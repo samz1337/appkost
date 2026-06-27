@@ -444,7 +444,6 @@
             box-shadow: 0 2px 10px rgba(72, 187, 120, 0.3);
         }
 
-        /* Test badge untuk kost luar kota */
         .kost-card .out-of-town {
             position: absolute;
             top: 10px;
@@ -707,7 +706,7 @@
             border-radius: 20px;
             padding: 2.5rem;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -758,6 +757,81 @@
             min-height: 100px;
         }
 
+        /* ===== MAP PICKER ===== */
+        .map-picker-container {
+            margin: 1rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            position: relative;
+        }
+
+        #addKostMap {
+            width: 100%;
+            height: 350px;
+            background: #edf2f7;
+        }
+
+        .map-picker-info {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.8rem;
+            align-items: center;
+        }
+
+        .map-picker-info .coord-info {
+            background: #f7fafc;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: #4a5568;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .map-picker-info .coord-info i {
+            color: #f6ad55;
+            margin-right: 5px;
+        }
+
+        .map-picker-info .coord-info strong {
+            color: #2d3748;
+        }
+
+        .map-picker-info .btn-use-location {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .map-picker-info .btn-use-location:hover {
+            background: #3182ce;
+        }
+
+        .map-picker-info .btn-use-location:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .map-picker-info .selected-marker-info {
+            background: #48bb78;
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
         .btn-submit {
             background: #f6ad55;
             color: #1a202c;
@@ -785,6 +859,13 @@
             font-size: 0.85rem;
             color: #a0aec0;
             margin-top: 0.3rem;
+        }
+
+        .form-error {
+            color: #e53e3e;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
         }
 
         /* ========== MODAL ========== */
@@ -1448,7 +1529,7 @@
                 margin: 1rem;
             }
 
-            #routeMap {
+            #routeMap, #addKostMap {
                 height: 250px;
             }
 
@@ -1470,6 +1551,11 @@
 
             .location-banner .location-info {
                 flex-direction: column;
+            }
+
+            .map-picker-info {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
 
@@ -1531,9 +1617,29 @@
             animation: pulse 1.5s ease-in-out infinite;
         }
 
+        .picker-marker {
+            background: #f6ad55;
+            border: 3px solid white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 0 20px rgba(246, 173, 85, 0.5);
+            color: #1a202c;
+            animation: pulse-gold 1.5s ease-in-out infinite;
+        }
+
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(66, 153, 225, 0.5); }
             100% { box-shadow: 0 0 0 20px rgba(66, 153, 225, 0); }
+        }
+
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(246, 173, 85, 0.5); }
+            100% { box-shadow: 0 0 0 20px rgba(246, 173, 85, 0); }
         }
     </style>
 </head>
@@ -1542,7 +1648,7 @@
     <!-- ========== NAVBAR ========== -->
     <nav class="navbar">
         <div class="logo" onclick="showPage('home')">
-            <span></span> Kost<span>App</span>
+            <span>🏠</span> Kost<span>App</span>
         </div>
         <div class="nav-links" id="navLinks">
             <button class="active" onclick="showPage('home')" data-page="home">
@@ -1703,7 +1809,7 @@
         <div class="page" id="page-add">
             <div class="form-card">
                 <h2><i class="fas fa-plus-circle" style="color:#f6ad55;"></i> Tambah Kost Baru</h2>
-                <p style="color:#718096; margin-bottom:1.5rem;">Isi data kost dengan lengkap untuk membantu pencari kost menemukan tempat tinggal impian mereka.</p>
+                <p style="color:#718096; margin-bottom:1.5rem;">Isi data kost dengan lengkap dan pilih lokasi di peta.</p>
                 
                 <form id="addKostForm" onsubmit="addKost(event)">
                     <div class="form-group">
@@ -1753,6 +1859,28 @@
                             <input type="text" id="kontakKost" placeholder="08123456789" required>
                             <div class="form-hint">Nomor yang bisa dihubungi oleh pencari kost</div>
                         </div>
+
+                        <!-- ===== MAP PICKER ===== -->
+                        <div class="full-width">
+                            <label><i class="fas fa-map-pin" style="color:#f6ad55;"></i> Pilih Lokasi di Peta *</label>
+                            <div class="map-picker-container">
+                                <div id="addKostMap"></div>
+                            </div>
+                            <div class="map-picker-info">
+                                <div class="coord-info">
+                                    <i class="fas fa-location-dot"></i>
+                                    <span>Koordinat: </span>
+                                    <strong id="selectedCoordDisplay">Belum dipilih</strong>
+                                </div>
+                                <button type="button" class="btn-use-location" id="btnUseMyLocation" onclick="useMyLocationForPicker()">
+                                    <i class="fas fa-location-dot"></i> Gunakan Lokasi Saya
+                                </button>
+                                <span class="selected-marker-info" id="markerStatus">⚪ Klik peta untuk pilih lokasi</span>
+                            </div>
+                            <input type="hidden" id="selectedLat" value="">
+                            <input type="hidden" id="selectedLng" value="">
+                            <div class="form-error" id="mapError">⚠️ Silakan pilih lokasi di peta terlebih dahulu!</div>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn-submit">
@@ -1762,7 +1890,7 @@
 
                 <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #f7fafc;">
                     <p style="color:#a0aec0; font-size:0.9rem;">
-                        <i class="fas fa-info-circle"></i> Setelah menambahkan kost, kost akan langsung muncul di daftar pencarian.
+                        <i class="fas fa-info-circle"></i> Klik pada peta untuk menentukan lokasi kost. Pin akan muncul di titik yang Anda klik.
                     </p>
                 </div>
             </div>
@@ -1906,7 +2034,7 @@
     
     <script>
         // ============================================
-        // DATA KOST - 10 Kost di Pematangsiantar + 3 Kost di Luar Kota
+        // DATA KOST
         // ============================================
         const PUSAT_KOTA = { lat: 2.9592, lng: 99.0687 };
 
@@ -2157,9 +2285,115 @@
         let userMarker = null;
         let isLocationDetected = false;
 
+        // Map Picker
+        let pickerMap = null;
+        let pickerMarker = null;
+        let isPickerMapInitialized = false;
+        let selectedLat = null;
+        let selectedLng = null;
+
         // Chat System
         let chatMessages = {};
         let chatContacts = [];
+
+        // ============================================
+        // MAP PICKER
+        // ============================================
+        function initPickerMap(lat, lng) {
+            if (!isPickerMapInitialized) {
+                pickerMap = L.map('addKostMap').setView([lat, lng], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                    maxZoom: 19
+                }).addTo(pickerMap);
+                isPickerMapInitialized = true;
+            } else {
+                pickerMap.setView([lat, lng], 15);
+            }
+
+            // Event klik pada peta
+            pickerMap.on('click', function(e) {
+                setPickerLocation(e.latlng.lat, e.latlng.lng);
+            });
+
+            return pickerMap;
+        }
+
+        function setPickerLocation(lat, lng) {
+            selectedLat = lat;
+            selectedLng = lng;
+
+            // Update hidden inputs
+            document.getElementById('selectedLat').value = lat;
+            document.getElementById('selectedLng').value = lng;
+
+            // Update display
+            document.getElementById('selectedCoordDisplay').textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            document.getElementById('markerStatus').innerHTML = '📍 Pin dipasang!';
+            document.getElementById('markerStatus').style.background = '#48bb78';
+            document.getElementById('markerStatus').style.color = 'white';
+            document.getElementById('mapError').style.display = 'none';
+
+            // Tambah atau update marker
+            if (pickerMarker) {
+                pickerMap.removeLayer(pickerMarker);
+            }
+
+            const icon = L.divIcon({
+                className: 'picker-marker',
+                html: '<i class="fas fa-map-pin"></i>',
+                iconSize: [35, 35],
+                iconAnchor: [17, 35]
+            });
+
+            pickerMarker = L.marker([lat, lng], { icon: icon, draggable: true })
+                .addTo(pickerMap)
+                .bindPopup('📍 Lokasi kost dipilih di sini')
+                .openPopup();
+
+            // Event drag marker
+            pickerMarker.on('dragend', function(e) {
+                const pos = e.target.getLatLng();
+                setPickerLocation(pos.lat, pos.lng);
+            });
+
+            pickerMap.setView([lat, lng], 16);
+        }
+
+        function useMyLocationForPicker() {
+            if (!navigator.geolocation) {
+                alert('⚠️ Browser Anda tidak mendukung geolokasi!');
+                return;
+            }
+
+            const btn = document.getElementById('btnUseMyLocation');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mendeteksi...';
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    setPickerLocation(lat, lng);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-location-dot"></i> Gunakan Lokasi Saya';
+                    alert('✅ Lokasi Anda telah dipasang di peta!');
+                },
+                (error) => {
+                    let msg = 'Gagal mendapatkan lokasi';
+                    if (error.code === error.PERMISSION_DENIED) {
+                        msg = 'Izin lokasi ditolak. Silakan izinkan akses lokasi.';
+                    }
+                    alert('⚠️ ' + msg);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-location-dot"></i> Gunakan Lokasi Saya';
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000
+                }
+            );
+        }
 
         // ============================================
         // LOCATION SYSTEM
@@ -2637,6 +2871,14 @@
                 return;
             }
 
+            // Validasi peta
+            if (!selectedLat || !selectedLng) {
+                document.getElementById('mapError').style.display = 'block';
+                document.getElementById('mapError').textContent = '⚠️ Silakan klik peta untuk memilih lokasi kost!';
+                document.getElementById('addKostMap').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
             const nama = document.getElementById('namaKost').value.trim();
             const lokasi = document.getElementById('lokasiKost').value.trim();
             const hargaBulan = parseInt(document.getElementById('hargaBulan').value);
@@ -2664,14 +2906,9 @@
 
             const fasilitas = fasilitasRaw.split(',').map(f => f.trim()).filter(f => f);
 
-            let lat, lng;
-            if (userLocation && isLocationDetected) {
-                lat = userLocation.lat + (Math.random() - 0.5) * 0.02;
-                lng = userLocation.lng + (Math.random() - 0.5) * 0.02;
-            } else {
-                lat = PUSAT_KOTA.lat + (Math.random() - 0.5) * 0.03;
-                lng = PUSAT_KOTA.lng + (Math.random() - 0.5) * 0.03;
-            }
+            // Gunakan lokasi dari peta
+            const lat = selectedLat;
+            const lng = selectedLng;
 
             const newKost = {
                 id: nextId++,
@@ -2694,6 +2931,21 @@
             kostData.push(newKost);
             
             document.getElementById('addKostForm').reset();
+            
+            // Reset map picker
+            selectedLat = null;
+            selectedLng = null;
+            document.getElementById('selectedCoordDisplay').textContent = 'Belum dipilih';
+            document.getElementById('markerStatus').innerHTML = '⚪ Klik peta untuk pilih lokasi';
+            document.getElementById('markerStatus').style.background = 'transparent';
+            document.getElementById('markerStatus').style.color = '#4a5568';
+            if (pickerMarker) {
+                pickerMap.removeLayer(pickerMarker);
+                pickerMarker = null;
+            }
+            document.getElementById('selectedLat').value = '';
+            document.getElementById('selectedLng').value = '';
+            document.getElementById('mapError').style.display = 'none';
             
             filterKostHome();
             filterKostList();
@@ -3324,6 +3576,14 @@
                 }
                 updateChatNotif();
             }
+            if (page === 'add') {
+                // Inisialisasi map picker saat halaman tambah dibuka
+                setTimeout(() => {
+                    const defaultLat = userLocation ? userLocation.lat : PUSAT_KOTA.lat;
+                    const defaultLng = userLocation ? userLocation.lng : PUSAT_KOTA.lng;
+                    initPickerMap(defaultLat, defaultLng);
+                }, 300);
+            }
             if (page === 'home') filterKostHome();
             if (page === 'list') filterKostList();
         }
@@ -3337,9 +3597,14 @@
             document.getElementById('locStatus').textContent = '📍 Pusat Kota (Default)';
             document.getElementById('locDetail').textContent = 'Aktifkan izin lokasi untuk deteksi lebih akurat';
             
+            // Inisialisasi map picker di halaman tambah
+            setTimeout(() => {
+                initPickerMap(PUSAT_KOTA.lat, PUSAT_KOTA.lng);
+            }, 500);
+
             setTimeout(() => {
                 getUserLocation();
-            }, 500);
+            }, 1000);
         });
 
         filterKostHome();
@@ -3367,6 +3632,9 @@
         window.addEventListener('resize', function() {
             if (map) {
                 map.invalidateSize();
+            }
+            if (pickerMap) {
+                pickerMap.invalidateSize();
             }
         });
     </script>
