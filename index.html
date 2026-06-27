@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KostApp - Cari Kost Mudah</title>
+    <title>KostApp</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Leaflet CSS -->
@@ -157,12 +157,30 @@
             padding: 2.5rem 5%;
             text-align: center;
             color: white;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🏙️</text></svg>') repeat;
+            opacity: 0.05;
+            background-size: 60px;
         }
 
         .hero h1 {
             font-size: 2.8rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .hero h1 .highlight {
+            color: #f6ad55;
         }
 
         .hero p {
@@ -170,6 +188,7 @@
             opacity: 0.9;
             max-width: 600px;
             margin: 0 auto 1.5rem;
+            position: relative;
         }
 
         .search-bar {
@@ -180,6 +199,7 @@
             border-radius: 50px;
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            position: relative;
         }
 
         .search-bar input {
@@ -316,6 +336,12 @@
             color: #f6ad55;
         }
 
+        .page-title .sub {
+            font-size: 1rem;
+            color: #718096;
+            font-weight: 400;
+        }
+
         /* ========== FILTER ========== */
         .filter-section {
             display: flex;
@@ -416,6 +442,20 @@
             transform: rotate(45deg);
             z-index: 5;
             box-shadow: 0 2px 10px rgba(72, 187, 120, 0.3);
+        }
+
+        /* Test badge untuk kost luar kota */
+        .kost-card .out-of-town {
+            position: absolute;
+            top: 10px;
+            left: 60px;
+            background: #ed8936;
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            z-index: 5;
         }
 
         .kost-image {
@@ -1501,7 +1541,9 @@
 
     <!-- ========== NAVBAR ========== -->
     <nav class="navbar">
-        <div class="logo" onclick="showPage('home')">Kost<span>App</span></div>
+        <div class="logo" onclick="showPage('home')">
+            <span>🏠</span> Kost<span>App</span>
+        </div>
         <div class="nav-links" id="navLinks">
             <button class="active" onclick="showPage('home')" data-page="home">
                 <i class="fas fa-home"></i> Beranda
@@ -1533,7 +1575,7 @@
 
     <!-- ========== HERO ========== -->
     <section class="hero" id="heroSection">
-        <h1>Cari Kost Impianmu</h1>
+        <h1>Cari Kost <span class="highlight">Terdekat</span></h1>
         <p>Temukan kost dengan harga terbaik, fasilitas lengkap, dan lokasi strategis</p>
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Cari nama kost atau lokasi..." onkeyup="searchKost()">
@@ -1561,7 +1603,8 @@
         <!-- ===== PAGE: HOME ===== -->
         <div class="page active" id="page-home">
             <div class="page-title">
-                <i class="fas fa-fire"></i> Kost Terdekat & Terpopuler
+                <i class="fas fa-fire"></i> Kost Terdekat
+                <span class="sub">— Temukan kost kosong terdekat</span>
             </div>
             <div class="filter-section">
                 <div class="filter-group">
@@ -1671,7 +1714,7 @@
                         
                         <div class="full-width">
                             <label for="lokasiKost">Lokasi / Alamat *</label>
-                            <input type="text" id="lokasiKost" placeholder="Contoh: Jl. Merpati No. 12, Malang" required>
+                            <input type="text" id="lokasiKost" placeholder="Contoh: Jl. Merpati No. 12" required>
                         </div>
 
                         <div>
@@ -1782,7 +1825,7 @@
                     <div id="routeMap"></div>
                 </div>
                 <div class="map-controls">
-                    <input type="text" id="startLocation" placeholder="Lokasi awal" value="Kampus Utama">
+                    <input type="text" id="startLocation" placeholder="Lokasi awal" value="Pusat Kota">
                     <button class="btn-route-map" onclick="calculateRoute()">
                         <i class="fas fa-route"></i> Hitung Rute
                     </button>
@@ -1854,7 +1897,7 @@
 
     <!-- ========== FOOTER ========== -->
     <div class="footer">
-        &copy; 2026 <span>KostApp</span> | Simulasi Kost-kostan | 
+        &copy; 2026 <span>KostApp</span> | Kost-kostan | 
         <span id="totalKostFooter">0</span> kost tersedia
     </div>
 
@@ -1863,23 +1906,27 @@
     
     <script>
         // ============================================
-        // DATA
+        // DATA KOST - 10 Kost di Pematangsiantar + 3 Kost di Luar Kota
         // ============================================
+        const PUSAT_KOTA = { lat: 2.9592, lng: 99.0687 };
+
         let kostData = [
+            // ===== KOST DI PEMATANGSIANTAR (10 Kost) =====
             {
                 id: 1,
                 nama: "Kost Mawar Indah",
-                lokasi: "Jl. Merpati No. 12, Malang",
+                lokasi: "Jl. Merpati No. 12, Pematangsiantar",
                 hargaBulan: 800000,
                 hargaTahun: 8400000,
                 fasilitas: ["AC", "WiFi", "Kamar Mandi Dalam", "Parkir"],
                 deskripsi: "Kost nyaman dengan suasana asri, dekat kampus dan pusat kota. Cocok untuk mahasiswa dan pekerja.",
-                lat: -7.9666,
-                lng: 112.6326,
+                lat: 2.9570,
+                lng: 99.0620,
                 owner: "Budi Santoso",
                 kontak: "08123456789",
                 totalKamar: 10,
                 kamarKosong: 3,
+                kota: "Pematangsiantar",
                 reviews: [
                     { user: "Ani", rating: 5, text: "Kostnya nyaman banget!", date: "2026-01-15" },
                     { user: "Citra", rating: 4, text: "Lokasi strategis, dekat kampus.", date: "2026-01-20" }
@@ -1888,17 +1935,18 @@
             {
                 id: 2,
                 nama: "Kost Melati Putih",
-                lokasi: "Jl. Kenanga No. 5, Surabaya",
+                lokasi: "Jl. Kenanga No. 5, Pematangsiantar",
                 hargaBulan: 1200000,
                 hargaTahun: 13200000,
                 fasilitas: ["AC", "WiFi", "Kamar Mandi Dalam", "TV", "Dapur"],
                 deskripsi: "Kost premium dengan fasilitas lengkap, cocok untuk mahasiswa dan pekerja profesional.",
-                lat: -7.2575,
-                lng: 112.7521,
+                lat: 2.9530,
+                lng: 99.0750,
                 owner: "Siti Rahayu",
                 kontak: "08765432100",
                 totalKamar: 8,
                 kamarKosong: 2,
+                kota: "Pematangsiantar",
                 reviews: [
                     { user: "Dewi", rating: 5, text: "Sangat recommended!", date: "2026-01-18" }
                 ]
@@ -1906,102 +1954,195 @@
             {
                 id: 3,
                 nama: "Kost Anggrek Biru",
-                lokasi: "Jl. Pahlawan No. 8, Yogyakarta",
+                lokasi: "Jl. Pahlawan No. 8, Pematangsiantar",
                 hargaBulan: 650000,
                 hargaTahun: 7150000,
                 fasilitas: ["WiFi", "Parkir", "Dapur"],
                 deskripsi: "Kost sederhana dengan lingkungan yang tenang dan aman. Harga terjangkau.",
-                lat: -7.7956,
-                lng: 110.3695,
+                lat: 2.9620,
+                lng: 99.0720,
                 owner: "Agus Prasetyo",
                 kontak: "08567890123",
                 totalKamar: 12,
                 kamarKosong: 5,
+                kota: "Pematangsiantar",
                 reviews: []
             },
             {
                 id: 4,
                 nama: "Kost Flamboyan",
-                lokasi: "Jl. Diponegoro No. 20, Bandung",
+                lokasi: "Jl. Diponegoro No. 20, Pematangsiantar",
                 hargaBulan: 1500000,
                 hargaTahun: 16500000,
                 fasilitas: ["AC", "WiFi", "Kamar Mandi Dalam", "TV", "Parkir", "Dapur"],
                 deskripsi: "Kost mewah dengan desain modern, dekat dengan pusat perbelanjaan dan kampus.",
-                lat: -6.9175,
-                lng: 107.6191,
+                lat: 2.9550,
+                lng: 99.0650,
                 owner: "Rina Wijaya",
                 kontak: "08987654321",
                 totalKamar: 6,
                 kamarKosong: 1,
+                kota: "Pematangsiantar",
                 reviews: []
             },
             {
                 id: 5,
                 nama: "Kost Sederhana Bahagia",
-                lokasi: "Jl. Bunga Raya No. 3, Semarang",
+                lokasi: "Jl. Bunga Raya No. 3, Pematangsiantar",
                 hargaBulan: 500000,
                 hargaTahun: 5500000,
                 fasilitas: ["Parkir", "Dapur"],
                 deskripsi: "Kost ekonomis dengan lingkungan yang ramah dan nyaman untuk istirahat.",
-                lat: -6.9667,
-                lng: 110.4167,
+                lat: 2.9650,
+                lng: 99.0600,
                 owner: "Mulyono",
                 kontak: "08111222333",
                 totalKamar: 15,
                 kamarKosong: 7,
+                kota: "Pematangsiantar",
                 reviews: []
             },
             {
                 id: 6,
                 nama: "Kost Gardenia",
-                lokasi: "Jl. Raya Candi No. 15, Malang",
+                lokasi: "Jl. Raya Candi No. 15, Pematangsiantar",
                 hargaBulan: 950000,
                 hargaTahun: 10450000,
                 fasilitas: ["AC", "WiFi", "Kamar Mandi Dalam", "Parkir"],
                 deskripsi: "Kost dengan taman hijau, suasana sejuk dan tenang. Cocok untuk yang suka ketenangan.",
-                lat: -7.9390,
-                lng: 112.6300,
+                lat: 2.9580,
+                lng: 99.0800,
                 owner: "Diana Putri",
                 kontak: "08222333444",
                 totalKamar: 10,
                 kamarKosong: 0,
+                kota: "Pematangsiantar",
                 reviews: []
             },
             {
                 id: 7,
-                nama: "Kost Teratai",
-                lokasi: "Jl. Mawar No. 45, Jakarta Selatan",
+                nama: "Kost Teratai Residence",
+                lokasi: "Jl. Sisingamangaraja No. 45, Pematangsiantar",
                 hargaBulan: 2000000,
                 hargaTahun: 22000000,
                 fasilitas: ["AC", "WiFi", "Kamar Mandi Dalam", "TV", "Parkir", "Dapur", "Kolam Renang"],
                 deskripsi: "Kost eksklusif dengan fasilitas premium, cocok untuk eksekutif muda.",
-                lat: -6.2244,
-                lng: 106.8244,
+                lat: 2.9500,
+                lng: 99.0700,
                 owner: "Andi Wijaya",
                 kontak: "08134567890",
                 totalKamar: 5,
                 kamarKosong: 2,
+                kota: "Pematangsiantar",
                 reviews: []
             },
             {
                 id: 8,
                 nama: "Kost Ceria",
-                lokasi: "Jl. Kamboja No. 7, Depok",
+                lokasi: "Jl. Kamboja No. 7, Pematangsiantar",
                 hargaBulan: 750000,
                 hargaTahun: 8250000,
                 fasilitas: ["WiFi", "Parkir", "Dapur", "TV"],
                 deskripsi: "Kost ramah dengan lingkungan yang nyaman dan dekat dengan kampus.",
-                lat: -6.3929,
-                lng: 106.8223,
+                lat: 2.9600,
+                lng: 99.0580,
                 owner: "Nina Kurnia",
                 kontak: "08345678901",
                 totalKamar: 8,
                 kamarKosong: 4,
+                kota: "Pematangsiantar",
+                reviews: []
+            },
+            {
+                id: 9,
+                nama: "Kost Permata",
+                lokasi: "Jl. Sutomo No. 25, Pematangsiantar",
+                hargaBulan: 1100000,
+                hargaTahun: 12100000,
+                fasilitas: ["AC", "WiFi", "Kamar Mandi Dalam", "Parkir", "TV"],
+                deskripsi: "Kost nyaman dengan akses mudah ke pusat kota dan fasilitas umum.",
+                lat: 2.9565,
+                lng: 99.0775,
+                owner: "Hendra Gunawan",
+                kontak: "08234567890",
+                totalKamar: 7,
+                kamarKosong: 3,
+                kota: "Pematangsiantar",
+                reviews: []
+            },
+            {
+                id: 10,
+                nama: "Kost Mutiara",
+                lokasi: "Jl. Thamrin No. 10, Pematangsiantar",
+                hargaBulan: 900000,
+                hargaTahun: 9900000,
+                fasilitas: ["WiFi", "Kamar Mandi Dalam", "Parkir", "Dapur"],
+                deskripsi: "Kost strategis di pusat kota, dekat dengan berbagai fasilitas umum.",
+                lat: 2.9615,
+                lng: 99.0635,
+                owner: "Lina Sari",
+                kontak: "08543210987",
+                totalKamar: 9,
+                kamarKosong: 6,
+                kota: "Pematangsiantar",
+                reviews: []
+            },
+
+            // ===== KOST DI LUAR KOTA (3 Kost untuk Testing) =====
+            {
+                id: 11,
+                nama: "Kost Medan Permai",
+                lokasi: "Jl. Jenderal Sudirman No. 50, Medan",
+                hargaBulan: 1800000,
+                hargaTahun: 19800000,
+                fasilitas: ["AC", "WiFi", "Kamar Mandi Dalam", "Parkir", "TV", "Dapur"],
+                deskripsi: "Kost premium di pusat kota Medan, dekat dengan mall dan kampus ternama.",
+                lat: 3.5952,
+                lng: 98.6722,
+                owner: "Hendra Wijaya",
+                kontak: "08123456788",
+                totalKamar: 8,
+                kamarKosong: 3,
+                kota: "Medan",
+                reviews: []
+            },
+            {
+                id: 12,
+                nama: "Kost Siantar 2",
+                lokasi: "Jl. Pahlawan No. 15, Siantar",
+                hargaBulan: 550000,
+                hargaTahun: 6050000,
+                fasilitas: ["WiFi", "Parkir", "Dapur"],
+                deskripsi: "Kost sederhana dengan suasana pedesaan, cocok untuk yang ingin suasana tenang.",
+                lat: 2.9270,
+                lng: 99.0520,
+                owner: "Joko Susanto",
+                kontak: "08567890122",
+                totalKamar: 10,
+                kamarKosong: 4,
+                kota: "Siantar",
+                reviews: []
+            },
+            {
+                id: 13,
+                nama: "Kost Berastagi Indah",
+                lokasi: "Jl. Raya Berastagi No. 8, Berastagi",
+                hargaBulan: 700000,
+                hargaTahun: 7700000,
+                fasilitas: ["AC", "WiFi", "Parkir", "TV"],
+                deskripsi: "Kost dengan pemandangan pegunungan, udara sejuk dan lingkungan yang asri.",
+                lat: 3.1900,
+                lng: 98.5130,
+                owner: "Maria Simamora",
+                kontak: "08222333445",
+                totalKamar: 6,
+                kamarKosong: 2,
+                kota: "Berastagi",
                 reviews: []
             }
         ];
 
-        let nextId = 9;
+        let nextId = 14;
         let currentModalId = null;
         let selectedRating = 0;
         let currentUser = null;
@@ -2033,9 +2174,14 @@
 
             if (!navigator.geolocation) {
                 document.getElementById('locStatus').textContent = '⚠️ Browser tidak mendukung geolokasi';
-                document.getElementById('locDetail').textContent = 'Gunakan lokasi manual atau perbarui browser';
+                document.getElementById('locDetail').textContent = 'Gunakan lokasi manual (Pusat Kota)';
                 btn.classList.remove('loading');
                 btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh Lokasi';
+                userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng };
+                isLocationDetected = true;
+                updateLocationUI('Pusat Kota');
+                filterKostHome();
+                filterKostList();
                 return;
             }
 
@@ -2049,17 +2195,15 @@
 
                     document.getElementById('locStatus').textContent = '📍 Lokasi terdeteksi!';
                     document.getElementById('locDetail').textContent = 
-                        `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)} • ${getLocationName()}`;
+                        `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`;
 
                     btn.classList.remove('loading');
                     btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh Lokasi';
 
-                    // Tampilkan marker di peta jika modal terbuka
                     if (mapInitialized && map) {
                         showUserLocationOnMap();
                     }
 
-                    // Refresh daftar kost dengan jarak
                     filterKostHome();
                     filterKostList();
 
@@ -2069,23 +2213,22 @@
                     let errorMsg = 'Gagal mendapatkan lokasi';
                     switch(error.code) {
                         case error.PERMISSION_DENIED:
-                            errorMsg = 'Izin lokasi ditolak. Izinkan akses lokasi di browser Anda.';
+                            errorMsg = 'Izin lokasi ditolak. Gunakan lokasi default.';
                             break;
                         case error.POSITION_UNAVAILABLE:
-                            errorMsg = 'Informasi lokasi tidak tersedia. Coba lagi nanti.';
+                            errorMsg = 'Informasi lokasi tidak tersedia. Gunakan lokasi default.';
                             break;
                         case error.TIMEOUT:
-                            errorMsg = 'Waktu deteksi lokasi habis. Coba lagi.';
+                            errorMsg = 'Waktu deteksi lokasi habis. Gunakan lokasi default.';
                             break;
                     }
                     document.getElementById('locStatus').textContent = '⚠️ ' + errorMsg;
-                    document.getElementById('locDetail').textContent = 'Gunakan fitur pencarian manual atau refresh halaman';
+                    document.getElementById('locDetail').textContent = 'Menggunakan lokasi default: Pusat Kota';
 
                     btn.classList.remove('loading');
                     btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh Lokasi';
 
-                    // Gunakan lokasi default (Jakarta)
-                    userLocation = { lat: -6.2088, lng: 106.8456 };
+                    userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng };
                     isLocationDetected = true;
                     filterKostHome();
                     filterKostList();
@@ -2098,34 +2241,9 @@
             );
         }
 
-        function getLocationName() {
-            // Simulasi nama lokasi berdasarkan koordinat
-            if (!userLocation) return 'Lokasi tidak diketahui';
-            
-            const locations = [
-                { lat: -7.9666, lng: 112.6326, name: 'Malang' },
-                { lat: -7.2575, lng: 112.7521, name: 'Surabaya' },
-                { lat: -7.7956, lng: 110.3695, name: 'Yogyakarta' },
-                { lat: -6.9175, lng: 107.6191, name: 'Bandung' },
-                { lat: -6.9667, lng: 110.4167, name: 'Semarang' },
-                { lat: -7.9390, lng: 112.6300, name: 'Malang' },
-                { lat: -6.2088, lng: 106.8456, name: 'Jakarta' },
-                { lat: -6.2244, lng: 106.8244, name: 'Jakarta Selatan' },
-                { lat: -6.3929, lng: 106.8223, name: 'Depok' }
-            ];
-
-            let closest = locations[0];
-            let minDist = Infinity;
-            
-            for (const loc of locations) {
-                const dist = getDistance(userLocation.lat, userLocation.lng, loc.lat, loc.lng);
-                if (dist < minDist) {
-                    minDist = dist;
-                    closest = loc;
-                }
-            }
-
-            return closest.name;
+        function updateLocationUI(locationName) {
+            document.getElementById('locStatus').textContent = '📍 Lokasi terdeteksi!';
+            document.getElementById('locDetail').textContent = `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)} • ${locationName}`;
         }
 
         function getDistance(lat1, lng1, lat2, lng2) {
@@ -2172,7 +2290,6 @@
                 .bindPopup('📍 Lokasi Anda')
                 .openPopup();
 
-            // Tambahkan circle radius
             const circle = L.circle([userLocation.lat, userLocation.lng], {
                 radius: 500,
                 color: '#4299e1',
@@ -2379,11 +2496,12 @@
                 const distance = calculateDistanceToKost(kost);
                 const distanceText = distance !== null ? getKostDistanceText(kost) : '';
                 const isNearby = distance !== null && distance < 3;
-                const isNearbyBadge = isNearby && distance !== null ? 'nearby-badge' : '';
+                const isOutOfTown = kost.kota && kost.kota !== "Pematangsiantar";
 
                 return `
                 <div class="kost-card ${isNearby ? 'nearby' : ''}" onclick="openModal(${kost.id})">
                     ${isNearby ? '<div class="nearby-ribbon">📍 TERDEKAT</div>' : ''}
+                    ${isOutOfTown ? '<div class="out-of-town">🌍 Luar Kota</div>' : ''}
                     <div class="kost-image">
                         <i class="fas fa-building"></i>
                         <span class="kost-badge">${kost.fasilitas.length} Fasilitas</span>
@@ -2396,6 +2514,7 @@
                             ${kost.nama}
                             ${distanceText ? `<span class="distance-badge">📍 ${distanceText}</span>` : ''}
                             ${isNearby ? `<span class="nearby-badge">Terdekat</span>` : ''}
+                            ${isOutOfTown ? `<span class="distance-badge" style="background:#ed8936;color:white;">${kost.kota}</span>` : ''}
                         </div>
                         <div class="kost-location"><i class="fas fa-map-pin"></i> ${kost.lokasi}</div>
                         <div class="kost-rooms">
@@ -2450,11 +2569,11 @@
                 const matchFacility = facilityFilter === 'all' || kost.fasilitas.includes(facilityFilter);
                 const matchSearch = searchQuery === '' || 
                     kost.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    kost.lokasi.toLowerCase().includes(searchQuery.toLowerCase());
+                    kost.lokasi.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    (kost.kota && kost.kota.toLowerCase().includes(searchQuery.toLowerCase()));
                 return matchFacility && matchSearch;
             });
 
-            // Filter hanya yang masih ada kamar kosong
             filtered = filtered.filter(kost => kost.kamarKosong > 0);
 
             if (sortFilter === 'low') {
@@ -2545,14 +2664,13 @@
 
             const fasilitas = fasilitasRaw.split(',').map(f => f.trim()).filter(f => f);
 
-            // Gunakan lokasi user jika tersedia, atau random
             let lat, lng;
             if (userLocation && isLocationDetected) {
                 lat = userLocation.lat + (Math.random() - 0.5) * 0.02;
                 lng = userLocation.lng + (Math.random() - 0.5) * 0.02;
             } else {
-                lat = -6.2 + (Math.random() * 2 - 1);
-                lng = 106.8 + (Math.random() * 2 - 1);
+                lat = PUSAT_KOTA.lat + (Math.random() - 0.5) * 0.03;
+                lng = PUSAT_KOTA.lng + (Math.random() - 0.5) * 0.03;
             }
 
             const newKost = {
@@ -2569,6 +2687,7 @@
                 kontak: kontak,
                 totalKamar: totalKamar,
                 kamarKosong: kamarKosong,
+                kota: "Pematangsiantar",
                 reviews: []
             };
 
@@ -2893,7 +3012,6 @@
                 map.removeLayer(routeLayer);
             }
 
-            // Gunakan lokasi user jika tersedia
             let startLat, startLng;
             if (userLocation && isLocationDetected) {
                 startLat = userLocation.lat;
@@ -2924,7 +3042,6 @@
 
             map.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
 
-            // Tampilkan marker start
             const startIcon = L.divIcon({
                 className: 'custom-marker',
                 html: '<i class="fas fa-play" style="color:#4299e1;"></i>',
@@ -2936,7 +3053,6 @@
                 .addTo(map)
                 .bindPopup(`📍 ${startInput}`);
 
-            // Hitung jarak sebenarnya
             const distance = getDistance(startLat, startLng, currentKostLat, currentKostLng);
             const time = Math.round(distance * 5 + Math.random() * 10);
 
@@ -3012,12 +3128,11 @@
                 currentKostLng = kost.lng;
                 addDestinationMarker(kost.lat, kost.lng, kost.nama);
                 
-                // Tampilkan lokasi user jika tersedia
                 if (userLocation && isLocationDetected) {
                     showUserLocationOnMap();
                     document.getElementById('startLocation').value = 'Lokasi Saya';
                 } else {
-                    document.getElementById('startLocation').value = 'Kampus Utama';
+                    document.getElementById('startLocation').value = 'Pusat Kota';
                 }
                 
                 document.getElementById('routeInfo').classList.remove('active');
@@ -3048,7 +3163,6 @@
             document.getElementById('modalOwner').textContent = kost.owner;
             document.getElementById('modalKontak').textContent = `📱 ${kost.kontak || '-'}`;
 
-            // Kamar
             const kamarElement = document.getElementById('modalKamar');
             const kamarKosong = kost.kamarKosong;
             const totalKamar = kost.totalKamar;
@@ -3058,16 +3172,13 @@
             else if (kamarKosong <= 2) kamarClass = 'limited';
             kamarElement.className = 'value ' + kamarClass;
 
-            // Rating
             const avgRating = getAverageRating(kost);
             document.getElementById('modalStars').textContent = getRatingStars(avgRating);
             document.getElementById('modalReviewCount').textContent = `(${kost.reviews ? kost.reviews.length : 0} ulasan)`;
 
-            // Facilities
             const facilitiesContainer = document.getElementById('modalFacilities');
             facilitiesContainer.innerHTML = kost.fasilitas.map(f => `<span class="tag">${f}</span>`).join('');
 
-            // Reviews
             const reviewsContainer = document.getElementById('modalReviews');
             if (kost.reviews && kost.reviews.length > 0) {
                 reviewsContainer.innerHTML = kost.reviews.map(r => `
@@ -3084,7 +3195,6 @@
                 reviewsContainer.innerHTML = '<p style="color:#a0aec0;font-size:0.9rem;">Belum ada ulasan. Jadilah yang pertama!</p>';
             }
 
-            // Reset rating
             selectedRating = 0;
             document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('selectedRatingLabel').textContent = '0';
@@ -3094,7 +3204,6 @@
             document.getElementById('detailModal').classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            // Inisialisasi map
             setTimeout(() => {
                 if (kost.lat && kost.lng) {
                     initMap(kost.lat, kost.lng);
@@ -3104,7 +3213,7 @@
                         showUserLocationOnMap();
                         document.getElementById('startLocation').value = 'Lokasi Saya';
                     } else {
-                        document.getElementById('startLocation').value = 'Kampus Utama';
+                        document.getElementById('startLocation').value = 'Pusat Kota';
                     }
                     
                     document.getElementById('routeInfo').classList.remove('active');
@@ -3222,8 +3331,12 @@
         // ============================================
         // INISIALISASI
         // ============================================
-        // Deteksi lokasi otomatis saat aplikasi dibuka
         window.addEventListener('load', function() {
+            userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng };
+            isLocationDetected = true;
+            document.getElementById('locStatus').textContent = '📍 Pusat Kota (Default)';
+            document.getElementById('locDetail').textContent = 'Aktifkan izin lokasi untuk deteksi lebih akurat';
+            
             setTimeout(() => {
                 getUserLocation();
             }, 500);
