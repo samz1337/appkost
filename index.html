@@ -21,12 +21,10 @@
             line-height: 1.6;
         }
 
-        /* ===== SCROLL ===== */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #eef2f6; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 12px; }
 
-        /* ===== NAVBAR ===== */
         .navbar {
             background: rgba(255, 255, 255, 0.82);
             backdrop-filter: blur(14px) saturate(180%);
@@ -143,7 +141,6 @@
             margin-left: 2px;
         }
 
-        /* ===== HERO ===== */
         .hero {
             padding: 3rem 5% 2.5rem;
             background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
@@ -195,7 +192,6 @@
         }
         .search-bar button:hover { background: #e09515; }
 
-        /* ===== LOCATION BANNER ===== */
         .location-banner {
             background: white;
             padding: 0.8rem 2rem;
@@ -247,7 +243,6 @@
         }
         .btn-refresh-loc:hover { background: #e2e8f0; }
 
-        /* ===== CONTAINER ===== */
         .container {
             max-width: 1440px;
             margin: 0 auto;
@@ -273,7 +268,6 @@
         .page-title i { color: #f5a623; }
         .page-title .sub { font-size: 0.95rem; font-weight: 400; color: #6f8aa0; }
 
-        /* ===== FILTER ===== */
         .filter-section {
             display: flex;
             flex-wrap: wrap;
@@ -306,7 +300,6 @@
         .filter-group select:focus, .filter-group input:focus { border-color: #f5a623; }
         .filter-count { font-size: 0.9rem; color: #6f8aa0; }
 
-        /* ===== GRID ===== */
         .kost-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -331,27 +324,41 @@
         .kost-card.nearby { border-color: #f5a623; background: #fffbf0; }
 
         .kost-image {
-            height: 180px;
+            height: 200px;
             background: #eef2f6;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.2rem;
-            color: #8a9aa8;
             position: relative;
+            overflow: hidden;
         }
-        .kost-image .fas { opacity: 0.3; }
+        .kost-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .kost-card:hover .kost-image img {
+            transform: scale(1.03);
+        }
+        .kost-image .fallback-icon {
+            position: absolute;
+            font-size: 4rem;
+            color: #8a9aa8;
+            opacity: 0.4;
+        }
         .kost-badge {
             position: absolute;
             top: 16px;
             right: 16px;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             backdrop-filter: blur(4px);
             color: white;
             padding: 0.2rem 0.9rem;
             border-radius: 40px;
             font-size: 0.7rem;
             font-weight: 600;
+            z-index: 2;
         }
         .wishlist-btn {
             position: absolute;
@@ -364,12 +371,13 @@
             border-radius: 50%;
             cursor: pointer;
             font-size: 1rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             display: flex;
             align-items: center;
             justify-content: center;
             transition: 0.2s;
             color: #cbd5e1;
+            z-index: 2;
         }
         .wishlist-btn.liked { color: #dc3545; }
         .wishlist-btn:hover { transform: scale(1.05); background: #f8fafc; }
@@ -386,6 +394,7 @@
             transform: rotate(45deg);
             box-shadow: 0 2px 10px rgba(245, 166, 35, 0.15);
             letter-spacing: 0.3px;
+            z-index: 3;
         }
         .out-of-town {
             position: absolute;
@@ -397,6 +406,7 @@
             border-radius: 40px;
             font-size: 0.65rem;
             font-weight: 600;
+            z-index: 2;
         }
 
         .kost-body { padding: 1.4rem 1.4rem 1.8rem; }
@@ -519,7 +529,6 @@
         }
         .btn-delete:hover { background: #fecaca; }
 
-        /* ===== FORM ===== */
         .form-card {
             background: white;
             border-radius: 32px;
@@ -619,7 +628,6 @@
 
         .form-error { color: #dc3545; font-size: 0.85rem; margin-top: 4px; display: none; }
 
-        /* ===== MODAL ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -658,15 +666,24 @@
         .modal-close:hover { color: #0b1a2e; transform: rotate(90deg); }
 
         .modal-image {
-            height: 160px;
+            height: 200px;
             background: #eef2f6;
             border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            color: #8a9aa8;
+            overflow: hidden;
             margin-bottom: 1.2rem;
+        }
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .modal-image .fallback-icon {
+            font-size: 4rem;
+            color: #8a9aa8;
+            opacity: 0.4;
         }
 
         .modal .detail-grid {
@@ -758,7 +775,6 @@
         }
         .route-info.active { display: block; }
 
-        /* ===== CHAT ===== */
         .chat-container {
             max-height: 350px;
             overflow-y: auto;
@@ -841,7 +857,6 @@
         }
         .btn-review:hover { background: #e09515; }
 
-        /* ===== WISHLIST EMPTY ===== */
         .wishlist-empty, .empty-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -850,7 +865,6 @@
         }
         .wishlist-empty i, .empty-state i { font-size: 3.2rem; opacity: 0.3; margin-bottom: 1rem; }
 
-        /* ===== FOOTER ===== */
         .footer {
             background: white;
             border-top: 1px solid #edf2f7;
@@ -861,7 +875,6 @@
         }
         .footer span { color: #f5a623; font-weight: 600; }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .navbar { flex-direction: column; padding: 0.6rem 1.2rem; }
             .nav-links { justify-content: center; width: 100%; gap: 4px; }
@@ -1013,7 +1026,7 @@
     <div class="modal-overlay" id="detailModal">
         <div class="modal">
             <button class="modal-close" onclick="closeModal()">&times;</button>
-            <div class="modal-image" id="modalImage"><i class="fas fa-building"></i></div>
+            <div class="modal-image" id="modalImage"><i class="fas fa-building fallback-icon"></i></div>
             <h2 id="modalTitle">Nama Kost</h2>
             <div class="location" id="modalLocation"><i class="fas fa-map-pin"></i> Lokasi</div>
             <div class="kost-rating"><span class="stars" id="modalStars">★★★★★</span><span class="review-count" id="modalReviewCount">(0 ulasan)</span></div>
@@ -1094,139 +1107,1186 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // ============================================
-        // DATA KOST (sama seperti sebelumnya, hanya disingkat)
+        // DATA KOST + GAMBAR RANDOM
         // ============================================
         const PUSAT_KOTA = { lat: 2.9592, lng: 99.0687 };
+
+        // Koleksi ID gambar dari picsum (bervariasi)
+        const IMAGE_IDS = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50];
+        let imageIndex = 0;
+
+        function getRandomImageUrl() {
+            const id = IMAGE_IDS[imageIndex % IMAGE_IDS.length];
+            imageIndex++;
+            return `https://picsum.photos/id/${id}/400/300`;
+        }
+
         let kostData = [
-            { id:1, nama:"Kost Mawar Indah", lokasi:"Jl. Merpati No. 12, Pematangsiantar", hargaBulan:800000, hargaTahun:8400000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost nyaman dengan suasana asri.", lat:2.9570, lng:99.0620, owner:"Budi Santoso", kontak:"08123456789", totalKamar:10, kamarKosong:3, kota:"Pematangsiantar", reviews:[{user:"Ani",rating:5,text:"Kostnya nyaman banget!",date:"2026-01-15"}] },
-            { id:2, nama:"Kost Melati Putih", lokasi:"Jl. Kenanga No. 5, Pematangsiantar", hargaBulan:1200000, hargaTahun:13200000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Dapur"], deskripsi:"Kost premium dengan fasilitas lengkap.", lat:2.9530, lng:99.0750, owner:"Siti Rahayu", kontak:"08765432100", totalKamar:8, kamarKosong:2, kota:"Pematangsiantar", reviews:[{user:"Dewi",rating:5,text:"Sangat recommended!",date:"2026-01-18"}] },
-            { id:3, nama:"Kost Anggrek Biru", lokasi:"Jl. Pahlawan No. 8, Pematangsiantar", hargaBulan:650000, hargaTahun:7150000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana dengan lingkungan tenang.", lat:2.9620, lng:99.0720, owner:"Agus Prasetyo", kontak:"08567890123", totalKamar:12, kamarKosong:5, kota:"Pematangsiantar", reviews:[] },
-            { id:4, nama:"Kost Flamboyan", lokasi:"Jl. Diponegoro No. 20, Pematangsiantar", hargaBulan:1500000, hargaTahun:16500000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur"], deskripsi:"Kost mewah dengan desain modern.", lat:2.9550, lng:99.0650, owner:"Rina Wijaya", kontak:"08987654321", totalKamar:6, kamarKosong:1, kota:"Pematangsiantar", reviews:[] },
-            { id:5, nama:"Kost Sederhana Bahagia", lokasi:"Jl. Bunga Raya No. 3, Pematangsiantar", hargaBulan:500000, hargaTahun:5500000, fasilitas:["Parkir","Dapur"], deskripsi:"Kost ekonomis dengan lingkungan ramah.", lat:2.9650, lng:99.0600, owner:"Mulyono", kontak:"08111222333", totalKamar:15, kamarKosong:7, kota:"Pematangsiantar", reviews:[] },
-            { id:6, nama:"Kost Gardenia", lokasi:"Jl. Raya Candi No. 15, Pematangsiantar", hargaBulan:950000, hargaTahun:10450000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost dengan taman hijau.", lat:2.9580, lng:99.0800, owner:"Diana Putri", kontak:"08222333444", totalKamar:10, kamarKosong:0, kota:"Pematangsiantar", reviews:[] },
-            { id:7, nama:"Kost Teratai Residence", lokasi:"Jl. Sisingamangaraja No. 45, Pematangsiantar", hargaBulan:2000000, hargaTahun:22000000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur","Kolam Renang"], deskripsi:"Kost eksklusif.", lat:2.9500, lng:99.0700, owner:"Andi Wijaya", kontak:"08134567890", totalKamar:5, kamarKosong:2, kota:"Pematangsiantar", reviews:[] },
-            { id:8, nama:"Kost Ceria", lokasi:"Jl. Kamboja No. 7, Pematangsiantar", hargaBulan:750000, hargaTahun:8250000, fasilitas:["WiFi","Parkir","Dapur","TV"], deskripsi:"Kost ramah.", lat:2.9600, lng:99.0580, owner:"Nina Kurnia", kontak:"08345678901", totalKamar:8, kamarKosong:4, kota:"Pematangsiantar", reviews:[] },
-            { id:9, nama:"Kost Permata", lokasi:"Jl. Sutomo No. 25, Pematangsiantar", hargaBulan:1100000, hargaTahun:12100000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV"], deskripsi:"Kost nyaman.", lat:2.9565, lng:99.0775, owner:"Hendra Gunawan", kontak:"08234567890", totalKamar:7, kamarKosong:3, kota:"Pematangsiantar", reviews:[] },
-            { id:10, nama:"Kost Mutiara", lokasi:"Jl. Thamrin No. 10, Pematangsiantar", hargaBulan:900000, hargaTahun:9900000, fasilitas:["WiFi","Kamar Mandi Dalam","Parkir","Dapur"], deskripsi:"Kost strategis.", lat:2.9615, lng:99.0635, owner:"Lina Sari", kontak:"08543210987", totalKamar:9, kamarKosong:6, kota:"Pematangsiantar", reviews:[] },
-            { id:11, nama:"Kost Medan Permai", lokasi:"Jl. Jenderal Sudirman No. 50, Medan", hargaBulan:1800000, hargaTahun:19800000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV","Dapur"], deskripsi:"Kost premium di Medan.", lat:3.5952, lng:98.6722, owner:"Hendra Wijaya", kontak:"08123456788", totalKamar:8, kamarKosong:3, kota:"Medan", reviews:[] },
-            { id:12, nama:"Kost Siantar 2", lokasi:"Jl. Pahlawan No. 15, Siantar", hargaBulan:550000, hargaTahun:6050000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana.", lat:2.9270, lng:99.0520, owner:"Joko Susanto", kontak:"08567890122", totalKamar:10, kamarKosong:4, kota:"Siantar", reviews:[] },
-            { id:13, nama:"Kost Berastagi Indah", lokasi:"Jl. Raya Berastagi No. 8, Berastagi", hargaBulan:700000, hargaTahun:7700000, fasilitas:["AC","WiFi","Parkir","TV"], deskripsi:"Kost dengan pemandangan pegunungan.", lat:3.1900, lng:98.5130, owner:"Maria Simamora", kontak:"08222333445", totalKamar:6, kamarKosong:2, kota:"Berastagi", reviews:[] }
+            { id:1, nama:"Kost Mawar Indah", lokasi:"Jl. Merpati No. 12, Pematangsiantar", hargaBulan:800000, hargaTahun:8400000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost nyaman dengan suasana asri, dekat kampus dan pusat kota.", lat:2.9570, lng:99.0620, owner:"Budi Santoso", kontak:"08123456789", totalKamar:10, kamarKosong:3, kota:"Pematangsiantar", reviews:[{user:"Ani",rating:5,text:"Kostnya nyaman banget!",date:"2026-01-15"}], gambar: getRandomImageUrl() },
+            { id:2, nama:"Kost Melati Putih", lokasi:"Jl. Kenanga No. 5, Pematangsiantar", hargaBulan:1200000, hargaTahun:13200000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Dapur"], deskripsi:"Kost premium dengan fasilitas lengkap, cocok untuk mahasiswa dan pekerja profesional.", lat:2.9530, lng:99.0750, owner:"Siti Rahayu", kontak:"08765432100", totalKamar:8, kamarKosong:2, kota:"Pematangsiantar", reviews:[{user:"Dewi",rating:5,text:"Sangat recommended!",date:"2026-01-18"}], gambar: getRandomImageUrl() },
+            { id:3, nama:"Kost Anggrek Biru", lokasi:"Jl. Pahlawan No. 8, Pematangsiantar", hargaBulan:650000, hargaTahun:7150000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana dengan lingkungan yang tenang dan aman. Harga terjangkau.", lat:2.9620, lng:99.0720, owner:"Agus Prasetyo", kontak:"08567890123", totalKamar:12, kamarKosong:5, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
+            { id:4, nama:"Kost Flamboyan", lokasi:"Jl. Diponegoro No. 20, Pematangsiantar", hargaBulan:1500000, hargaTahun:16500000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur"], deskripsi:"Kost mewah dengan desain modern, dekat dengan pusat perbelanjaan dan kampus.", lat:2.9550, lng:99.0650, owner:"Rina Wijaya", kontak:"08987654321", totalKamar:6, kamarKosong:1, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
+            { id:5, nama:"Kost Sederhana Bahagia", lokasi:"Jl. Bunga Raya No. 3, Pematangsiantar", hargaBulan:500000, hargaTahun:5500000, fasilitas:["Parkir","Dapur"], deskripsi:"Kost ekonomis dengan lingkungan yang ramah dan nyaman untuk istirahat.", lat:2.9650, lng:99.0600, owner:"Mulyono", kontak:"08111222333", totalKamar:15, kamarKosong:7, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
+            { id:6, nama:"Kost Gardenia", lokasi:"Jl. Raya Candi No. 15, Pematangsiantar", hargaBulan:950000, hargaTahun:10450000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost dengan taman hijau, suasana sejuk dan tenang.", lat:2.9580, lng:99.0800, owner:"Diana Putri", kontak:"08222333444", totalKamar:10, kamarKosong:0, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
+            { id:7, nama:"Kost Teratai Residence", lokasi:"Jl. Sisingamangaraja No. 45, Pematangsiantar", hargaBulan:2000000, hargaTahun:22000000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur","Kolam Renang"], deskripsi:"Kost eksklusif dengan fasilitas premium, cocok untuk eksekutif muda.", lat:2.9500, lng:99.0700, owner:"Andi Wijaya", kontak:"08134567890", totalKamar:5, kamarKosong:2, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
+            { id:8, nama:"Kost Ceria", lokasi:"Jl. Kamboja No. 7, Pematangsiantar", hargaBulan:750000, hargaTahun:8250000, fasilitas:["WiFi","Parkir","Dapur","TV"], deskripsi:"Kost ramah dengan lingkungan yang nyaman dan dekat dengan kampus.", lat:2.9600, lng:99.0580, owner:"Nina Kurnia", kontak:"08345678901", totalKamar:8, kamarKosong:4, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
+            { id:9, nama:"Kost Permata", lokasi:"Jl. Sutomo No. 25, Pematangsiantar", hargaBulan:1100000, hargaTahun:12100000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV"], deskripsi:"Kost nyaman dengan akses mudah ke pusat kota.", lat:2.9565, lng:99.0775, owner:"Hendra Gunawan", kontak:"08234567890", totalKamar:7, kamarKosong:3, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
+            { id:10, nama:"Kost Mutiara", lokasi:"Jl. Thamrin No. 10, Pematangsiantar", hargaBulan:900000, hargaTahun:9900000, fasilitas:["WiFi","Kamar Mandi Dalam","Parkir","Dapur"], deskripsi:"Kost strategis di pusat kota, dekat dengan berbagai fasilitas umum.", lat:2.9615, lng:99.0635, owner:"Lina Sari", kontak:"08543210987", totalKamar:9, kamarKosong:6, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
+            { id:11, nama:"Kost Medan Permai", lokasi:"Jl. Jenderal Sudirman No. 50, Medan", hargaBulan:1800000, hargaTahun:19800000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV","Dapur"], deskripsi:"Kost premium di pusat kota Medan, dekat dengan mall dan kampus ternama.", lat:3.5952, lng:98.6722, owner:"Hendra Wijaya", kontak:"08123456788", totalKamar:8, kamarKosong:3, kota:"Medan", reviews:[], gambar: getRandomImageUrl() },
+            { id:12, nama:"Kost Siantar 2", lokasi:"Jl. Pahlawan No. 15, Siantar", hargaBulan:550000, hargaTahun:6050000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana dengan suasana pedesaan, cocok untuk yang ingin suasana tenang.", lat:2.9270, lng:99.0520, owner:"Joko Susanto", kontak:"08567890122", totalKamar:10, kamarKosong:4, kota:"Siantar", reviews:[], gambar: getRandomImageUrl() },
+            { id:13, nama:"Kost Berastagi Indah", lokasi:"Jl. Raya Berastagi No. 8, Berastagi", hargaBulan:700000, hargaTahun:7700000, fasilitas:["AC","WiFi","Parkir","TV"], deskripsi:"Kost dengan pemandangan pegunungan, udara sejuk dan lingkungan yang asri.", lat:3.1900, lng:98.5130, owner:"Maria Simamora", kontak:"08222333445", totalKamar:6, kamarKosong:2, kota:"Berastagi", reviews:[], gambar: getRandomImageUrl() }
         ];
-        let nextId = 14, currentModalId = null, selectedRating = 0, currentUser = null, wishlist = [], userLocation = null, isLocationDetected = false;
-        let map = null, mapInitialized = false, routeLayer = null, destinationMarker = null, currentKostLat = null, currentKostLng = null, userMarker = null;
-        let pickerMap = null, pickerMarker = null, isPickerMapInitialized = false, selectedLat = null, selectedLng = null;
-        let chatMessages = {}, chatContacts = [];
 
-        // ===== helper =====
-        function getAverageRating(kost) { if (!kost.reviews || !kost.reviews.length) return 0; return kost.reviews.reduce((a,b) => a + b.rating, 0) / kost.reviews.length; }
-        function getRatingStars(r) { let f = Math.floor(r), h = r % 1 >= 0.5 ? 1 : 0; return '★'.repeat(f) + (h ? '½' : '') + '☆'.repeat(5 - f - h); }
-        function getRoomStatus(k, t) { if (k === 0) return { text:'Penuh', class:'room-full' }; if (k <= 2) return { text:'⚠️ '+k+' tersisa', class:'room-limited' }; return { text:k+' kamar tersedia', class:'room-available' }; }
-        function getDistance(lat1,lng1,lat2,lng2) { let R=6371, dLat=(lat2-lat1)*Math.PI/180, dLng=(lng2-lng1)*Math.PI/180, a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2; return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); }
-        function calculateDistanceToKost(k) { if (!userLocation || !isLocationDetected) return null; return getDistance(userLocation.lat, userLocation.lng, k.lat, k.lng); }
-        function isInWishlist(id) { return wishlist.indexOf(id) > -1; }
+        // ============================================
+        // VARIABEL GLOBAL
+        // ============================================
+        let nextId = 14;
+        let currentModalId = null;
+        let selectedRating = 0;
+        let currentUser = null;
+        let wishlist = [];
+        let userLocation = null;
+        let isLocationDetected = false;
+        let map = null;
+        let mapInitialized = false;
+        let routeLayer = null;
+        let destinationMarker = null;
+        let currentKostLat = null;
+        let currentKostLng = null;
+        let userMarker = null;
+        let pickerMap = null;
+        let pickerMarker = null;
+        let isPickerMapInitialized = false;
+        let selectedLat = null;
+        let selectedLng = null;
+        let chatMessages = {};
+        let chatContacts = [];
 
-        // ===== UI =====
+        // ============================================
+        // FUNGSI UTILITY
+        // ============================================
+        function getAverageRating(kost) {
+            if (!kost.reviews || !kost.reviews.length) return 0;
+            return kost.reviews.reduce((a, b) => a + b.rating, 0) / kost.reviews.length;
+        }
+
+        function getRatingStars(r) {
+            let full = Math.floor(r);
+            let half = r % 1 >= 0.5 ? 1 : 0;
+            return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - half);
+        }
+
+        function getRoomStatus(k, t) {
+            if (k === 0) return { text: 'Penuh', class: 'room-full' };
+            if (k <= 2) return { text: '⚠️ ' + k + ' tersisa', class: 'room-limited' };
+            return { text: k + ' kamar tersedia', class: 'room-available' };
+        }
+
+        function getDistance(lat1, lng1, lat2, lng2) {
+            let R = 6371;
+            let dLat = (lat2 - lat1) * Math.PI / 180;
+            let dLng = (lng2 - lng1) * Math.PI / 180;
+            let a = Math.sin(dLat/2)**2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng/2)**2;
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        }
+
+        function calculateDistanceToKost(k) {
+            if (!userLocation || !isLocationDetected) return null;
+            return getDistance(userLocation.lat, userLocation.lng, k.lat, k.lng);
+        }
+
+        function isInWishlist(id) {
+            return wishlist.indexOf(id) > -1;
+        }
+
+        function getKostImage(kost) {
+            return kost.gambar || `https://picsum.photos/id/${Math.floor(Math.random() * 40) + 10}/400/300`;
+        }
+
+        // ============================================
+        // RENDER KOST GRID
+        // ============================================
         function renderKostGrid(containerId, data) {
-            let container = document.getElementById(containerId); if (!container) return;
-            if (!data.length) { container.innerHTML = `<div class="empty-state"><i class="fas fa-home"></i><h3>Tidak ada kost</h3><p>${containerId === 'wishlistGrid' ? 'Tambahkan ke favorit' : 'Tambahkan kost baru'}</p></div>`; return; }
-            container.innerHTML = data.map(k => {
-                let avg = getAverageRating(k), stars = getRatingStars(avg), liked = isInWishlist(k.id), room = getRoomStatus(k.kamarKosong, k.totalKamar);
-                let dist = calculateDistanceToKost(k), distText = dist !== null ? (dist < 1 ? (dist*1000).toFixed(0)+' m' : dist.toFixed(1)+' km') : '';
-                let nearby = dist !== null && dist < 3, outTown = k.kota && k.kota !== "Pematangsiantar";
-                return `<div class="kost-card ${nearby?'nearby':''}" onclick="openModal(${k.id})">
-                    ${nearby ? '<div class="nearby-ribbon">📍 TERDEKAT</div>' : ''}${outTown ? '<div class="out-of-town">🌍 '+k.kota+'</div>':''}
-                    <div class="kost-image"><i class="fas fa-building"></i><span class="kost-badge">${k.fasilitas.length} Fasilitas</span>
-                    <button class="wishlist-btn ${liked?'liked':'unliked'}" onclick="toggleWishlist(${k.id}, event)"><i class="fas fa-heart"></i></button></div>
-                    <div class="kost-body"><div class="kost-title">${k.nama}${distText ? '<span class="distance-badge">📍 '+distText+'</span>':''}${nearby ? '<span class="nearby-badge">Terdekat</span>':''}</div>
-                    <div class="kost-location"><i class="fas fa-map-pin"></i> ${k.lokasi}</div>
-                    <div class="kost-rooms"><i class="fas fa-door-open"></i> <span class="${room.class}">${room.text}</span> <span style="color:#8a9aa8;font-size:0.8rem;">(dari ${k.totalKamar})</span></div>
-                    <div class="kost-rating"><span class="stars">${stars}</span><span class="review-count">(${k.reviews ? k.reviews.length : 0} ulasan)</span></div>
-                    <div class="kost-facilities">${k.fasilitas.slice(0,3).map(f => '<span class="facility-tag">'+f+'</span>').join('')}${k.fasilitas.length > 3 ? '<span class="facility-tag">+'+ (k.fasilitas.length-3)+'</span>':''}</div>
-                    <div class="kost-price"><div class="price-item"><span class="label">Per Bulan</span><span class="value">Rp ${k.hargaBulan.toLocaleString()}</span></div><div class="price-item"><span class="label">Per Tahun</span><span class="value">Rp ${k.hargaTahun.toLocaleString()}</span></div></div>
-                    <div class="kost-actions"><button class="btn-route" onclick="event.stopPropagation(); openRouteInMap(${k.id})"><i class="fas fa-route"></i> Rute</button><button class="btn-detail" onclick="event.stopPropagation(); openModal(${k.id})"><i class="fas fa-info"></i> Detail</button><button class="btn-chat-card" onclick="event.stopPropagation(); openChatFromCard(${k.id})"><i class="fas fa-comment"></i></button>${currentUser && k.owner === currentUser.name ? '<button class="btn-delete" onclick="event.stopPropagation(); deleteKost('+k.id+')"><i class="fas fa-trash"></i></button>':''}</div></div></div>`;
+            let container = document.getElementById(containerId);
+            if (!container) return;
+
+            if (!data.length) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-home"></i>
+                        <h3>${containerId === 'wishlistGrid' ? 'Belum ada kost favorit' : 'Tidak ada kost'}</h3>
+                        <p>${containerId === 'wishlistGrid' ? 'Tambahkan ke favorit dengan klik ikon hati' : 'Tambahkan kost baru melalui halaman Tambah Kost'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = data.map(kost => {
+                let avg = getAverageRating(kost);
+                let stars = getRatingStars(avg);
+                let liked = isInWishlist(kost.id);
+                let room = getRoomStatus(kost.kamarKosong, kost.totalKamar);
+                let dist = calculateDistanceToKost(kost);
+                let distText = dist !== null ? (dist < 1 ? (dist * 1000).toFixed(0) + ' m' : dist.toFixed(1) + ' km') : '';
+                let nearby = dist !== null && dist < 3;
+                let outTown = kost.kota && kost.kota !== "Pematangsiantar";
+                let imageUrl = getKostImage(kost);
+
+                return `
+                    <div class="kost-card ${nearby ? 'nearby' : ''}" onclick="openModal(${kost.id})">
+                        ${nearby ? '<div class="nearby-ribbon">📍 TERDEKAT</div>' : ''}
+                        ${outTown ? '<div class="out-of-town">🌍 ' + kost.kota + '</div>' : ''}
+                        <div class="kost-image">
+                            <img src="${imageUrl}" alt="${kost.nama}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <i class="fas fa-building fallback-icon" style="display:none;"></i>
+                            <span class="kost-badge">${kost.fasilitas.length} Fasilitas</span>
+                            <button class="wishlist-btn ${liked ? 'liked' : 'unliked'}" onclick="toggleWishlist(${kost.id}, event)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="kost-body">
+                            <div class="kost-title">
+                                ${kost.nama}
+                                ${distText ? '<span class="distance-badge">📍 ' + distText + '</span>' : ''}
+                                ${nearby ? '<span class="nearby-badge">Terdekat</span>' : ''}
+                            </div>
+                            <div class="kost-location"><i class="fas fa-map-pin"></i> ${kost.lokasi}</div>
+                            <div class="kost-rooms">
+                                <i class="fas fa-door-open"></i>
+                                <span class="${room.class}">${room.text}</span>
+                                <span style="color:#8a9aa8;font-size:0.8rem;">(dari ${kost.totalKamar})</span>
+                            </div>
+                            <div class="kost-rating">
+                                <span class="stars">${stars}</span>
+                                <span class="review-count">(${kost.reviews ? kost.reviews.length : 0} ulasan)</span>
+                            </div>
+                            <div class="kost-facilities">
+                                ${kost.fasilitas.slice(0, 3).map(f => '<span class="facility-tag">' + f + '</span>').join('')}
+                                ${kost.fasilitas.length > 3 ? '<span class="facility-tag">+' + (kost.fasilitas.length - 3) + '</span>' : ''}
+                            </div>
+                            <div class="kost-price">
+                                <div class="price-item">
+                                    <span class="label">Per Bulan</span>
+                                    <span class="value">Rp ${kost.hargaBulan.toLocaleString()}</span>
+                                </div>
+                                <div class="price-item">
+                                    <span class="label">Per Tahun</span>
+                                    <span class="value">Rp ${kost.hargaTahun.toLocaleString()}</span>
+                                </div>
+                            </div>
+                            <div class="kost-actions">
+                                <button class="btn-route" onclick="event.stopPropagation(); openRouteInMap(${kost.id})">
+                                    <i class="fas fa-route"></i> Rute
+                                </button>
+                                <button class="btn-detail" onclick="event.stopPropagation(); openModal(${kost.id})">
+                                    <i class="fas fa-info"></i> Detail
+                                </button>
+                                <button class="btn-chat-card" onclick="event.stopPropagation(); openChatFromCard(${kost.id})">
+                                    <i class="fas fa-comment"></i>
+                                </button>
+                                ${currentUser && kost.owner === currentUser.name ? '<button class="btn-delete" onclick="event.stopPropagation(); deleteKost(' + kost.id + ')"><i class="fas fa-trash"></i></button>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
             }).join('');
         }
 
-        function filterKostHome() { let f = document.getElementById('filterFacilityHome').value, s = document.getElementById('sortPriceHome').value, r = document.getElementById('sortRatingHome').value, d = document.getElementById('sortDistanceHome').value, q = document.getElementById('searchInput').value; let filtered = kostData.filter(k => (f === 'all' || k.fasilitas.indexOf(f) > -1) && (q === '' || k.nama.toLowerCase().indexOf(q.toLowerCase()) > -1 || k.lokasi.toLowerCase().indexOf(q.toLowerCase()) > -1 || (k.kota && k.kota.toLowerCase().indexOf(q.toLowerCase()) > -1))).filter(k => k.kamarKosong > 0); if (s === 'low') filtered.sort((a,b) => a.hargaBulan - b.hargaBulan); else if (s === 'high') filtered.sort((a,b) => b.hargaBulan - a.hargaBulan); if (r === 'rating') filtered.sort((a,b) => getAverageRating(b) - getAverageRating(a)); if (d === 'distance' && userLocation && isLocationDetected) filtered.sort((a,b) => { let da = calculateDistanceToKost(a), db = calculateDistanceToKost(b); if (da === null) return 1; if (db === null) return -1; return da - db; }); renderKostGrid('kostGridHome', filtered); document.getElementById('kostCountHome').textContent = filtered.length; }
-        function filterKostList() { let f = document.getElementById('filterFacilityList').value, s = document.getElementById('sortPriceList').value, q = document.getElementById('searchList').value; let filtered = kostData.filter(k => (f === 'all' || k.fasilitas.indexOf(f) > -1) && (q === '' || k.nama.toLowerCase().indexOf(q.toLowerCase()) > -1 || k.lokasi.toLowerCase().indexOf(q.toLowerCase()) > -1)).filter(k => k.kamarKosong > 0); if (s === 'low') filtered.sort((a,b) => a.hargaBulan - b.hargaBulan); else if (s === 'high') filtered.sort((a,b) => b.hargaBulan - a.hargaBulan); renderKostGrid('kostGridList', filtered); document.getElementById('kostCountList').textContent = filtered.length; }
-        function searchKost() { filterKostHome(); }
+        // ============================================
+        // FILTER & SEARCH
+        // ============================================
+        function filterKostHome() {
+            let facility = document.getElementById('filterFacilityHome').value;
+            let sort = document.getElementById('sortPriceHome').value;
+            let sortRating = document.getElementById('sortRatingHome').value;
+            let sortDistance = document.getElementById('sortDistanceHome').value;
+            let search = document.getElementById('searchInput').value;
 
-        // ===== WISHLIST =====
-        function toggleWishlist(id, e) { e.stopPropagation(); if (!currentUser) { alert('⚠️ Login dulu!'); openLoginModal(); return; } let idx = wishlist.indexOf(id); if (idx > -1) wishlist.splice(idx,1); else wishlist.push(id); updateWishlistUI(); filterKostHome(); filterKostList(); renderWishlist(); }
-        function updateWishlistUI() { document.getElementById('wishlistCount').textContent = wishlist.length; }
-        function renderWishlist() { let container = document.getElementById('wishlistGrid'); if (!wishlist.length) { container.innerHTML = `<div class="wishlist-empty" style="grid-column:1/-1;"><i class="fas fa-heart"></i><h3>Belum ada favorit</h3><p>Klik ikon hati untuk menyimpan kost favorit</p></div>`; return; } renderKostGrid('wishlistGrid', kostData.filter(k => wishlist.indexOf(k.id) > -1)); }
+            let filtered = kostData.filter(k => {
+                let matchFacility = facility === 'all' || k.fasilitas.indexOf(facility) > -1;
+                let matchSearch = search === '' ||
+                    k.nama.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                    k.lokasi.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                    (k.kota && k.kota.toLowerCase().indexOf(search.toLowerCase()) > -1);
+                return matchFacility && matchSearch;
+            }).filter(k => k.kamarKosong > 0);
 
-        // ===== AUTH =====
-        let users = [{ email:"demo@kostapp.com", password:"123456", name:"Demo User" }, { email:"budi@kost.com", password:"123456", name:"Budi Santoso" }];
-        function openLoginModal() { document.getElementById('loginModal').classList.add('active'); document.body.style.overflow = 'hidden'; document.getElementById('loginTitle').textContent = 'Login'; document.getElementById('loginSubtitle').textContent = 'Masuk untuk mengakses semua fitur'; document.getElementById('loginSubmitBtn').textContent = 'Login'; document.getElementById('toggleText').textContent = 'Belum punya akun?'; document.getElementById('toggleLink').textContent = 'Daftar Sekarang'; document.getElementById('loginNameField').style.display = 'none'; document.getElementById('loginForm').reset(); }
-        function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); document.body.style.overflow = 'auto'; }
-        function toggleLoginForm() { let isLogin = document.getElementById('loginTitle').textContent === 'Login'; if (isLogin) { document.getElementById('loginTitle').textContent = 'Daftar'; document.getElementById('loginSubtitle').textContent = 'Buat akun baru'; document.getElementById('loginSubmitBtn').textContent = 'Daftar'; document.getElementById('toggleText').textContent = 'Sudah punya akun?'; document.getElementById('toggleLink').textContent = 'Login Sekarang'; document.getElementById('loginNameField').style.display = 'block'; } else { document.getElementById('loginTitle').textContent = 'Login'; document.getElementById('loginSubtitle').textContent = 'Masuk untuk mengakses semua fitur'; document.getElementById('loginSubmitBtn').textContent = 'Login'; document.getElementById('toggleText').textContent = 'Belum punya akun?'; document.getElementById('toggleLink').textContent = 'Daftar Sekarang'; document.getElementById('loginNameField').style.display = 'none'; } }
-        function handleLogin(e) { e.preventDefault(); let email = document.getElementById('loginEmail').value, pass = document.getElementById('loginPassword').value, isLogin = document.getElementById('loginTitle').textContent === 'Login'; if (isLogin) { let u = users.find(u => u.email === email && u.password === pass); if (u) { currentUser = u; closeLoginModal(); updateUI(); alert('✅ Login berhasil!'); } else alert('❌ Email atau password salah!'); } else { let name = document.getElementById('loginName').value; if (!name) { alert('⚠️ Isi nama!'); return; } if (users.find(u => u.email === email)) { alert('❌ Email sudah terdaftar!'); return; } users.push({ email, password: pass, name }); currentUser = { email, password: pass, name }; closeLoginModal(); updateUI(); alert('✅ Pendaftaran berhasil!'); } }
-        function logout() { currentUser = null; updateUI(); showPage('home'); }
-        function updateUI() { let auth = document.getElementById('authButtons'), info = document.getElementById('userInfo'), name = document.getElementById('userName'), avatar = document.getElementById('userAvatar'); if (currentUser) { auth.style.display = 'none'; info.style.display = 'flex'; name.textContent = currentUser.name; avatar.textContent = currentUser.name.charAt(0).toUpperCase(); } else { auth.style.display = 'block'; info.style.display = 'none'; } }
+            if (sort === 'low') filtered.sort((a, b) => a.hargaBulan - b.hargaBulan);
+            else if (sort === 'high') filtered.sort((a, b) => b.hargaBulan - a.hargaBulan);
+            if (sortRating === 'rating') filtered.sort((a, b) => getAverageRating(b) - getAverageRating(a));
+            if (sortDistance === 'distance' && userLocation && isLocationDetected) {
+                filtered.sort((a, b) => {
+                    let da = calculateDistanceToKost(a);
+                    let db = calculateDistanceToKost(b);
+                    if (da === null) return 1;
+                    if (db === null) return -1;
+                    return da - db;
+                });
+            }
 
-        // ===== LOCATION =====
-        function getUserLocation() { let btn = document.getElementById('btnRefreshLoc'); btn.classList.add('loading'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mendeteksi...'; document.getElementById('locStatus').textContent = '📍 Mendeteksi lokasi...'; document.getElementById('locDetail').textContent = 'Mohon tunggu...'; if (!navigator.geolocation) { document.getElementById('locStatus').textContent = '⚠️ Browser tidak mendukung geolokasi'; document.getElementById('locDetail').textContent = 'Gunakan lokasi default'; btn.classList.remove('loading'); btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh'; userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng }; isLocationDetected = true; filterKostHome(); filterKostList(); return; } navigator.geolocation.getCurrentPosition(pos => { userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude }; isLocationDetected = true; document.getElementById('locStatus').textContent = '📍 Lokasi terdeteksi!'; document.getElementById('locDetail').textContent = userLocation.lat.toFixed(4)+', '+userLocation.lng.toFixed(4); btn.classList.remove('loading'); btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh'; filterKostHome(); filterKostList(); }, err => { document.getElementById('locStatus').textContent = '⚠️ Gagal deteksi lokasi'; document.getElementById('locDetail').textContent = 'Gunakan lokasi default'; btn.classList.remove('loading'); btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh'; userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng }; isLocationDetected = true; filterKostHome(); filterKostList(); }, { enableHighAccuracy: true, timeout: 10000 }); }
+            renderKostGrid('kostGridHome', filtered);
+            document.getElementById('kostCountHome').textContent = filtered.length;
+        }
 
-        // ===== MAP PICKER =====
-        function initPickerMap(lat, lng) { if (pickerMap) { pickerMap.remove(); pickerMap = null; } pickerMap = L.map('addKostMap').setView([lat, lng], 15); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(pickerMap); isPickerMapInitialized = true; pickerMap.on('click', e => setPickerLocation(e.latlng.lat, e.latlng.lng)); setTimeout(() => { if (pickerMap) pickerMap.invalidateSize(); }, 300); }
-        function setPickerLocation(lat, lng) { selectedLat = lat; selectedLng = lng; document.getElementById('selectedLat').value = lat; document.getElementById('selectedLng').value = lng; document.getElementById('selectedCoordDisplay').textContent = lat.toFixed(6)+', '+lng.toFixed(6); document.getElementById('markerStatus').innerHTML = '📍 Pin dipasang!'; document.getElementById('markerStatus').className = 'selected-marker-info'; document.getElementById('markerStatus').style.background = '#eef6ff'; document.getElementById('mapError').style.display = 'none'; if (pickerMarker) pickerMap.removeLayer(pickerMarker); let icon = L.divIcon({ className: 'picker-marker', html: '<i class="fas fa-map-pin"></i>', iconSize: [35,35], iconAnchor: [17,35] }); pickerMarker = L.marker([lat, lng], { icon, draggable: true }).addTo(pickerMap); pickerMarker.bindPopup('📍 Lokasi kost').openPopup(); pickerMarker.on('dragend', e => { let p = e.target.getLatLng(); setPickerLocation(p.lat, p.lng); }); pickerMap.setView([lat, lng], 16); }
-        function useMyLocationForPicker() { if (!navigator.geolocation) { alert('⚠️ Browser tidak mendukung geolokasi!'); return; } let btn = document.getElementById('btnUseMyLocation'); btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mendeteksi...'; navigator.geolocation.getCurrentPosition(pos => { setPickerLocation(pos.coords.latitude, pos.coords.longitude); btn.disabled = false; btn.innerHTML = '<i class="fas fa-location-dot"></i> Lokasi Saya'; alert('✅ Lokasi Anda dipasang di peta!'); }, err => { alert('⚠️ Gagal mendapatkan lokasi'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-location-dot"></i> Lokasi Saya'; }, { enableHighAccuracy: true, timeout: 10000 }); }
+        function filterKostList() {
+            let facility = document.getElementById('filterFacilityList').value;
+            let sort = document.getElementById('sortPriceList').value;
+            let search = document.getElementById('searchList').value;
 
-        // ===== ADD KOST =====
-        function addKost(e) { e.preventDefault(); if (!currentUser) { alert('⚠️ Login dulu!'); openLoginModal(); return; } if (!selectedLat || !selectedLng) { document.getElementById('mapError').style.display = 'block'; document.getElementById('mapError').textContent = '⚠️ Klik peta untuk memilih lokasi!'; document.getElementById('addKostMap').scrollIntoView({ behavior: 'smooth' }); return; } let nama = document.getElementById('namaKost').value.trim(), lokasi = document.getElementById('lokasiKost').value.trim(), hargaBulan = parseInt(document.getElementById('hargaBulan').value), hargaTahun = parseInt(document.getElementById('hargaTahun').value), fasilitasRaw = document.getElementById('fasilitasKost').value.trim(), deskripsi = document.getElementById('deskripsiKost').value.trim(), totalKamar = parseInt(document.getElementById('totalKamar').value), kamarKosong = parseInt(document.getElementById('kamarKosong').value), kontak = document.getElementById('kontakKost').value.trim(); if (!nama || !lokasi || !hargaBulan || !hargaTahun || !fasilitasRaw || !totalKamar || kamarKosong === undefined || !kontak) { alert('⚠️ Semua field wajib diisi!'); return; } if (hargaBulan <= 0 || hargaTahun <= 0 || totalKamar <= 0 || kamarKosong < 0 || kamarKosong > totalKamar) { alert('⚠️ Periksa kembali input!'); return; } let fasilitas = fasilitasRaw.split(',').map(f => f.trim()).filter(f => f); let newKost = { id: nextId++, nama, lokasi, hargaBulan, hargaTahun, fasilitas, deskripsi: deskripsi || 'Kost baru dengan fasilitas lengkap.', lat: selectedLat, lng: selectedLng, owner: currentUser.name, kontak, totalKamar, kamarKosong, kota: "Pematangsiantar", reviews: [] }; kostData.push(newKost); document.getElementById('addKostForm').reset(); selectedLat = null; selectedLng = null; document.getElementById('selectedCoordDisplay').textContent = 'Belum dipilih'; document.getElementById('markerStatus').innerHTML = '⚪ Klik peta untuk pilih'; document.getElementById('markerStatus').className = 'selected-marker-info empty'; if (pickerMarker) pickerMap.removeLayer(pickerMarker); document.getElementById('selectedLat').value = ''; document.getElementById('selectedLng').value = ''; document.getElementById('mapError').style.display = 'none'; filterKostHome(); filterKostList(); updateFooterCount(); alert('✅ Kost "'+nama+'" berhasil ditambahkan!'); showPage('list'); }
+            let filtered = kostData.filter(k => {
+                let matchFacility = facility === 'all' || k.fasilitas.indexOf(facility) > -1;
+                let matchSearch = search === '' ||
+                    k.nama.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                    k.lokasi.toLowerCase().indexOf(search.toLowerCase()) > -1;
+                return matchFacility && matchSearch;
+            }).filter(k => k.kamarKosong > 0);
 
-        // ===== DELETE =====
-        function deleteKost(id) { let kost = kostData.find(k => k.id === id); if (!kost) return; if (currentUser && kost.owner !== currentUser.name) { alert('⚠️ Hanya pemilik kost yang bisa menghapus!'); return; } if (confirm('Yakin hapus "'+kost.nama+'"?')) { kostData = kostData.filter(k => k.id !== id); wishlist = wishlist.filter(w => w !== id); filterKostHome(); filterKostList(); renderWishlist(); updateWishlistUI(); updateFooterCount(); if (currentModalId === id) closeModal(); } }
+            if (sort === 'low') filtered.sort((a, b) => a.hargaBulan - b.hargaBulan);
+            else if (sort === 'high') filtered.sort((a, b) => b.hargaBulan - a.hargaBulan);
 
-        // ===== CHAT =====
-        function initChat(kostId) { if (!currentUser) return null; let kost = kostData.find(k => k.id === kostId); if (!kost) return null; let chatId = 'chat_'+Math.min(currentUser.name, kost.owner)+'_'+Math.max(currentUser.name, kost.owner); if (!chatMessages[chatId]) chatMessages[chatId] = []; if (!chatContacts.find(c => c.id === chatId)) chatContacts.push({ id: chatId, name: kost.owner, kostName: kost.nama, kostId: kost.id }); return chatId; }
-        function sendMessage(kostId) { let chatId = initChat(kostId); if (!chatId) return; let input = document.getElementById('chatInput'); let text = input.value.trim(); if (!text) return; chatMessages[chatId].push({ sender: currentUser.name, text, time: new Date().toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' }) }); input.value = ''; let kost = kostData.find(k => k.id === kostId); setTimeout(() => { let replies = ['Halo! Kost '+kost.nama+' masih tersedia nih.','Ada yang bisa saya bantu?','Kamar kosong tersisa '+kost.kamarKosong+' dari '+kost.totalKamar+'.','Harga Rp '+kost.hargaBulan.toLocaleString()+'/bulan.']; chatMessages[chatId].push({ sender: kost.owner, text: replies[Math.floor(Math.random()*replies.length)], time: new Date().toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' }) }); renderChat(chatId); updateChatNotif(); }, 1200); renderChat(chatId); updateChatNotif(); }
-        function renderChat(chatId) { let container = document.getElementById('chatDetail'); let msgs = chatMessages[chatId] || []; if (!msgs.length) { container.innerHTML = `<p style="color:#8a9aa8;text-align:center;padding:2rem 0;"><i class="fas fa-comment" style="font-size:2.8rem;display:block;margin-bottom:0.8rem;opacity:0.2;"></i> Kirim pesan pertama</p><div class="chat-input-group"><input type="text" id="chatInput" placeholder="Tulis pesan..." onkeypress="if(event.key==='Enter') sendMessageFromChat()"><button onclick="sendMessageFromChat()"><i class="fas fa-paper-plane"></i></button></div>`; return; } let contact = chatContacts.find(c => c.id === chatId); let kost = kostData.find(k => k.id === contact?.kostId); container.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid #edf2f7;"><div><strong>${contact?.name||'Pemilik'}</strong><div style="font-size:0.8rem;color:#6f8aa0;">${kost?.nama||''}</div></div></div><div class="chat-container" id="chatMessages">${msgs.map(m => `<div class="chat-message ${m.sender===currentUser.name?'sent':'received'}">${m.text}<span class="chat-time" style="display:block;font-size:0.7rem;color:#8a9aa8;margin-top:4px;">${m.sender} • ${m.time}</span></div>`).join('')}</div><div class="chat-input-group"><input type="text" id="chatInput" placeholder="Tulis pesan..." onkeypress="if(event.key==='Enter') sendMessageFromChat()"><button onclick="sendMessageFromChat()"><i class="fas fa-paper-plane"></i></button></div>`; let cm = document.getElementById('chatMessages'); if (cm) cm.scrollTop = cm.scrollHeight; }
-        function sendMessageFromChat() { let contact = chatContacts.find(c => c.id === Object.keys(chatMessages).find(key => document.getElementById('chatDetail').innerHTML.includes(key))); if (contact) sendMessage(contact.kostId); }
-        function renderChatContacts() { let container = document.getElementById('chatContactList'); if (!chatContacts.length) { container.innerHTML = '<p style="color:#8a9aa8;font-size:0.9rem;">Belum ada percakapan</p>'; return; } container.innerHTML = chatContacts.map(c => `<div style="padding:0.8rem;border-radius:16px;margin-bottom:0.5rem;cursor:pointer;background:${document.getElementById('chatDetail').innerHTML.includes(c.id)?'#f1f5f9':'transparent'}" onclick="openChatContact('${c.id}')"><div style="display:flex;justify-content:space-between;"><div><strong>${c.name}</strong><div style="font-size:0.8rem;color:#6f8aa0;">${c.kostName}</div></div><span style="font-size:0.7rem;color:#8a9aa8;">${chatMessages[c.id]?.length||0} pesan</span></div></div>`).join(''); }
-        function openChatContact(id) { renderChat(id); renderChatContacts(); }
-        function openChat() { let id = parseInt(document.getElementById('detailModal').dataset.kostId); let kost = kostData.find(k => k.id === id); if (!kost) return; if (!currentUser) { alert('⚠️ Login dulu!'); openLoginModal(); return; } closeModal(); showPage('chat'); let chatId = initChat(id); if (chatId) setTimeout(() => { renderChat(chatId); renderChatContacts(); }, 100); }
-        function openChatFromCard(id) { if (!currentUser) { alert('⚠️ Login dulu!'); openLoginModal(); return; } showPage('chat'); let chatId = initChat(id); if (chatId) setTimeout(() => { renderChat(chatId); renderChatContacts(); }, 100); }
-        function updateChatNotif() { let total = 0; for (let key in chatMessages) { let msgs = chatMessages[key]; if (msgs.length && msgs[msgs.length-1].sender !== currentUser?.name) total++; } let notif = document.getElementById('chatNotif'); if (total > 0) { notif.style.display = 'inline'; notif.textContent = total; } else notif.style.display = 'none'; }
-        function openWhatsApp() { let id = parseInt(document.getElementById('detailModal').dataset.kostId); let kost = kostData.find(k => k.id === id); if (kost && kost.kontak) { let phone = kost.kontak.replace(/[^0-9]/g, ''); if (!phone.startsWith('62') && !phone.startsWith('0')) phone = '62'+phone; if (phone.startsWith('0')) phone = '62'+phone.substring(1); window.open('https://wa.me/'+phone+'?text=Halo%20saya%20tertarik%20dengan%20kost%20'+encodeURIComponent(kost.nama), '_blank'); } else alert('⚠️ Nomor kontak tidak tersedia!'); }
+            renderKostGrid('kostGridList', filtered);
+            document.getElementById('kostCountList').textContent = filtered.length;
+        }
 
-        // ===== MAP ROUTE =====
-        function initMap(lat, lng) { if (!mapInitialized) { map = L.map('routeMap').setView([lat, lng], 15); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map); mapInitialized = true; } else map.setView([lat, lng], 15); return map; }
-        function addDestinationMarker(lat, lng, name) { if (destinationMarker) map.removeLayer(destinationMarker); let icon = L.divIcon({ className: 'custom-marker', html: '<i class="fas fa-home"></i>', iconSize: [30,30], iconAnchor: [15,15] }); destinationMarker = L.marker([lat, lng], { icon }).addTo(map).bindPopup('<strong>'+name+'</strong><br>Lokasi Kost').openPopup(); }
-        function calculateRoute() { if (!mapInitialized || !currentKostLat || !currentKostLng) { alert('⚠️ Buka detail kost dulu!'); return; } let startInput = document.getElementById('startLocation').value; if (!startInput) { alert('⚠️ Masukkan lokasi awal!'); return; } if (routeLayer) map.removeLayer(routeLayer); let startLat, startLng; if (userLocation && isLocationDetected) { startLat = userLocation.lat; startLng = userLocation.lng; } else { startLat = currentKostLat + (Math.random()-0.5)*0.03; startLng = currentKostLng + (Math.random()-0.5)*0.03; } let points = []; for (let i=0; i<=10; i++) { let t = i/10; points.push([startLat + (currentKostLat-startLat)*t + (Math.random()-0.5)*0.002*(1-t), startLng + (currentKostLng-startLng)*t + (Math.random()-0.5)*0.002*(1-t)]); } points[points.length-1] = [currentKostLat, currentKostLng]; routeLayer = L.polyline(points, { color:'#f5a623', weight:4, opacity:0.7, dashArray:'8,8' }).addTo(map); map.fitBounds(routeLayer.getBounds(), { padding:[50,50] }); let startIcon = L.divIcon({ className: 'custom-marker', html: '<i class="fas fa-play" style="color:#0b1a2e;"></i>', iconSize:[30,30], iconAnchor:[15,15] }); let startMarker = L.marker([startLat, startLng], { icon: startIcon }).addTo(map).bindPopup('📍 '+startInput); let dist = getDistance(startLat, startLng, currentKostLat, currentKostLng); let time = Math.round(dist * 5 + Math.random() * 10); let info = document.getElementById('routeInfo'); info.classList.add('active'); document.getElementById('routeDistance').textContent = '🚗 Jarak: '+dist.toFixed(1)+' km'; document.getElementById('routeTime').textContent = '⏱️ Estimasi: '+time+' menit'; document.getElementById('routeSteps').innerHTML = ['Mulai dari <strong>'+startInput+'</strong>','Belok kiri ke Jalan Utama ('+(dist*0.3).toFixed(1)+' km)','Lanjutkan lurus ('+(dist*0.25).toFixed(1)+' km)','Belok kanan ke Jalan Kost ('+(dist*0.2).toFixed(1)+' km)','Tujuan di sebelah kanan'].map((d,i) => '<li>'+(i+1)+'. '+d+'</li>').join(''); setTimeout(() => { if (startMarker) map.removeLayer(startMarker); }, 5000); }
-        function locateUser() { if (!navigator.geolocation) { alert('⚠️ Browser tidak mendukung geolokasi!'); return; } navigator.geolocation.getCurrentPosition(pos => { if (map) { map.setView([pos.coords.latitude, pos.coords.longitude], 15); let icon = L.divIcon({ className: 'user-location-marker', html: '<i class="fas fa-user"></i>', iconSize:[30,30], iconAnchor:[15,15] }); L.marker([pos.coords.latitude, pos.coords.longitude], { icon }).addTo(map).bindPopup('📍 Lokasi Anda').openPopup(); document.getElementById('startLocation').value = 'Lokasi Saya'; } }, err => alert('⚠️ Gagal: '+err.message)); }
-        function openRouteInMap(id) { let kost = kostData.find(k => k.id === id); if (!kost || !kost.lat || !kost.lng) { alert('⚠️ Lokasi tidak tersedia!'); return; } openModal(id); setTimeout(() => { initMap(kost.lat, kost.lng); currentKostLat = kost.lat; currentKostLng = kost.lng; addDestinationMarker(kost.lat, kost.lng, kost.nama); if (userLocation && isLocationDetected) { document.getElementById('startLocation').value = 'Lokasi Saya'; } else document.getElementById('startLocation').value = 'Pusat Kota'; document.getElementById('routeInfo').classList.remove('active'); if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; } }, 300); }
+        function searchKost() {
+            filterKostHome();
+        }
 
-        // ===== MODAL DETAIL =====
-        function openModal(id) { let k = kostData.find(k => k.id === id); if (!k) return; currentModalId = id; currentKostLat = k.lat; currentKostLng = k.lng; document.getElementById('modalTitle').textContent = k.nama; document.getElementById('modalLocation').innerHTML = '<i class="fas fa-map-pin"></i> '+k.lokasi; document.getElementById('modalBulan').textContent = 'Rp '+k.hargaBulan.toLocaleString(); document.getElementById('modalTahun').textContent = 'Rp '+k.hargaTahun.toLocaleString(); document.getElementById('modalDeskripsi').textContent = k.deskripsi || 'Tidak ada deskripsi.'; document.getElementById('modalOwner').textContent = k.owner; document.getElementById('modalKontak').textContent = '📱 '+(k.kontak||'-'); let kamar = document.getElementById('modalKamar'); kamar.textContent = k.kamarKosong+' / '+k.totalKamar; kamar.className = 'value ' + (k.kamarKosong===0 ? 'full' : k.kamarKosong<=2 ? 'limited' : 'available'); let avg = getAverageRating(k); document.getElementById('modalStars').textContent = getRatingStars(avg); document.getElementById('modalReviewCount').textContent = '('+(k.reviews?k.reviews.length:0)+' ulasan)'; document.getElementById('modalFacilities').innerHTML = k.fasilitas.map(f => '<span class="tag">'+f+'</span>').join(''); let reviewsContainer = document.getElementById('modalReviews'); if (k.reviews && k.reviews.length) { reviewsContainer.innerHTML = k.reviews.map(r => `<div class="review-item"><div style="display:flex;justify-content:space-between;"><span class="review-name" style="font-weight:600;">${r.user}</span><span style="color:#f5a623;">${'★'.repeat(r.rating)}</span></div><p>${r.text}</p><span style="font-size:0.8rem;color:#8a9aa8;">${r.date}</span></div>`).join(''); } else reviewsContainer.innerHTML = '<p style="color:#8a9aa8;">Belum ada ulasan.</p>'; selectedRating = 0; document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active')); document.getElementById('selectedRatingLabel').textContent = '0'; document.getElementById('reviewText').value = ''; document.getElementById('detailModal').dataset.kostId = id; document.getElementById('detailModal').classList.add('active'); document.body.style.overflow = 'hidden'; setTimeout(() => { if (k.lat && k.lng) { initMap(k.lat, k.lng); addDestinationMarker(k.lat, k.lng, k.nama); if (userLocation && isLocationDetected) document.getElementById('startLocation').value = 'Lokasi Saya'; else document.getElementById('startLocation').value = 'Pusat Kota'; document.getElementById('routeInfo').classList.remove('active'); if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; } } }, 300); }
-        function closeModal() { document.getElementById('detailModal').classList.remove('active'); document.body.style.overflow = 'auto'; currentModalId = null; if (map) { map.remove(); map = null; mapInitialized = false; } }
-        document.getElementById('detailModal').addEventListener('click', e => { if (e.target === this) closeModal(); });
+        // ============================================
+        // WISHLIST
+        // ============================================
+        function toggleWishlist(id, e) {
+            e.stopPropagation();
+            if (!currentUser) {
+                alert('⚠️ Silakan login terlebih dahulu!');
+                openLoginModal();
+                return;
+            }
+            let idx = wishlist.indexOf(id);
+            if (idx > -1) wishlist.splice(idx, 1);
+            else wishlist.push(id);
+            updateWishlistUI();
+            filterKostHome();
+            filterKostList();
+            renderWishlist();
+        }
 
-        // ===== REVIEW =====
-        function setRating(r) { selectedRating = r; document.querySelectorAll('.star-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.rating) <= r)); document.getElementById('selectedRatingLabel').textContent = r; }
-        function submitReview() { let id = parseInt(document.getElementById('detailModal').dataset.kostId); let kost = kostData.find(k => k.id === id); if (!kost) return; if (!currentUser) { alert('⚠️ Login dulu!'); openLoginModal(); return; } if (!selectedRating) { alert('⚠️ Beri rating!'); return; } let text = document.getElementById('reviewText').value.trim(); if (!text) { alert('⚠️ Tulis ulasan!'); return; } if (!kost.reviews) kost.reviews = []; kost.reviews.push({ user: currentUser.name, rating: selectedRating, text, date: new Date().toISOString().split('T')[0] }); openModal(id); filterKostHome(); filterKostList(); renderWishlist(); alert('✅ Ulasan terkirim!'); }
+        function updateWishlistUI() {
+            document.getElementById('wishlistCount').textContent = wishlist.length;
+        }
 
-        // ===== NAVIGASI =====
-        function showPage(page) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); let target = document.getElementById('page-'+page); if (target) target.classList.add('active'); document.querySelectorAll('.nav-links button').forEach(btn => { btn.classList.toggle('active', btn.dataset.page === page); }); document.getElementById('heroSection').style.display = page === 'home' ? 'block' : 'none'; if (page === 'wishlist') renderWishlist(); if (page === 'chat') { renderChatContacts(); if (chatContacts.length) renderChat(chatContacts[0].id); updateChatNotif(); } if (page === 'add') setTimeout(() => { let lat = userLocation ? userLocation.lat : PUSAT_KOTA.lat; let lng = userLocation ? userLocation.lng : PUSAT_KOTA.lng; initPickerMap(lat, lng); }, 300); if (page === 'home') filterKostHome(); if (page === 'list') filterKostList(); }
+        function renderWishlist() {
+            let container = document.getElementById('wishlistGrid');
+            if (!wishlist.length) {
+                container.innerHTML = `
+                    <div class="wishlist-empty" style="grid-column:1/-1;">
+                        <i class="fas fa-heart"></i>
+                        <h3>Belum ada kost favorit</h3>
+                        <p>Mulai jelajahi kost dan klik ikon hati untuk menyimpan favoritmu</p>
+                    </div>
+                `;
+                return;
+            }
+            renderKostGrid('wishlistGrid', kostData.filter(k => wishlist.indexOf(k.id) > -1));
+        }
 
-        function updateFooterCount() { document.getElementById('totalKostFooter').textContent = kostData.length; }
+        // ============================================
+        // AUTH SYSTEM
+        // ============================================
+        let users = [
+            { email: "demo@kostapp.com", password: "123456", name: "Demo User" },
+            { email: "budi@kost.com", password: "123456", name: "Budi Santoso" }
+        ];
 
-        // ===== INIT =====
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('loginTitle').textContent = 'Login';
+            document.getElementById('loginSubtitle').textContent = 'Masuk untuk mengakses semua fitur';
+            document.getElementById('loginSubmitBtn').textContent = 'Login';
+            document.getElementById('toggleText').textContent = 'Belum punya akun?';
+            document.getElementById('toggleLink').textContent = 'Daftar Sekarang';
+            document.getElementById('loginNameField').style.display = 'none';
+            document.getElementById('loginForm').reset();
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleLoginForm() {
+            let isLogin = document.getElementById('loginTitle').textContent === 'Login';
+            if (isLogin) {
+                document.getElementById('loginTitle').textContent = 'Daftar';
+                document.getElementById('loginSubtitle').textContent = 'Buat akun baru untuk mulai mencari kost';
+                document.getElementById('loginSubmitBtn').textContent = 'Daftar';
+                document.getElementById('toggleText').textContent = 'Sudah punya akun?';
+                document.getElementById('toggleLink').textContent = 'Login Sekarang';
+                document.getElementById('loginNameField').style.display = 'block';
+            } else {
+                document.getElementById('loginTitle').textContent = 'Login';
+                document.getElementById('loginSubtitle').textContent = 'Masuk untuk mengakses semua fitur';
+                document.getElementById('loginSubmitBtn').textContent = 'Login';
+                document.getElementById('toggleText').textContent = 'Belum punya akun?';
+                document.getElementById('toggleLink').textContent = 'Daftar Sekarang';
+                document.getElementById('loginNameField').style.display = 'none';
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            let email = document.getElementById('loginEmail').value;
+            let password = document.getElementById('loginPassword').value;
+            let isLogin = document.getElementById('loginTitle').textContent === 'Login';
+
+            if (isLogin) {
+                let user = users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    closeLoginModal();
+                    updateUI();
+                    alert('✅ Login berhasil! Selamat datang ' + user.name);
+                } else {
+                    alert('❌ Email atau password salah!');
+                }
+            } else {
+                let name = document.getElementById('loginName').value;
+                if (!name) {
+                    alert('⚠️ Mohon isi nama lengkap!');
+                    return;
+                }
+                if (users.find(u => u.email === email)) {
+                    alert('❌ Email sudah terdaftar!');
+                    return;
+                }
+                users.push({ email, password, name });
+                currentUser = { email, password, name };
+                closeLoginModal();
+                updateUI();
+                alert('✅ Pendaftaran berhasil! Selamat datang ' + name);
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            updateUI();
+            showPage('home');
+            alert('👋 Anda telah logout');
+        }
+
+        function updateUI() {
+            let authButtons = document.getElementById('authButtons');
+            let userInfo = document.getElementById('userInfo');
+            let userName = document.getElementById('userName');
+            let userAvatar = document.getElementById('userAvatar');
+
+            if (currentUser) {
+                authButtons.style.display = 'none';
+                userInfo.style.display = 'flex';
+                userName.textContent = currentUser.name;
+                userAvatar.textContent = currentUser.name.charAt(0).toUpperCase();
+            } else {
+                authButtons.style.display = 'block';
+                userInfo.style.display = 'none';
+            }
+        }
+
+        // ============================================
+        // LOCATION SYSTEM
+        // ============================================
+        function getUserLocation() {
+            let btn = document.getElementById('btnRefreshLoc');
+            btn.classList.add('loading');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mendeteksi...';
+            document.getElementById('locStatus').textContent = '📍 Mendeteksi lokasi...';
+            document.getElementById('locDetail').textContent = 'Mohon tunggu, sedang mengambil lokasi Anda';
+
+            if (!navigator.geolocation) {
+                document.getElementById('locStatus').textContent = '⚠️ Browser tidak mendukung geolokasi';
+                document.getElementById('locDetail').textContent = 'Gunakan lokasi default (Pusat Kota)';
+                btn.classList.remove('loading');
+                btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh';
+                userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng };
+                isLocationDetected = true;
+                filterKostHome();
+                filterKostList();
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    userLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
+                    isLocationDetected = true;
+                    document.getElementById('locStatus').textContent = '📍 Lokasi terdeteksi!';
+                    document.getElementById('locDetail').textContent = userLocation.lat.toFixed(4) + ', ' + userLocation.lng.toFixed(4);
+                    btn.classList.remove('loading');
+                    btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh';
+                    filterKostHome();
+                    filterKostList();
+                },
+                error => {
+                    let errorMsg = 'Gagal mendapatkan lokasi';
+                    if (error.code === error.PERMISSION_DENIED) {
+                        errorMsg = 'Izin lokasi ditolak. Gunakan lokasi default.';
+                    }
+                    document.getElementById('locStatus').textContent = '⚠️ ' + errorMsg;
+                    document.getElementById('locDetail').textContent = 'Menggunakan lokasi default: Pusat Kota';
+                    btn.classList.remove('loading');
+                    btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh';
+                    userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng };
+                    isLocationDetected = true;
+                    filterKostHome();
+                    filterKostList();
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        // ============================================
+        // MAP PICKER
+        // ============================================
+        function initPickerMap(lat, lng) {
+            if (pickerMap) {
+                pickerMap.remove();
+                pickerMap = null;
+            }
+            pickerMap = L.map('addKostMap').setView([lat, lng], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(pickerMap);
+            isPickerMapInitialized = true;
+            pickerMap.on('click', e => setPickerLocation(e.latlng.lat, e.latlng.lng));
+            setTimeout(() => { if (pickerMap) pickerMap.invalidateSize(); }, 300);
+        }
+
+        function setPickerLocation(lat, lng) {
+            selectedLat = lat;
+            selectedLng = lng;
+            document.getElementById('selectedLat').value = lat;
+            document.getElementById('selectedLng').value = lng;
+            document.getElementById('selectedCoordDisplay').textContent = lat.toFixed(6) + ', ' + lng.toFixed(6);
+            document.getElementById('markerStatus').innerHTML = '📍 Pin dipasang!';
+            document.getElementById('markerStatus').className = 'selected-marker-info';
+            document.getElementById('markerStatus').style.background = '#eef6ff';
+            document.getElementById('mapError').style.display = 'none';
+
+            if (pickerMarker) pickerMap.removeLayer(pickerMarker);
+            let icon = L.divIcon({
+                className: 'picker-marker',
+                html: '<i class="fas fa-map-pin"></i>',
+                iconSize: [35, 35],
+                iconAnchor: [17, 35]
+            });
+            pickerMarker = L.marker([lat, lng], { icon, draggable: true }).addTo(pickerMap);
+            pickerMarker.bindPopup('📍 Lokasi kost dipilih di sini').openPopup();
+            pickerMarker.on('dragend', e => {
+                let pos = e.target.getLatLng();
+                setPickerLocation(pos.lat, pos.lng);
+            });
+            pickerMap.setView([lat, lng], 16);
+        }
+
+        function useMyLocationForPicker() {
+            if (!navigator.geolocation) {
+                alert('⚠️ Browser Anda tidak mendukung geolokasi!');
+                return;
+            }
+            let btn = document.getElementById('btnUseMyLocation');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mendeteksi...';
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    setPickerLocation(position.coords.latitude, position.coords.longitude);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-location-dot"></i> Lokasi Saya';
+                    alert('✅ Lokasi Anda telah dipasang di peta!');
+                },
+                error => {
+                    alert('⚠️ Gagal mendapatkan lokasi: ' + error.message);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-location-dot"></i> Lokasi Saya';
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        // ============================================
+        // ADD KOST
+        // ============================================
+        function addKost(e) {
+            e.preventDefault();
+
+            if (!currentUser) {
+                alert('⚠️ Silakan login terlebih dahulu untuk menambahkan kost!');
+                openLoginModal();
+                return;
+            }
+
+            if (!selectedLat || !selectedLng) {
+                document.getElementById('mapError').style.display = 'block';
+                document.getElementById('mapError').textContent = '⚠️ Silakan klik peta untuk memilih lokasi kost!';
+                document.getElementById('addKostMap').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            let nama = document.getElementById('namaKost').value.trim();
+            let lokasi = document.getElementById('lokasiKost').value.trim();
+            let hargaBulan = parseInt(document.getElementById('hargaBulan').value);
+            let hargaTahun = parseInt(document.getElementById('hargaTahun').value);
+            let fasilitasRaw = document.getElementById('fasilitasKost').value.trim();
+            let deskripsi = document.getElementById('deskripsiKost').value.trim();
+            let totalKamar = parseInt(document.getElementById('totalKamar').value);
+            let kamarKosong = parseInt(document.getElementById('kamarKosong').value);
+            let kontak = document.getElementById('kontakKost').value.trim();
+
+            if (!nama || !lokasi || !hargaBulan || !hargaTahun || !fasilitasRaw || !totalKamar || kamarKosong === undefined || !kontak) {
+                alert('⚠️ Mohon isi semua field yang diperlukan!');
+                return;
+            }
+
+            if (hargaBulan <= 0 || hargaTahun <= 0 || totalKamar <= 0 || kamarKosong < 0 || kamarKosong > totalKamar) {
+                alert('⚠️ Periksa kembali input!');
+                return;
+            }
+
+            let fasilitas = fasilitasRaw.split(',').map(f => f.trim()).filter(f => f);
+
+            let newKost = {
+                id: nextId++,
+                nama,
+                lokasi,
+                hargaBulan,
+                hargaTahun,
+                fasilitas,
+                deskripsi: deskripsi || 'Kost baru dengan fasilitas lengkap.',
+                lat: selectedLat,
+                lng: selectedLng,
+                owner: currentUser.name,
+                kontak,
+                totalKamar,
+                kamarKosong,
+                kota: "Pematangsiantar",
+                reviews: [],
+                gambar: getRandomImageUrl()
+            };
+
+            kostData.push(newKost);
+
+            document.getElementById('addKostForm').reset();
+            selectedLat = null;
+            selectedLng = null;
+            document.getElementById('selectedCoordDisplay').textContent = 'Belum dipilih';
+            document.getElementById('markerStatus').innerHTML = '⚪ Klik peta untuk pilih lokasi';
+            document.getElementById('markerStatus').className = 'selected-marker-info empty';
+            if (pickerMarker) pickerMap.removeLayer(pickerMarker);
+            document.getElementById('selectedLat').value = '';
+            document.getElementById('selectedLng').value = '';
+            document.getElementById('mapError').style.display = 'none';
+
+            filterKostHome();
+            filterKostList();
+            updateFooterCount();
+
+            alert('✅ Kost "' + nama + '" berhasil ditambahkan!');
+            showPage('list');
+        }
+
+        // ============================================
+        // DELETE KOST
+        // ============================================
+        function deleteKost(id) {
+            let kost = kostData.find(k => k.id === id);
+            if (!kost) return;
+            if (currentUser && kost.owner !== currentUser.name) {
+                alert('⚠️ Anda hanya bisa menghapus kost milik sendiri!');
+                return;
+            }
+            if (confirm('Yakin ingin menghapus kost "' + kost.nama + '"?')) {
+                kostData = kostData.filter(k => k.id !== id);
+                wishlist = wishlist.filter(w => w !== id);
+                filterKostHome();
+                filterKostList();
+                renderWishlist();
+                updateWishlistUI();
+                updateFooterCount();
+                if (currentModalId === id) closeModal();
+            }
+        }
+
+        // ============================================
+        // CHAT SYSTEM
+        // ============================================
+        function initChat(kostId) {
+            if (!currentUser) return null;
+            let kost = kostData.find(k => k.id === kostId);
+            if (!kost) return null;
+            let chatId = 'chat_' + Math.min(currentUser.name, kost.owner) + '_' + Math.max(currentUser.name, kost.owner);
+            if (!chatMessages[chatId]) chatMessages[chatId] = [];
+            if (!chatContacts.find(c => c.id === chatId)) {
+                chatContacts.push({ id: chatId, name: kost.owner, kostName: kost.nama, kostId: kost.id });
+            }
+            return chatId;
+        }
+
+        function sendMessage(kostId) {
+            let chatId = initChat(kostId);
+            if (!chatId) return;
+            let input = document.getElementById('chatInput');
+            let text = input.value.trim();
+            if (!text) return;
+
+            chatMessages[chatId].push({
+                sender: currentUser.name,
+                text: text,
+                time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+            });
+            input.value = '';
+
+            let kost = kostData.find(k => k.id === kostId);
+            setTimeout(() => {
+                let replies = [
+                    'Halo! Terima kasih sudah menghubungi. Kost ' + kost.nama + ' masih tersedia nih.',
+                    'Ada yang bisa saya bantu untuk kost ' + kost.nama + '?',
+                    'Untuk kost ' + kost.nama + ', kamar kosong tersisa ' + kost.kamarKosong + ' dari ' + kost.totalKamar + ' kamar.',
+                    'Harga kost ' + kost.nama + ' Rp ' + kost.hargaBulan.toLocaleString() + '/bulan. Berminat?',
+                    'Baik, untuk info lebih lanjut tentang kost ' + kost.nama + ' silakan tanyakan saja.'
+                ];
+                chatMessages[chatId].push({
+                    sender: kost.owner,
+                    text: replies[Math.floor(Math.random() * replies.length)],
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+                });
+                renderChat(chatId);
+                updateChatNotif();
+            }, 1000 + Math.random() * 2000);
+
+            renderChat(chatId);
+            updateChatNotif();
+        }
+
+        function renderChat(chatId) {
+            let container = document.getElementById('chatDetail');
+            let msgs = chatMessages[chatId] || [];
+
+            if (!msgs.length) {
+                container.innerHTML = `
+                    <p style="color:#8a9aa8;text-align:center;padding:2rem 0;">
+                        <i class="fas fa-comment" style="font-size:2.8rem;display:block;margin-bottom:0.8rem;opacity:0.2;"></i>
+                        Kirim pesan pertama
+                    </p>
+                    <div class="chat-input-group">
+                        <input type="text" id="chatInput" placeholder="Tulis pesan..." onkeypress="if(event.key==='Enter') sendMessageFromChat()">
+                        <button onclick="sendMessageFromChat()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                `;
+                return;
+            }
+
+            let contact = chatContacts.find(c => c.id === chatId);
+            let kost = kostData.find(k => k.id === contact?.kostId);
+
+            container.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid #edf2f7;">
+                    <div>
+                        <strong>${contact?.name || 'Pemilik Kost'}</strong>
+                        <div style="font-size:0.8rem;color:#6f8aa0;">${kost?.nama || ''}</div>
+                    </div>
+                </div>
+                <div class="chat-container" id="chatMessages">
+                    ${msgs.map(m => `
+                        <div class="chat-message ${m.sender === currentUser.name ? 'sent' : 'received'}">
+                            ${m.text}
+                            <span class="chat-time" style="display:block;font-size:0.7rem;color:#8a9aa8;margin-top:4px;">${m.sender} • ${m.time}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="chat-input-group">
+                    <input type="text" id="chatInput" placeholder="Tulis pesan..." onkeypress="if(event.key==='Enter') sendMessageFromChat()">
+                    <button onclick="sendMessageFromChat()"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            `;
+
+            let chatContainer = document.getElementById('chatMessages');
+            if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function sendMessageFromChat() {
+            let contact = chatContacts.find(c =>
+                c.id === Object.keys(chatMessages).find(key =>
+                    document.getElementById('chatDetail').innerHTML.includes(key)
+                )
+            );
+            if (contact) sendMessage(contact.kostId);
+        }
+
+        function renderChatContacts() {
+            let container = document.getElementById('chatContactList');
+            if (!chatContacts.length) {
+                container.innerHTML = '<p style="color:#8a9aa8;font-size:0.9rem;">Belum ada percakapan</p>';
+                return;
+            }
+            container.innerHTML = chatContacts.map(c => `
+                <div style="padding:0.8rem;border-radius:16px;margin-bottom:0.5rem;cursor:pointer;background:${document.getElementById('chatDetail').innerHTML.includes(c.id) ? '#f1f5f9' : 'transparent'};transition:0.2s;"
+                     onclick="openChatContact('${c.id}')"
+                     onmouseover="this.style.background='#f1f5f9'"
+                     onmouseout="this.style.background='${document.getElementById('chatDetail').innerHTML.includes(c.id) ? '#f1f5f9' : 'transparent'}'">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div>
+                            <strong>${c.name}</strong>
+                            <div style="font-size:0.8rem;color:#6f8aa0;">${c.kostName}</div>
+                        </div>
+                        <span style="font-size:0.7rem;color:#8a9aa8;">${chatMessages[c.id]?.length || 0} pesan</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openChatContact(chatId) {
+            renderChat(chatId);
+            renderChatContacts();
+        }
+
+        function openChat() {
+            let id = parseInt(document.getElementById('detailModal').dataset.kostId);
+            let kost = kostData.find(k => k.id === id);
+            if (!kost) return;
+            if (!currentUser) {
+                alert('⚠️ Silakan login terlebih dahulu untuk chat!');
+                openLoginModal();
+                return;
+            }
+            closeModal();
+            showPage('chat');
+            let chatId = initChat(id);
+            if (chatId) {
+                setTimeout(() => {
+                    renderChat(chatId);
+                    renderChatContacts();
+                }, 100);
+            }
+        }
+
+        function openChatFromCard(id) {
+            if (!currentUser) {
+                alert('⚠️ Silakan login terlebih dahulu untuk chat!');
+                openLoginModal();
+                return;
+            }
+            showPage('chat');
+            let chatId = initChat(id);
+            if (chatId) {
+                setTimeout(() => {
+                    renderChat(chatId);
+                    renderChatContacts();
+                }, 100);
+            }
+        }
+
+        function updateChatNotif() {
+            let totalUnread = 0;
+            for (let key in chatMessages) {
+                let msgs = chatMessages[key];
+                if (msgs.length && msgs[msgs.length - 1].sender !== currentUser?.name) {
+                    totalUnread++;
+                }
+            }
+            let notif = document.getElementById('chatNotif');
+            if (totalUnread > 0) {
+                notif.style.display = 'inline';
+                notif.textContent = totalUnread;
+            } else {
+                notif.style.display = 'none';
+            }
+        }
+
+        function openWhatsApp() {
+            let id = parseInt(document.getElementById('detailModal').dataset.kostId);
+            let kost = kostData.find(k => k.id === id);
+            if (kost && kost.kontak) {
+                let phone = kost.kontak.replace(/[^0-9]/g, '');
+                if (!phone.startsWith('62') && !phone.startsWith('0')) phone = '62' + phone;
+                if (phone.startsWith('0')) phone = '62' + phone.substring(1);
+                window.open('https://wa.me/' + phone + '?text=Halo%20saya%20tertarik%20dengan%20kost%20' + encodeURIComponent(kost.nama), '_blank');
+            } else {
+                alert('⚠️ Nomor kontak tidak tersedia!');
+            }
+        }
+
+        // ============================================
+        // MAP ROUTE
+        // ============================================
+        function initMap(lat, lng) {
+            if (!mapInitialized) {
+                map = L.map('routeMap').setView([lat, lng], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+                mapInitialized = true;
+            } else {
+                map.setView([lat, lng], 15);
+            }
+            return map;
+        }
+
+        function addDestinationMarker(lat, lng, name) {
+            if (destinationMarker) map.removeLayer(destinationMarker);
+            let icon = L.divIcon({
+                className: 'custom-marker',
+                html: '<i class="fas fa-home"></i>',
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+            destinationMarker = L.marker([lat, lng], { icon })
+                .addTo(map)
+                .bindPopup('<strong>' + name + '</strong><br>Lokasi Kost')
+                .openPopup();
+        }
+
+        function calculateRoute() {
+            if (!mapInitialized || !currentKostLat || !currentKostLng) {
+                alert('⚠️ Silakan buka detail kost terlebih dahulu!');
+                return;
+            }
+
+            let startInput = document.getElementById('startLocation').value;
+            if (!startInput) {
+                alert('⚠️ Masukkan lokasi awal!');
+                return;
+            }
+
+            if (routeLayer) map.removeLayer(routeLayer);
+
+            let startLat, startLng;
+            if (userLocation && isLocationDetected) {
+                startLat = userLocation.lat;
+                startLng = userLocation.lng;
+            } else {
+                startLat = currentKostLat + (Math.random() - 0.5) * 0.03;
+                startLng = currentKostLng + (Math.random() - 0.5) * 0.03;
+            }
+
+            let points = [];
+            for (let i = 0; i <= 10; i++) {
+                let t = i / 10;
+                points.push([
+                    startLat + (currentKostLat - startLat) * t + (Math.random() - 0.5) * 0.002 * (1 - t),
+                    startLng + (currentKostLng - startLng) * t + (Math.random() - 0.5) * 0.002 * (1 - t)
+                ]);
+            }
+            points[points.length - 1] = [currentKostLat, currentKostLng];
+
+            routeLayer = L.polyline(points, {
+                color: '#f5a623',
+                weight: 4,
+                opacity: 0.7,
+                dashArray: '8,8'
+            }).addTo(map);
+
+            map.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
+
+            let startIcon = L.divIcon({
+                className: 'custom-marker',
+                html: '<i class="fas fa-play" style="color:#0b1a2e;"></i>',
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+            let startMarker = L.marker([startLat, startLng], { icon: startIcon })
+                .addTo(map)
+                .bindPopup('📍 ' + startInput);
+
+            let distance = getDistance(startLat, startLng, currentKostLat, currentKostLng);
+            let time = Math.round(distance * 5 + Math.random() * 10);
+
+            let routeInfo = document.getElementById('routeInfo');
+            routeInfo.classList.add('active');
+            document.getElementById('routeDistance').textContent = '🚗 Jarak: ' + distance.toFixed(1) + ' km';
+            document.getElementById('routeTime').textContent = '⏱️ Estimasi: ' + time + ' menit';
+
+            let stepsList = document.getElementById('routeSteps');
+            let directions = [
+                'Mulai dari <strong>' + startInput + '</strong>',
+                'Belok kiri ke Jalan Utama (' + (distance * 0.3).toFixed(1) + ' km)',
+                'Lanjutkan lurus ke arah timur (' + (distance * 0.25).toFixed(1) + ' km)',
+                'Belok kanan ke Jalan Kost (' + (distance * 0.2).toFixed(1) + ' km)',
+                'Tujuan berada di sebelah kanan'
+            ];
+            stepsList.innerHTML = directions.map((d, i) => '<li>' + (i + 1) + '. ' + d + '</li>').join('');
+
+            setTimeout(() => { if (startMarker) map.removeLayer(startMarker); }, 5000);
+        }
+
+        function locateUser() {
+            if (!navigator.geolocation) {
+                alert('⚠️ Browser Anda tidak mendukung geolokasi!');
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    if (map) {
+                        map.setView([position.coords.latitude, position.coords.longitude], 15);
+                        let icon = L.divIcon({
+                            className: 'user-location-marker',
+                            html: '<i class="fas fa-user"></i>',
+                            iconSize: [30, 30],
+                            iconAnchor: [15, 15]
+                        });
+                        L.marker([position.coords.latitude, position.coords.longitude], { icon })
+                            .addTo(map)
+                            .bindPopup('📍 Lokasi Anda')
+                            .openPopup();
+                        document.getElementById('startLocation').value = 'Lokasi Saya';
+                    }
+                },
+                error => alert('⚠️ Gagal mendapatkan lokasi: ' + error.message)
+            );
+        }
+
+        function openRouteInMap(id) {
+            let kost = kostData.find(k => k.id === id);
+            if (!kost || !kost.lat || !kost.lng) {
+                alert('⚠️ Lokasi kost tidak tersedia!');
+                return;
+            }
+            openModal(id);
+            setTimeout(() => {
+                initMap(kost.lat, kost.lng);
+                currentKostLat = kost.lat;
+                currentKostLng = kost.lng;
+                addDestinationMarker(kost.lat, kost.lng, kost.nama);
+                if (userLocation && isLocationDetected) {
+                    document.getElementById('startLocation').value = 'Lokasi Saya';
+                } else {
+                    document.getElementById('startLocation').value = 'Pusat Kota';
+                }
+                document.getElementById('routeInfo').classList.remove('active');
+                if (routeLayer) {
+                    map.removeLayer(routeLayer);
+                    routeLayer = null;
+                }
+            }, 300);
+        }
+
+        // ============================================
+        // MODAL DETAIL
+        // ============================================
+        function openModal(id) {
+            let kost = kostData.find(k => k.id === id);
+            if (!kost) return;
+
+            currentModalId = id;
+            currentKostLat = kost.lat;
+            currentKostLng = kost.lng;
+
+            document.getElementById('modalTitle').textContent = kost.nama;
+            document.getElementById('modalLocation').innerHTML = '<i class="fas fa-map-pin"></i> ' + kost.lokasi;
+            document.getElementById('modalBulan').textContent = 'Rp ' + kost.hargaBulan.toLocaleString();
+            document.getElementById('modalTahun').textContent = 'Rp ' + kost.hargaTahun.toLocaleString();
+            document.getElementById('modalDeskripsi').textContent = kost.deskripsi || 'Tidak ada deskripsi.';
+            document.getElementById('modalOwner').textContent = kost.owner;
+            document.getElementById('modalKontak').textContent = '📱 ' + (kost.kontak || '-');
+
+            let kamarElement = document.getElementById('modalKamar');
+            kamarElement.textContent = kost.kamarKosong + ' / ' + kost.totalKamar;
+            kamarElement.className = 'value ' + (kost.kamarKosong === 0 ? 'full' : kost.kamarKosong <= 2 ? 'limited' : 'available');
+
+            let avg = getAverageRating(kost);
+            document.getElementById('modalStars').textContent = getRatingStars(avg);
+            document.getElementById('modalReviewCount').textContent = '(' + (kost.reviews ? kost.reviews.length : 0) + ' ulasan)';
+
+            document.getElementById('modalFacilities').innerHTML = kost.fasilitas.map(f => '<span class="tag">' + f + '</span>').join('');
+
+            // Gambar modal
+            let modalImage = document.getElementById('modalImage');
+            let imageUrl = getKostImage(kost);
+            modalImage.innerHTML = `
+                <img src="${imageUrl}" alt="${kost.nama}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <i class="fas fa-building fallback-icon" style="display:none;"></i>
+            `;
+
+            let reviewsContainer = document.getElementById('modalReviews');
+            if (kost.reviews && kost.reviews.length) {
+                reviewsContainer.innerHTML = kost.reviews.map(r => `
+                    <div class="review-item">
+                        <div style="display:flex;justify-content:space-between;">
+                            <span class="review-name" style="font-weight:600;">${r.user}</span>
+                            <span style="color:#f5a623;">${'★'.repeat(r.rating)}</span>
+                        </div>
+                        <p>${r.text}</p>
+                        <span style="font-size:0.8rem;color:#8a9aa8;">${r.date}</span>
+                    </div>
+                `).join('');
+            } else {
+                reviewsContainer.innerHTML = '<p style="color:#8a9aa8;">Belum ada ulasan. Jadilah yang pertama!</p>';
+            }
+
+            selectedRating = 0;
+            document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('selectedRatingLabel').textContent = '0';
+            document.getElementById('reviewText').value = '';
+
+            document.getElementById('detailModal').dataset.kostId = id;
+            document.getElementById('detailModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                if (kost.lat && kost.lng) {
+                    initMap(kost.lat, kost.lng);
+                    addDestinationMarker(kost.lat, kost.lng, kost.nama);
+                    if (userLocation && isLocationDetected) {
+                        document.getElementById('startLocation').value = 'Lokasi Saya';
+                    } else {
+                        document.getElementById('startLocation').value = 'Pusat Kota';
+                    }
+                    document.getElementById('routeInfo').classList.remove('active');
+                    if (routeLayer) {
+                        map.removeLayer(routeLayer);
+                        routeLayer = null;
+                    }
+                }
+            }, 300);
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentModalId = null;
+            if (map) {
+                map.remove();
+                map = null;
+                mapInitialized = false;
+            }
+        }
+
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // ============================================
+        // REVIEW SYSTEM
+        // ============================================
+        function setRating(rating) {
+            selectedRating = rating;
+            document.querySelectorAll('.star-btn').forEach(b => {
+                b.classList.toggle('active', parseInt(b.dataset.rating) <= rating);
+            });
+            document.getElementById('selectedRatingLabel').textContent = rating;
+        }
+
+        function submitReview() {
+            let id = parseInt(document.getElementById('detailModal').dataset.kostId);
+            let kost = kostData.find(k => k.id === id);
+            if (!kost) return;
+
+            if (!currentUser) {
+                alert('⚠️ Silakan login terlebih dahulu untuk memberi ulasan!');
+                openLoginModal();
+                return;
+            }
+
+            if (selectedRating === 0) {
+                alert('⚠️ Mohon berikan rating!');
+                return;
+            }
+
+            let text = document.getElementById('reviewText').value.trim();
+            if (!text) {
+                alert('⚠️ Mohon tulis ulasan!');
+                return;
+            }
+
+            if (!kost.reviews) kost.reviews = [];
+            kost.reviews.push({
+                user: currentUser.name,
+                rating: selectedRating,
+                text: text,
+                date: new Date().toISOString().split('T')[0]
+            });
+
+            openModal(id);
+            filterKostHome();
+            filterKostList();
+            renderWishlist();
+
+            alert('✅ Ulasan berhasil dikirim!');
+        }
+
+        // ============================================
+        // NAVIGASI
+        // ============================================
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            let target = document.getElementById('page-' + page);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.nav-links button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.page === page);
+            });
+
+            let hero = document.getElementById('heroSection');
+            hero.style.display = page === 'home' ? 'block' : 'none';
+
+            if (page === 'wishlist') renderWishlist();
+            if (page === 'chat') {
+                renderChatContacts();
+                if (chatContacts.length) renderChat(chatContacts[0].id);
+                updateChatNotif();
+            }
+            if (page === 'add') {
+                setTimeout(() => {
+                    let lat = userLocation ? userLocation.lat : PUSAT_KOTA.lat;
+                    let lng = userLocation ? userLocation.lng : PUSAT_KOTA.lng;
+                    initPickerMap(lat, lng);
+                }, 300);
+            }
+            if (page === 'home') filterKostHome();
+            if (page === 'list') filterKostList();
+        }
+
+        function updateFooterCount() {
+            document.getElementById('totalKostFooter').textContent = kostData.length;
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
         window.addEventListener('load', function() {
             userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng };
             isLocationDetected = true;
             document.getElementById('locStatus').textContent = '📍 Pusat Kota (Default)';
             document.getElementById('locDetail').textContent = 'Aktifkan izin lokasi untuk deteksi lebih akurat';
-            setTimeout(() => initPickerMap(PUSAT_KOTA.lat, PUSAT_KOTA.lng), 400);
-            setTimeout(() => getUserLocation(), 800);
-            filterKostHome(); filterKostList(); renderWishlist(); updateFooterCount(); updateWishlistUI(); updateChatNotif();
+
+            setTimeout(() => initPickerMap(PUSAT_KOTA.lat, PUSAT_KOTA.lng), 500);
+            setTimeout(() => getUserLocation(), 1000);
+
+            filterKostHome();
+            filterKostList();
+            renderWishlist();
+            updateFooterCount();
+            updateWishlistUI();
+            updateChatNotif();
         });
 
-        document.getElementById('searchInput').addEventListener('keyup', e => { if (e.key === 'Enter') searchKost(); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeLoginModal(); } });
-        document.getElementById('loginModal').addEventListener('click', e => { if (e.target === this) closeLoginModal(); });
-        window.addEventListener('resize', () => { if (map) map.invalidateSize(); if (pickerMap) pickerMap.invalidateSize(); });
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') searchKost();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeLoginModal();
+            }
+        });
+
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) closeLoginModal();
+        });
+
+        window.addEventListener('resize', function() {
+            if (map) map.invalidateSize();
+            if (pickerMap) pickerMap.invalidateSize();
+        });
     </script>
+
 </body>
 </html>
