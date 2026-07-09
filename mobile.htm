@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>KostApp · Mobile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+            color: #0b1a2e;
+            line-height: 1.5;
+            padding-bottom: 80px;
+            overflow-x: hidden;
+        }
+
+        /* ===== SCROLL BAR ===== */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 12px; }
+
+        /* ===== NAVBAR MOBILE ===== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #0b1a2e;
+            cursor: pointer;
+        }
+        .logo i { color: #f5a623; font-size: 1.4rem; }
+        .logo span { font-weight: 300; color: #5b6f82; }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .nav-right button {
+            background: transparent;
+            border: none;
+            padding: 0.4rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2d3f53;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Inter', sans-serif;
+            transition: 0.2s;
+        }
+        .nav-right button i { font-size: 0.9rem; }
+        .nav-right button.active {
+            background: #0b1a2e;
+            color: white;
+        }
+        .btn-login-nav {
+            background: #0b1a2e !important;
+            color: white !important;
+            padding: 0.4rem 1rem !important;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #f1f5f9;
+            padding: 0.1rem 0.6rem 0.1rem 0.3rem;
+            border-radius: 30px;
+        }
+        .user-info .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f5a623;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #0b1a2e;
+        }
+        .user-info span { font-weight: 500; font-size: 0.8rem; }
+        .logout-btn {
+            background: transparent;
+            border: none;
+            color: #8a9aa8;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .chat-notif {
+            background: #dc3545;
+            color: white;
+            border-radius: 30px;
+            padding: 0 6px;
+            font-size: 0.6rem;
+            margin-left: 2px;
+        }
+
+        /* ===== HERO MOBILE ===== */
+        .hero {
+            padding: 1.5rem 1rem 1.2rem;
+            background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.02);
+        }
+        .hero h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #0b1a2e;
+        }
+        .hero h1 .highlight { color: #f5a623; }
+        .hero p {
+            font-size: 0.95rem;
+            color: #4a637a;
+            max-width: 400px;
+            margin: 0.3rem auto 1.2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            border: 1px solid #e9edf2;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 0.7rem 1.2rem;
+            border: none;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            background: transparent;
+        }
+        .search-bar button {
+            padding: 0.7rem 1.2rem;
+            background: #f5a623;
+            border: none;
+            color: #0b1a2e;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* ===== LOCATION BANNER ===== */
+        .location-banner {
+            background: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            margin: -0.8rem 1rem 0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border: 1px solid #edf2f7;
+            position: relative;
+            z-index: 10;
+        }
+        .location-banner .location-info {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .location-banner .loc-icon {
+            background: #eef6ff;
+            color: #0b1a2e;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        .location-banner .loc-text strong { display: block; font-size: 0.8rem; }
+        .location-banner .loc-text span { font-size: 0.7rem; color: #6f8aa0; }
+
+        .btn-refresh-loc {
+            background: #eef2f6;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #0b1a2e;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1rem 1rem 5rem;
+        }
+
+        .page { display: none; animation: fadeUp 0.3s ease; }
+        .page.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+        }
+        .page-title i { color: #f5a623; }
+        .page-title .sub { font-size: 0.8rem; font-weight: 400; color: #6f8aa0; }
+
+        /* ===== FILTER ===== */
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 0.6rem 1rem;
+            border-radius: 28px;
+            border: 1px solid #edf2f7;
+            margin-bottom: 1.2rem;
+        }
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+        .filter-group select, .filter-group input {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            outline: none;
+            font-size: 0.75rem;
+            color: #0b1a2e;
+            min-width: 0;
+            flex: 1;
+        }
+        .filter-group select:focus, .filter-group input:focus { border-color: #f5a623; }
+        .filter-count { font-size: 0.75rem; color: #6f8aa0; white-space: nowrap; }
+
+        /* ===== GRID ===== */
+        .kost-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        .kost-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+            border: 1px solid #edf2f7;
+            transition: 0.2s;
+            position: relative;
+        }
+        .kost-card:active { transform: scale(0.98); }
+        .kost-card.nearby { border-color: #f5a623; background: #fffbf0; }
+
+        .kost-image {
+            height: 160px;
+            background: #eef2f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .kost-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .kost-image .fallback-icon {
+            position: absolute;
+            font-size: 3rem;
+            color: #8a9aa8;
+            opacity: 0.4;
+        }
+        .kost-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            color: white;
+            padding: 0.1rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+        .wishlist-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: white;
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #cbd5e1;
+            z-index: 2;
+        }
+        .wishlist-btn.liked { color: #dc3545; }
+
+        .nearby-ribbon {
+            position: absolute;
+            top: 10px;
+            right: -20px;
+            background: #f5a623;
+            color: #0b1a2e;
+            font-weight: 700;
+            font-size: 0.55rem;
+            padding: 0.15rem 1.8rem;
+            transform: rotate(45deg);
+            z-index: 3;
+            letter-spacing: 0.3px;
+        }
+        .out-of-town {
+            position: absolute;
+            top: 10px;
+            left: 50px;
+            background: #8a9aa8;
+            color: white;
+            padding: 0.1rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .kost-body { padding: 1rem 1rem 1.2rem; }
+        .kost-title {
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .kost-title .distance-badge {
+            background: #eef2f6;
+            padding: 0.05rem 0.6rem;
+            border-radius: 24px;
+            font-size: 0.6rem;
+            font-weight: 500;
+        }
+        .nearby-badge {
+            background: #f5a623;
+            color: #0b1a2e;
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 0.05rem 0.6rem;
+            border-radius: 24px;
+        }
+        .kost-location {
+            color: #6f8aa0;
+            font-size: 0.75rem;
+            margin: 0.2rem 0 0.4rem;
+        }
+        .kost-location i { margin-right: 3px; color: #f5a623; }
+
+        .kost-rooms {
+            font-size: 0.8rem;
+            margin-bottom: 0.2rem;
+        }
+        .room-available { color: #1a9b5e; font-weight: 600; }
+        .room-limited { color: #e09515; font-weight: 600; }
+        .room-full { color: #dc3545; font-weight: 600; }
+
+        .kost-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 0.4rem;
+        }
+        .kost-rating .stars { color: #f5a623; font-size: 0.85rem; letter-spacing: 0.5px; }
+        .kost-rating .review-count { color: #8a9aa8; font-size: 0.7rem; }
+
+        .kost-facilities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 0.3rem 0 0.6rem;
+        }
+        .facility-tag {
+            background: #f1f5f9;
+            padding: 0.05rem 0.6rem;
+            border-radius: 24px;
+            font-size: 0.6rem;
+            color: #2d3f53;
+        }
+
+        .kost-price {
+            display: flex;
+            gap: 1.2rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #edf2f7;
+            margin-top: 0.2rem;
+        }
+        .price-item .label {
+            font-size: 0.6rem;
+            color: #8a9aa8;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .price-item .value {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #0b1a2e;
+        }
+
+        .kost-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .kost-actions button {
+            font-family: 'Inter', sans-serif;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-route { background: #eef6ff; color: #0b1a2e; }
+        .btn-detail { background: #f1f5f9; color: #0b1a2e; }
+        .btn-chat-card { background: #f5a623; color: #0b1a2e; }
+        .btn-delete { background: #fee2e2; color: #dc3545; }
+
+        /* ===== FORM ===== */
+        .form-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem;
+            border: 1px solid #edf2f7;
+        }
+        .form-card h2 { font-size: 1.3rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+        .form-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+        .form-group .full-width { grid-column: 1 / -1; }
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #2d3f53;
+            display: block;
+            margin-bottom: 3px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+            outline: none;
+            font-size: 0.85rem;
+            background: #fafcfe;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: #f5a623; }
+        .form-group textarea { min-height: 60px; resize: vertical; }
+
+        #addKostMap { width: 100%; height: 200px; background: #eef2f6; border-radius: 16px; overflow: hidden; margin: 0.4rem 0; }
+
+        .map-picker-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.4rem;
+        }
+        .coord-info {
+            background: #f1f5f9;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            color: #2d3f53;
+            flex: 1;
+            min-width: 120px;
+        }
+        .btn-use-location {
+            background: #0b1a2e;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .selected-marker-info {
+            background: #eef6ff;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+        }
+        .selected-marker-info.empty { background: #f1f5f9; color: #8a9aa8; }
+
+        .btn-submit {
+            background: #f5a623;
+            border: none;
+            padding: 0.6rem 2rem;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            margin-top: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #0b1a2e;
+            width: 100%;
+            justify-content: center;
+        }
+        .btn-submit:hover { background: #e09515; }
+
+        .form-error { color: #dc3545; font-size: 0.75rem; margin-top: 4px; display: none; }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 0;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            border-radius: 32px 32px 0 0;
+            max-width: 600px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 1.5rem 1.2rem 2rem;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            font-size: 1.6rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #8a9aa8;
+        }
+        .modal-image {
+            height: 160px;
+            background: #eef2f6;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .modal-image img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-image .fallback-icon { font-size: 3rem; color: #8a9aa8; opacity: 0.4; }
+
+        .modal .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin: 1rem 0;
+        }
+        .modal .detail-item {
+            background: #f8fafc;
+            padding: 0.6rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        .modal .detail-item .label { font-size: 0.6rem; color: #8a9aa8; text-transform: uppercase; }
+        .modal .detail-item .value { font-weight: 700; font-size: 0.9rem; }
+
+        .facilities-list { display: flex; flex-wrap: wrap; gap: 4px; margin: 0.4rem 0; }
+        .facilities-list .tag {
+            background: #f1f5f9;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+        }
+
+        .contact-section { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid #edf2f7; }
+        .btn-contact, .btn-whatsapp {
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-contact { background: #eef6ff; color: #0b1a2e; }
+        .btn-whatsapp { background: #25d366; color: white; }
+
+        #routeMap { width: 100%; height: 200px; background: #eef2f6; border-radius: 16px; overflow: hidden; margin: 0.4rem 0; }
+
+        .map-controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.4rem;
+        }
+        .map-controls input {
+            flex: 1;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            font-size: 0.8rem;
+            min-width: 100px;
+        }
+        .map-controls button {
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 24px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-route-map { background: #f5a623; color: #0b1a2e; }
+        .btn-locate { background: #0b1a2e; color: white; }
+
+        .route-info {
+            background: #f8fafc;
+            padding: 0.8rem;
+            border-radius: 16px;
+            margin-top: 0.6rem;
+            display: none;
+        }
+        .route-info.active { display: block; }
+
+        .chat-container {
+            max-height: 280px;
+            overflow-y: auto;
+            padding: 0.6rem;
+            background: #f8fafc;
+            border-radius: 20px;
+            margin: 0.8rem 0;
+        }
+        .chat-message {
+            max-width: 85%;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .chat-message.sent {
+            background: #f5a623;
+            color: #0b1a2e;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-message.received {
+            background: white;
+            border: 1px solid #edf2f7;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+        .chat-input-group input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 30px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            font-size: 0.85rem;
+        }
+        .chat-input-group button {
+            background: #f5a623;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #0b1a2e;
+        }
+
+        .review-item {
+            background: #f8fafc;
+            padding: 0.8rem;
+            border-radius: 16px;
+            margin-bottom: 0.6rem;
+        }
+        .star-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #dce3ec;
+        }
+        .star-btn.active { color: #f5a623; }
+
+        .btn-review {
+            background: #f5a623;
+            border: none;
+            padding: 0.4rem 1.6rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            margin-top: 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.4rem 0.5rem 0.6rem;
+            z-index: 1000;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.02);
+        }
+        .bottom-nav button {
+            background: transparent;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: #8a9aa8;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            padding: 0.2rem 0.8rem;
+            transition: 0.2s;
+            position: relative;
+        }
+        .bottom-nav button i { font-size: 1.2rem; }
+        .bottom-nav button.active { color: #f5a623; }
+        .bottom-nav button .badge {
+            position: absolute;
+            top: -2px;
+            right: 2px;
+            background: #dc3545;
+            color: white;
+            border-radius: 30px;
+            padding: 0 6px;
+            font-size: 0.5rem;
+            font-weight: 700;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .wishlist-empty, .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: #8a9aa8;
+        }
+        .wishlist-empty i, .empty-state i { font-size: 2.8rem; opacity: 0.3; margin-bottom: 0.8rem; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            color: #8a9aa8;
+            font-size: 0.75rem;
+            border-top: 1px solid #edf2f7;
+            background: white;
+            margin-top: 1rem;
+        }
+        .footer span { color: #f5a623; font-weight: 600; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (min-width: 600px) {
+            .container { padding: 1.5rem 2rem 5rem; }
+            .kost-grid { grid-template-columns: 1fr 1fr; }
+            .hero h1 { font-size: 2.2rem; }
+        }
+        @media (max-width: 400px) {
+            .kost-title { font-size: 0.9rem; }
+            .kost-price .value { font-size: 0.8rem; }
+            .filter-group select, .filter-group input { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+            .modal .detail-grid { grid-template-columns: 1fr 1fr; }
+            .form-group { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="logo" onclick="showPage('home')">
+            <i class="fas fa-building"></i> Kost<span>App</span>
+        </div>
+        <div class="nav-right">
+            <div id="authButtons"><button onclick="openLoginModal()" class="btn-login-nav"><i class="fas fa-sign-in-alt"></i></button></div>
+            <div id="userInfo" style="display:none;" class="user-info">
+                <div class="avatar" id="userAvatar">U</div>
+                <span id="userName">User</span>
+                <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="heroSection">
+        <h1>Cari Kost <span class="highlight">Terdekat</span></h1>
+        <p>Temukan kost dengan harga terbaik & lokasi strategis</p>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Cari nama kost..." onkeyup="searchKost()">
+            <button onclick="searchKost()"><i class="fas fa-search"></i></button>
+        </div>
+    </section>
+
+    <!-- ===== LOCATION BANNER ===== -->
+    <div class="location-banner" id="locationBanner">
+        <div class="location-info">
+            <div class="loc-icon"><i class="fas fa-location-dot"></i></div>
+            <div class="loc-text">
+                <strong id="locStatus">📍 Mendeteksi...</strong>
+                <span id="locDetail">Aktifkan izin lokasi</span>
+            </div>
+        </div>
+        <button class="btn-refresh-loc" id="btnRefreshLoc" onclick="getUserLocation()"><i class="fas fa-rotate"></i></button>
+    </div>
+
+    <!-- ===== MAIN ===== -->
+    <div class="container">
+
+        <!-- HOME -->
+        <div class="page active" id="page-home">
+            <div class="page-title"><i class="fas fa-fire"></i> Kost Terdekat</div>
+            <div class="filter-section">
+                <div class="filter-group">
+                    <select id="filterFacilityHome" onchange="filterKostHome()"><option value="all">Semua</option><option value="AC">AC</option><option value="WiFi">WiFi</option><option value="Kamar Mandi Dalam">Kamar Mandi</option><option value="Parkir">Parkir</option></select>
+                    <select id="sortPriceHome" onchange="filterKostHome()"><option value="default">Urut</option><option value="low">Termurah</option><option value="high">Termahal</option></select>
+                    <select id="sortDistanceHome" onchange="filterKostHome()"><option value="default">Jarak</option><option value="distance">Terdekat</option></select>
+                </div>
+                <div class="filter-count"><span id="kostCountHome">0</span></div>
+            </div>
+            <div id="kostGridHome" class="kost-grid"></div>
+        </div>
+
+        <!-- LIST -->
+        <div class="page" id="page-list">
+            <div class="page-title"><i class="fas fa-list"></i> Semua Kost</div>
+            <div class="filter-section">
+                <div class="filter-group">
+                    <select id="filterFacilityList" onchange="filterKostList()"><option value="all">Semua</option><option value="AC">AC</option><option value="WiFi">WiFi</option><option value="Kamar Mandi Dalam">Kamar Mandi</option><option value="Parkir">Parkir</option></select>
+                    <select id="sortPriceList" onchange="filterKostList()"><option value="default">Urut</option><option value="low">Termurah</option><option value="high">Termahal</option></select>
+                </div>
+                <div class="filter-count"><span id="kostCountList">0</span></div>
+            </div>
+            <div id="kostGridList" class="kost-grid"></div>
+        </div>
+
+        <!-- WISHLIST -->
+        <div class="page" id="page-wishlist">
+            <div class="page-title"><i class="fas fa-heart" style="color:#dc3545;"></i> Favorit</div>
+            <div id="wishlistGrid" class="kost-grid"></div>
+        </div>
+
+        <!-- CHAT -->
+        <div class="page" id="page-chat">
+            <div class="page-title"><i class="fas fa-comment-dots" style="color:#f5a623;"></i> Pesan</div>
+            <div style="background:white; border-radius:24px; padding:1rem; border:1px solid #edf2f7; margin-bottom:1rem; max-height:120px; overflow-y:auto;">
+                <div id="chatContactList"><p style="color:#8a9aa8; font-size:0.8rem;">Belum ada percakapan</p></div>
+            </div>
+            <div style="background:white; border-radius:24px; padding:1rem; border:1px solid #edf2f7;">
+                <div id="chatDetail"><p style="color:#8a9aa8; text-align:center; padding:1rem 0; font-size:0.9rem;"><i class="fas fa-comment" style="font-size:2rem; display:block; margin-bottom:0.5rem; opacity:0.2;"></i> Pilih percakapan</p></div>
+            </div>
+        </div>
+
+        <!-- ADD -->
+        <div class="page" id="page-add">
+            <div class="form-card">
+                <h2><i class="fas fa-plus-circle" style="color:#f5a623;"></i> Tambah Kost</h2>
+                <form id="addKostForm" onsubmit="addKost(event)">
+                    <div class="form-group">
+                        <div class="full-width"><label>Nama Kost *</label><input type="text" id="namaKost" placeholder="Kost Mawar Indah" required></div>
+                        <div class="full-width"><label>Alamat *</label><input type="text" id="lokasiKost" placeholder="Jl. Merpati No. 12" required></div>
+                        <div><label>Harga/Bulan</label><input type="number" id="hargaBulan" placeholder="800000" required></div>
+                        <div><label>Harga/Tahun</label><input type="number" id="hargaTahun" placeholder="8400000" required></div>
+                        <div><label>Total Kamar</label><input type="number" id="totalKamar" placeholder="10" required min="1"></div>
+                        <div><label>Kamar Kosong</label><input type="number" id="kamarKosong" placeholder="3" required min="0"></div>
+                        <div class="full-width"><label>Fasilitas</label><input type="text" id="fasilitasKost" placeholder="AC, WiFi, Parkir" required></div>
+                        <div class="full-width"><label>Deskripsi</label><textarea id="deskripsiKost" placeholder="Deskripsikan kost..."></textarea></div>
+                        <div class="full-width"><label>Kontak (WA)</label><input type="text" id="kontakKost" placeholder="08123456789" required></div>
+
+                        <div class="full-width">
+                            <label><i class="fas fa-map-pin" style="color:#f5a623;"></i> Lokasi di Peta</label>
+                            <div id="addKostMap"></div>
+                            <div class="map-picker-info">
+                                <div class="coord-info"><i class="fas fa-location-dot"></i> <strong id="selectedCoordDisplay">Belum dipilih</strong></div>
+                                <button type="button" class="btn-use-location" onclick="useMyLocationForPicker()"><i class="fas fa-location-dot"></i> Lokasi Saya</button>
+                                <span class="selected-marker-info empty" id="markerStatus">Klik peta</span>
+                            </div>
+                            <input type="hidden" id="selectedLat" value=""><input type="hidden" id="selectedLng" value="">
+                            <div class="form-error" id="mapError">⚠️ Pilih lokasi di peta!</div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DETAIL ===== -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal" style="position:relative;">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-image" id="modalImage"><i class="fas fa-building fallback-icon"></i></div>
+            <h2 id="modalTitle" style="font-size:1.2rem;">Nama Kost</h2>
+            <div style="font-size:0.85rem; color:#6f8aa0;" id="modalLocation"><i class="fas fa-map-pin"></i> Lokasi</div>
+            <div class="kost-rating"><span class="stars" id="modalStars">★★★★★</span><span class="review-count" id="modalReviewCount">(0)</span></div>
+            <div class="detail-grid">
+                <div class="detail-item"><div class="label">Per Bulan</div><div class="value" id="modalBulan">Rp 0</div></div>
+                <div class="detail-item"><div class="label">Per Tahun</div><div class="value" id="modalTahun">Rp 0</div></div>
+                <div class="detail-item"><div class="label">Kamar</div><div class="value" id="modalKamar">0/0</div></div>
+            </div>
+            <div><strong>Fasilitas</strong></div>
+            <div class="facilities-list" id="modalFacilities"></div>
+            <div style="margin-top:0.5rem;"><strong>Deskripsi</strong></div>
+            <p id="modalDeskripsi" style="color:#4a637a; font-size:0.9rem;"></p>
+
+            <div class="contact-section">
+                <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; align-items:center;">
+                    <div><span style="font-weight:600;"><i class="fas fa-user-circle"></i> <span id="modalOwner">Pemilik</span></span> <span style="color:#6f8aa0;font-size:0.8rem;" id="modalKontak">📱 -</span></div>
+                    <div style="display:flex; gap:0.4rem;"><button class="btn-contact" onclick="openChat()"><i class="fas fa-comment"></i> Chat</button><button class="btn-whatsapp" onclick="openWhatsApp()"><i class="fab fa-whatsapp"></i> WA</button></div>
+                </div>
+            </div>
+
+            <div style="margin-top:1rem;">
+                <strong><i class="fas fa-route" style="color:#f5a623;"></i> Rute</strong>
+                <div id="routeMap"></div>
+                <div class="map-controls">
+                    <input type="text" id="startLocation" placeholder="Lokasi awal" value="Pusat Kota">
+                    <button class="btn-route-map" onclick="calculateRoute()"><i class="fas fa-route"></i> Hitung</button>
+                    <button class="btn-locate" onclick="locateUser()"><i class="fas fa-location-dot"></i></button>
+                </div>
+                <div class="route-info" id="routeInfo">
+                    <div><span class="route-distance" id="routeDistance">🚗 Jarak: 0 km</span> · <span class="route-time" id="routeTime">⏱️ 0 menit</span></div>
+                    <div class="route-steps" id="routeSteps" style="font-size:0.8rem;margin-top:0.4rem;"></div>
+                </div>
+            </div>
+
+            <div class="review-section" style="margin-top:1.2rem;padding-top:1rem;border-top:1px solid #edf2f7;">
+                <strong>Ulasan</strong>
+                <div id="modalReviews"></div>
+                <div class="review-form">
+                    <div class="rating-input" style="display:flex;gap:3px;align-items:center;margin:0.4rem 0;">
+                        <span style="font-size:0.8rem;">Rating: </span>
+                        <button type="button" class="star-btn" data-rating="1" onclick="setRating(1)">★</button>
+                        <button type="button" class="star-btn" data-rating="2" onclick="setRating(2)">★</button>
+                        <button type="button" class="star-btn" data-rating="3" onclick="setRating(3)">★</button>
+                        <button type="button" class="star-btn" data-rating="4" onclick="setRating(4)">★</button>
+                        <button type="button" class="star-btn" data-rating="5" onclick="setRating(5)">★</button>
+                        <span id="selectedRatingLabel" style="font-size:0.8rem;color:#6f8aa0;margin-left:4px;">0</span>
+                    </div>
+                    <textarea id="reviewText" placeholder="Tulis ulasan..." rows="2" style="width:100%;padding:0.6rem;border:1px solid #e2e8f0;border-radius:16px;font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;"></textarea>
+                    <button class="btn-review" onclick="submitReview()"><i class="fas fa-pen"></i> Kirim</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== LOGIN MODAL ===== -->
+    <div class="modal-overlay login-modal" id="loginModal">
+        <div class="modal" style="max-width:440px;border-radius:32px;">
+            <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            <h2 id="loginTitle" style="font-size:1.4rem;">Login</h2>
+            <p id="loginSubtitle" style="color:#6f8aa0;margin-bottom:1.2rem;font-size:0.9rem;">Masuk untuk akses semua fitur</p>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div style="display:grid;grid-template-columns:1fr;gap:0.8rem;">
+                    <div><label style="font-weight:600;font-size:0.85rem;">Email</label><input type="email" id="loginEmail" placeholder="email@example.com" required style="width:100%;padding:0.6rem 1rem;border:1px solid #e2e8f0;border-radius:16px;font-family:'Inter',sans-serif;outline:none;"></div>
+                    <div><label style="font-weight:600;font-size:0.85rem;">Password</label><input type="password" id="loginPassword" placeholder="Minimal 6 karakter" required minlength="6" style="width:100%;padding:0.6rem 1rem;border:1px solid #e2e8f0;border-radius:16px;font-family:'Inter',sans-serif;outline:none;"></div>
+                    <div id="loginNameField" style="display:none;"><label style="font-weight:600;font-size:0.85rem;">Nama Lengkap</label><input type="text" id="loginName" placeholder="Nama Anda" style="width:100%;padding:0.6rem 1rem;border:1px solid #e2e8f0;border-radius:16px;font-family:'Inter',sans-serif;outline:none;"></div>
+                </div>
+                <button type="submit" class="btn-submit" id="loginSubmitBtn" style="width:100%;justify-content:center;margin-top:1rem;">Login</button>
+            </form>
+            <div style="text-align:center;margin-top:1rem;color:#6f8aa0;font-size:0.9rem;">
+                <span id="toggleText">Belum punya akun?</span>
+                <a id="toggleLink" onclick="toggleLoginForm()" style="color:#f5a623;font-weight:600;cursor:pointer;">Daftar</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="bottom-nav">
+        <button class="active" onclick="showPage('home')" data-page="home"><i class="fas fa-home"></i><span>Beranda</span></button>
+        <button onclick="showPage('list')" data-page="list"><i class="fas fa-list"></i><span>Daftar</span></button>
+        <button onclick="showPage('wishlist')" data-page="wishlist"><i class="fas fa-heart"></i><span>Favorit</span><span id="wishlistBadge" class="badge" style="display:none;">0</span></button>
+        <button onclick="showPage('chat')" data-page="chat"><i class="fas fa-comment-dots"></i><span>Pesan</span><span id="chatBadge" class="badge" style="display:none;">0</span></button>
+        <button onclick="showPage('add')" data-page="add"><i class="fas fa-plus-circle" style="color:#f5a623;"></i><span>Tambah</span></button>
+    </nav>
+
+    <div class="footer">&copy; 2026 <span>KostApp</span> · <span id="totalKostFooter">0</span> kost</div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // ============================================
+        // DATA GAMBAR KOST (dari URL Anda)
+        // ============================================
+        const GAMBAR_KOST = [
+            "https://b.top4top.io/p_3841zy6u81.jpg",
+            "https://h.top4top.io/p_3841bzbuw1.jpg",
+            "https://k.top4top.io/p_38418tval1.jpg",
+            "https://g.top4top.io/p_3841rmigm1.jpg",
+            "https://a.top4top.io/p_3841bkvwv1.jpg",
+            "https://c.top4top.io/p_3841e28md1.jpg",
+            "https://i.top4top.io/p_3841g8ps91.jpg",
+            "https://www.pasteboard.co/Y6mtY4GylYs4.jpg"
+        ];
+
+        function getGambarKost(index) {
+            return GAMBAR_KOST[index % GAMBAR_KOST.length];
+        }
+
+        // ============================================
+        // DATA KOST
+        // ============================================
+        const PUSAT_KOTA = { lat: 2.9592, lng: 99.0687 };
+
+        let kostData = [
+            { id:1, nama:"Kost Mawar Indah", lokasi:"Jl. Merpati No. 12, Pematangsiantar", hargaBulan:800000, hargaTahun:8400000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost nyaman dengan suasana asri.", lat:2.9570, lng:99.0620, owner:"Budi Santoso", kontak:"08123456789", totalKamar:10, kamarKosong:3, kota:"Pematangsiantar", reviews:[{user:"Ani",rating:5,text:"Kostnya nyaman banget!",date:"2026-01-15"}], gambar: getGambarKost(0) },
+            { id:2, nama:"Kost Melati Putih", lokasi:"Jl. Kenanga No. 5, Pematangsiantar", hargaBulan:1200000, hargaTahun:13200000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Dapur"], deskripsi:"Kost premium dengan fasilitas lengkap.", lat:2.9530, lng:99.0750, owner:"Siti Rahayu", kontak:"08765432100", totalKamar:8, kamarKosong:2, kota:"Pematangsiantar", reviews:[{user:"Dewi",rating:5,text:"Sangat recommended!",date:"2026-01-18"}], gambar: getGambarKost(1) },
+            { id:3, nama:"Kost Anggrek Biru", lokasi:"Jl. Pahlawan No. 8, Pematangsiantar", hargaBulan:650000, hargaTahun:7150000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana dengan lingkungan tenang.", lat:2.9620, lng:99.0720, owner:"Agus Prasetyo", kontak:"08567890123", totalKamar:12, kamarKosong:5, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(2) },
+            { id:4, nama:"Kost Flamboyan", lokasi:"Jl. Diponegoro No. 20, Pematangsiantar", hargaBulan:1500000, hargaTahun:16500000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur"], deskripsi:"Kost mewah dengan desain modern.", lat:2.9550, lng:99.0650, owner:"Rina Wijaya", kontak:"08987654321", totalKamar:6, kamarKosong:1, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(3) },
+            { id:5, nama:"Kost Sederhana Bahagia", lokasi:"Jl. Bunga Raya No. 3, Pematangsiantar", hargaBulan:500000, hargaTahun:5500000, fasilitas:["Parkir","Dapur"], deskripsi:"Kost ekonomis dengan lingkungan ramah.", lat:2.9650, lng:99.0600, owner:"Mulyono", kontak:"08111222333", totalKamar:15, kamarKosong:7, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(4) },
+            { id:6, nama:"Kost Gardenia", lokasi:"Jl. Raya Candi No. 15, Pematangsiantar", hargaBulan:950000, hargaTahun:10450000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost dengan taman hijau.", lat:2.9580, lng:99.0800, owner:"Diana Putri", kontak:"08222333444", totalKamar:10, kamarKosong:0, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(5) },
+            { id:7, nama:"Kost Teratai Residence", lokasi:"Jl. Sisingamangaraja No. 45, Pematangsiantar", hargaBulan:2000000, hargaTahun:22000000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur","Kolam Renang"], deskripsi:"Kost eksklusif.", lat:2.9500, lng:99.0700, owner:"Andi Wijaya", kontak:"08134567890", totalKamar:5, kamarKosong:2, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(6) },
+            { id:8, nama:"Kost Ceria", lokasi:"Jl. Kamboja No. 7, Pematangsiantar", hargaBulan:750000, hargaTahun:8250000, fasilitas:["WiFi","Parkir","Dapur","TV"], deskripsi:"Kost ramah.", lat:2.9600, lng:99.0580, owner:"Nina Kurnia", kontak:"08345678901", totalKamar:8, kamarKosong:4, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(7) },
+            { id:9, nama:"Kost Permata", lokasi:"Jl. Sutomo No. 25, Pematangsiantar", hargaBulan:1100000, hargaTahun:12100000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV"], deskripsi:"Kost nyaman.", lat:2.9565, lng:99.0775, owner:"Hendra Gunawan", kontak:"08234567890", totalKamar:7, kamarKosong:3, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(0) },
+            { id:10, nama:"Kost Mutiara", lokasi:"Jl. Thamrin No. 10, Pematangsiantar", hargaBulan:900000, hargaTahun:9900000, fasilitas:["WiFi","Kamar Mandi Dalam","Parkir","Dapur"], deskripsi:"Kost strategis.", lat:2.9615, lng:99.0635, owner:"Lina Sari", kontak:"08543210987", totalKamar:9, kamarKosong:6, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(1) },
+            { id:11, nama:"Kost Medan Permai", lokasi:"Jl. Jenderal Sudirman No. 50, Medan", hargaBulan:1800000, hargaTahun:19800000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV","Dapur"], deskripsi:"Kost premium di Medan.", lat:3.5952, lng:98.6722, owner:"Hendra Wijaya", kontak:"08123456788", totalKamar:8, kamarKosong:3, kota:"Medan", reviews:[], gambar: getGambarKost(2) },
+            { id:12, nama:"Kost Siantar 2", lokasi:"Jl. Pahlawan No. 15, Siantar", hargaBulan:550000, hargaTahun:6050000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana.", lat:2.9270, lng:99.0520, owner:"Joko Susanto", kontak:"08567890122", totalKamar:10, kamarKosong:4, kota:"Siantar", reviews:[], gambar: getGambarKost(3) },
+            { id:13, nama:"Kost Berastagi Indah", lokasi:"Jl. Raya Berastagi No. 8, Berastagi", hargaBulan:700000, hargaTahun:7700000, fasilitas:["AC","WiFi","Parkir","TV"], deskripsi:"Kost dengan pemandangan pegunungan.", lat:3.1900, lng:98.5130, owner:"Maria Simamora", kontak:"08222333445", totalKamar:6, kamarKosong:2, kota:"Berastagi", reviews:[], gambar: getGambarKost(4) }
+        ];
+
+        let nextId = 14;
+        let currentModalId = null;
+        let selectedRating = 0;
+        let currentUser = null;
+        let wishlist = [];
+        let userLocation = null;
+        let isLocationDetected = false;
+        let map = null;
+        let mapInitialized = false;
+        let routeLayer = null;
+        let destinationMarker = null;
+        let currentKostLat = null;
+        let currentKostLng = null;
+        let pickerMap = null;
+        let pickerMarker = null;
+        let selectedLat = null;
+        let selectedLng = null;
+        let chatMessages = {};
+        let chatContacts = [];
+
+        // ============================================
+        // FUNGSI UTILITY
+        // ============================================
+        function getAverageRating(kost) {
+            if (!kost.reviews || !kost.reviews.length) return 0;
+            return kost.reviews.reduce((a, b) => a + b.rating, 0) / kost.reviews.length;
+        }
+
+        function getRatingStars(r) {
+            let full = Math.floor(r);
+            let half = r % 1 >= 0.5 ? 1 : 0;
+            return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - half);
+        }
+
+        function getRoomStatus(k, t) {
+            if (k === 0) return { text: 'Penuh', class: 'room-full' };
+            if (k <= 2) return { text: '⚠️ ' + k + ' tersisa', class: 'room-limited' };
+            return { text: k + ' tersedia', class: 'room-available' };
+        }
+
+        function getDistance(lat1, lng1, lat2, lng2) {
+            let R = 6371;
+            let dLat = (lat2 - lat1) * Math.PI / 180;
+            let dLng = (lng2 - lng1) * Math.PI / 180;
+            let a = Math.sin(dLat/2)**2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng/2)**2;
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        }
+
+        function calculateDistanceToKost(k) {
+            if (!userLocation || !isLocationDetected) return null;
+            return getDistance(userLocation.lat, userLocation.lng, k.lat, k.lng);
+        }
+
+        function isInWishlist(id) {
+            return wishlist.indexOf(id) > -1;
+        }
+
+        function getKostImage(kost) {
+            return kost.gambar || `https://picsum.photos/id/${Math.floor(Math.random() * 40) + 10}/400/300`;
+        }
+
+        // ============================================
+        // RENDER KOST GRID
+        // ============================================
+        function renderKostGrid(containerId, data) {
+            let container = document.getElementById(containerId);
+            if (!container) return;
+
+            if (!data.length) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-home"></i>
+                        <h3 style="font-size:1rem;">${containerId === 'wishlistGrid' ? 'Belum ada favorit' : 'Tidak ada kost'}</h3>
+                        <p style="font-size:0.85rem;">${containerId === 'wishlistGrid' ? 'Klik hati untuk menyimpan' : 'Tambahkan kost baru'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = data.map(kost => {
+                let avg = getAverageRating(kost);
+                let stars = getRatingStars(avg);
+                let liked = isInWishlist(kost.id);
+                let room = getRoomStatus(kost.kamarKosong, kost.totalKamar);
+                let dist = calculateDistanceToKost(kost);
+                let distText = dist !== null ? (dist < 1 ? (dist * 1000).toFixed(0) + 'm' : dist.toFixed(1) + 'km') : '';
+                let nearby = dist !== null && dist < 3;
+                let outTown = kost.kota && kost.kota !== "Pematangsiantar";
+                let imageUrl = getKostImage(kost);
+
+                return `
+                    <div class="kost-card ${nearby ? 'nearby' : ''}" onclick="openModal(${kost.id})">
+                        ${nearby ? '<div class="nearby-ribbon">📍 TERDEKAT</div>' : ''}
+                        ${outTown ? '<div class="out-of-town">🌍 ' + kost.kota + '</div>' : ''}
+                        <div class="kost-image">
+                            <img src="${imageUrl}" alt="${kost.nama}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <i class="fas fa-building fallback-icon" style="display:none;"></i>
+                            <span class="kost-badge">${kost.fasilitas.length}</span>
+                            <button class="wishlist-btn ${liked ? 'liked' : 'unliked'}" onclick="toggleWishlist(${kost.id}, event)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="kost-body">
+                            <div class="kost-title">
+                                ${kost.nama}
+                                ${distText ? '<span class="distance-badge">' + distText + '</span>' : ''}
+                                ${nearby ? '<span class="nearby-badge">Terdekat</span>' : ''}
+                            </div>
+                            <div class="kost-location"><i class="fas fa-map-pin"></i> ${kost.lokasi}</div>
+                            <div class="kost-rooms">
+                                <i class="fas fa-door-open"></i>
+                                <span class="${room.class}">${room.text}</span>
+                            </div>
+                            <div class="kost-rating">
+                                <span class="stars">${stars}</span>
+                                <span class="review-count">(${kost.reviews ? kost.reviews.length : 0})</span>
+                            </div>
+                            <div class="kost-facilities">
+                                ${kost.fasilitas.slice(0, 3).map(f => '<span class="facility-tag">' + f + '</span>').join('')}
+                                ${kost.fasilitas.length > 3 ? '<span class="facility-tag">+' + (kost.fasilitas.length - 3) + '</span>' : ''}
+                            </div>
+                            <div class="kost-price">
+                                <div class="price-item">
+                                    <span class="label">Bulan</span>
+                                    <span class="value">Rp ${kost.hargaBulan.toLocaleString()}</span>
+                                </div>
+                                <div class="price-item">
+                                    <span class="label">Tahun</span>
+                                    <span class="value">Rp ${kost.hargaTahun.toLocaleString()}</span>
+                                </div>
+                            </div>
+                            <div class="kost-actions">
+                                <button class="btn-route" onclick="event.stopPropagation(); openRouteInMap(${kost.id})"><i class="fas fa-route"></i></button>
+                                <button class="btn-detail" onclick="event.stopPropagation(); openModal(${kost.id})"><i class="fas fa-info"></i></button>
+                                <button class="btn-chat-card" onclick="event.stopPropagation(); openChatFromCard(${kost.id})"><i class="fas fa-comment"></i></button>
+                                ${currentUser && kost.owner === currentUser.name ? '<button class="btn-delete" onclick="event.stopPropagation(); deleteKost(' + kost.id + ')"><i class="fas fa-trash"></i></button>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================
+        // FILTER & SEARCH
+        // ============================================
+        function filterKostHome() {
+            let facility = document.getElementById('filterFacilityHome').value;
+            let sort = document.getElementById('sortPriceHome').value;
+            let sortDistance = document.getElementById('sortDistanceHome').value;
+            let search = document.getElementById('searchInput').value;
+
+            let filtered = kostData.filter(k => {
+                let matchFacility = facility === 'all' || k.fasilitas.indexOf(facility) > -1;
+                let matchSearch = search === '' ||
+                    k.nama.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                    k.lokasi.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                    (k.kota && k.kota.toLowerCase().indexOf(search.toLowerCase()) > -1);
+                return matchFacility && matchSearch;
+            }).filter(k => k.kamarKosong > 0);
+
+            if (sort === 'low') filtered.sort((a, b) => a.hargaBulan - b.hargaBulan);
+            else if (sort === 'high') filtered.sort((a, b) => b.hargaBulan - a.hargaBulan);
+            if (sortDistance === 'distance' && userLocation && isLocationDetected) {
+                filtered.sort((a, b) => {
+                    let da = calculateDistanceToKost(a);
+                    let db = calculateDistanceToKost(b);
+                    if (da === null) return 1;
+                    if (db === null) return -1;
+                    return da - db;
+                });
+            }
+
+            renderKostGrid('kostGridHome', filtered);
+            document.getElementById('kostCountHome').textContent = filtered.length;
+        }
+
+        function filterKostList() {
+            let facility = document.getElementById('filterFacilityList').value;
+            let sort = document.getElementById('sortPriceList').value;
+
+            let filtered = kostData.filter(k => {
+                let matchFacility = facility === 'all' || k.fasilitas.indexOf(facility) > -1;
+                return matchFacility;
+            }).filter(k => k.kamarKosong > 0);
+
+            if (sort === 'low') filtered.sort((a, b) => a.hargaBulan - b.hargaBulan);
+            else if (sort === 'high') filtered.sort((a, b) => b.hargaBulan - a.hargaBulan);
+
+            renderKostGrid('kostGridList', filtered);
+            document.getElementById('kostCountList').textContent = filtered.length;
+        }
+
+        function searchKost() {
+            filterKostHome();
+        }
+
+        // ============================================
+        // WISHLIST
+        // ============================================
+        function toggleWishlist(id, e) {
+            e.stopPropagation();
+            if (!currentUser) {
+                alert('⚠️ Login dulu!');
+                openLoginModal();
+                return;
+            }
+            let idx = wishlist.indexOf(id);
+            if (idx > -1) wishlist.splice(idx, 1);
+            else wishlist.push(id);
+            updateWishlistUI();
+            filterKostHome();
+            filterKostList();
+            renderWishlist();
+        }
+
+        function updateWishlistUI() {
+            document.getElementById('wishlistCount').textContent = wishlist.length;
+            let badge = document.getElementById('wishlistBadge');
+            if (wishlist.length > 0) { badge.style.display = 'inline'; badge.textContent = wishlist.length; }
+            else badge.style.display = 'none';
+        }
+
+        function renderWishlist() {
+            let container = document.getElementById('wishlistGrid');
+            if (!wishlist.length) {
+                container.innerHTML = `
+                    <div class="wishlist-empty" style="grid-column:1/-1;">
+                        <i class="fas fa-heart"></i>
+                        <h3 style="font-size:1rem;">Belum ada favorit</h3>
+                        <p style="font-size:0.85rem;">Klik hati untuk menyimpan kost</p>
+                    </div>
+                `;
+                return;
+            }
+            renderKostGrid('wishlistGrid', kostData.filter(k => wishlist.indexOf(k.id) > -1));
+        }
+
+        // ============================================
+        // AUTH SYSTEM
+        // ============================================
+        let users = [
+            { email: "demo@kostapp.com", password: "123456", name: "Demo User" },
+            { email: "budi@kost.com", password: "123456", name: "Budi Santoso" }
+        ];
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('loginTitle').textContent = 'Login';
+            document.getElementById('loginSubtitle').textContent = 'Masuk untuk akses semua fitur';
+            document.getElementById('loginSubmitBtn').textContent = 'Login';
+            document.getElementById('toggleText').textContent = 'Belum punya akun?';
+            document.getElementById('toggleLink').textContent = 'Daftar';
+            document.getElementById('loginNameField').style.display = 'none';
+            document.getElementById('loginForm').reset();
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleLoginForm() {
+            let isLogin = document.getElementById('loginTitle').textContent === 'Login';
+            if (isLogin) {
+                document.getElementById('loginTitle').textContent = 'Daftar';
+                document.getElementById('loginSubtitle').textContent = 'Buat akun baru';
+                document.getElementById('loginSubmitBtn').textContent = 'Daftar';
+                document.getElementById('toggleText').textContent = 'Sudah punya akun?';
+                document.getElementById('toggleLink').textContent = 'Login';
+                document.getElementById('loginNameField').style.display = 'block';
+            } else {
+                document.getElementById('loginTitle').textContent = 'Login';
+                document.getElementById('loginSubtitle').textContent = 'Masuk untuk akses semua fitur';
+                document.getElementById('loginSubmitBtn').textContent = 'Login';
+                document.getElementById('toggleText').textContent = 'Belum punya akun?';
+                document.getElementById('toggleLink').textContent = 'Daftar';
+                document.getElementById('loginNameField').style.display = 'none';
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            let email = document.getElementById('loginEmail').value;
+            let password = document.getElementById('loginPassword').value;
+            let isLogin = document.getElementById('loginTitle').textContent === 'Login';
+
+            if (isLogin) {
+                let user = users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    closeLoginModal();
+                    updateUI();
+                    alert('✅ Login berhasil!');
+                } else {
+                    alert('❌ Email atau password salah!');
+                }
+            } else {
+                let name = document.getElementById('loginName').value;
+                if (!name) { alert('⚠️ Isi nama!'); return; }
+                if (users.find(u => u.email === email)) { alert('❌ Email sudah terdaftar!'); return; }
+                users.push({ email, password, name });
+                currentUser = { email, password, name };
+                closeLoginModal();
+                updateUI();
+                alert('✅ Pendaftaran berhasil!');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            updateUI();
+            showPage('home');
+            alert('👋 Logout');
+        }
+
+        function updateUI() {
+            let auth = document.getElementById('authButtons');
+            let info = document.getElementById('userInfo');
+            let name = document.getElementById('userName');
+            let avatar = document.getElementById('userAvatar');
+            if (currentUser) {
+                auth.style.display = 'none';
+                info.style.display = 'flex';
+                name.textContent = currentUser.name;
+                avatar.textContent = currentUser.name.charAt(0).toUpperCase();
+            } else {
+                auth.style.display = 'block';
+                info.style.display = 'none';
+            }
+        }
+
+        // ============================================
+        // LOCATION SYSTEM
+        // ============================================
+        function getUserLocation() {
+            let btn = document.getElementById('btnRefreshLoc');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            document.getElementById('locStatus').textContent = '📍 Mendeteksi...';
+            document.getElementById('locDetail').textContent = 'Tunggu sebentar';
+
+            if (!navigator.geolocation) {
+                document.getElementById('locStatus').textContent = '⚠️ Tidak support';
+                document.getElementById('locDetail').textContent = 'Gunakan default';
+                btn.innerHTML = '<i class="fas fa-rotate"></i>';
+                userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng };
+                isLocationDetected = true;
+                filterKostHome();
+                filterKostList();
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    userLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
+                    isLocationDetected = true;
+                    document.getElementById('locStatus').textContent = '📍 Lokasi terdeteksi!';
+                    document.getElementById('locDetail').textContent = userLocation.lat.toFixed(4) + ', ' + userLocation.lng.toFixed(4);
+                    btn.innerHTML = '<i class="fas fa-rotate"></i>';
+                    filterKostHome();
+                    filterKostList();
+                },
+                error => {
+                    document.getElementById('locStatus').textContent = '⚠️ Gagal deteksi';
+                    document.getElementById('locDetail').textContent = 'Gunakan default';
+                    btn.innerHTML = '<i class="fas fa-rotate"></i>';
+                    userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng };
+                    isLocationDetected = true;
+                    filterKostHome();
+                    filterKostList();
+                },
+                { enableHighAccuracy: true, timeout: 8000 }
+            );
+        }
+
+        // ============================================
+        // MAP PICKER
+        // ============================================
+        function initPickerMap(lat, lng) {
+            if (pickerMap) { pickerMap.remove(); pickerMap = null; }
+            pickerMap = L.map('addKostMap').setView([lat, lng], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(pickerMap);
+            pickerMap.on('click', e => setPickerLocation(e.latlng.lat, e.latlng.lng));
+            setTimeout(() => { if (pickerMap) pickerMap.invalidateSize(); }, 300);
+        }
+
+        function setPickerLocation(lat, lng) {
+            selectedLat = lat;
+            selectedLng = lng;
+            document.getElementById('selectedLat').value = lat;
+            document.getElementById('selectedLng').value = lng;
+            document.getElementById('selectedCoordDisplay').textContent = lat.toFixed(5) + ', ' + lng.toFixed(5);
+            document.getElementById('markerStatus').innerHTML = '📍 Dipasang!';
+            document.getElementById('markerStatus').className = 'selected-marker-info';
+            document.getElementById('mapError').style.display = 'none';
+
+            if (pickerMarker) pickerMap.removeLayer(pickerMarker);
+            let icon = L.divIcon({
+                className: 'picker-marker',
+                html: '<i class="fas fa-map-pin"></i>',
+                iconSize: [30, 30],
+                iconAnchor: [15, 30]
+            });
+            pickerMarker = L.marker([lat, lng], { icon, draggable: true }).addTo(pickerMap);
+            pickerMarker.on('dragend', e => { let p = e.target.getLatLng(); setPickerLocation(p.lat, p.lng); });
+            pickerMap.setView([lat, lng], 16);
+        }
+
+        function useMyLocationForPicker() {
+            if (!navigator.geolocation) { alert('⚠️ Tidak support!'); return; }
+            let btn = document.getElementById('btnUseMyLocation');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    setPickerLocation(position.coords.latitude, position.coords.longitude);
+                    btn.innerHTML = '<i class="fas fa-location-dot"></i> Lokasi Saya';
+                    alert('✅ Lokasi dipasang!');
+                },
+                error => { alert('⚠️ Gagal: ' + error.message); btn.innerHTML = '<i class="fas fa-location-dot"></i> Lokasi Saya'; },
+                { enableHighAccuracy: true, timeout: 8000 }
+            );
+        }
+
+        // ============================================
+        // ADD KOST
+        // ============================================
+        function addKost(e) {
+            e.preventDefault();
+            if (!currentUser) { alert('⚠️ Login dulu!'); openLoginModal(); return; }
+            if (!selectedLat || !selectedLng) {
+                document.getElementById('mapError').style.display = 'block';
+                document.getElementById('mapError').textContent = '⚠️ Klik peta untuk pilih lokasi!';
+                return;
+            }
+
+            let nama = document.getElementById('namaKost').value.trim();
+            let lokasi = document.getElementById('lokasiKost').value.trim();
+            let hargaBulan = parseInt(document.getElementById('hargaBulan').value);
+            let hargaTahun = parseInt(document.getElementById('hargaTahun').value);
+            let fasilitasRaw = document.getElementById('fasilitasKost').value.trim();
+            let deskripsi = document.getElementById('deskripsiKost').value.trim();
+            let totalKamar = parseInt(document.getElementById('totalKamar').value);
+            let kamarKosong = parseInt(document.getElementById('kamarKosong').value);
+            let kontak = document.getElementById('kontakKost').value.trim();
+
+            if (!nama || !lokasi || !hargaBulan || !hargaTahun || !fasilitasRaw || !totalKamar || kamarKosong === undefined || !kontak) {
+                alert('⚠️ Isi semua field!');
+                return;
+            }
+            if (hargaBulan <= 0 || hargaTahun <= 0 || totalKamar <= 0 || kamarKosong < 0 || kamarKosong > totalKamar) {
+                alert('⚠️ Periksa input!');
+                return;
+            }
+
+            let fasilitas = fasilitasRaw.split(',').map(f => f.trim()).filter(f => f);
+            let randomGambar = GAMBAR_KOST[Math.floor(Math.random() * GAMBAR_KOST.length)];
+
+            kostData.push({
+                id: nextId++,
+                nama, lokasi, hargaBulan, hargaTahun, fasilitas,
+                deskripsi: deskripsi || 'Kost baru.',
+                lat: selectedLat, lng: selectedLng,
+                owner: currentUser.name, kontak,
+                totalKamar, kamarKosong,
+                kota: "Pematangsiantar",
+                reviews: [],
+                gambar: randomGambar
+            });
+
+            document.getElementById('addKostForm').reset();
+            selectedLat = null; selectedLng = null;
+            document.getElementById('selectedCoordDisplay').textContent = 'Belum dipilih';
+            document.getElementById('markerStatus').innerHTML = 'Klik peta';
+            document.getElementById('markerStatus').className = 'selected-marker-info empty';
+            if (pickerMarker) pickerMap.removeLayer(pickerMarker);
+            document.getElementById('selectedLat').value = '';
+            document.getElementById('selectedLng').value = '';
+            document.getElementById('mapError').style.display = 'none';
+
+            filterKostHome(); filterKostList(); updateFooterCount();
+            alert('✅ Kost "' + nama + '" ditambahkan!');
+            showPage('list');
+        }
+
+        // ============================================
+        // DELETE KOST
+        // ============================================
+        function deleteKost(id) {
+            let kost = kostData.find(k => k.id === id);
+            if (!kost) return;
+            if (currentUser && kost.owner !== currentUser.name) {
+                alert('⚠️ Hanya pemilik!');
+                return;
+            }
+            if (confirm('Hapus "' + kost.nama + '"?')) {
+                kostData = kostData.filter(k => k.id !== id);
+                wishlist = wishlist.filter(w => w !== id);
+                filterKostHome(); filterKostList(); renderWishlist();
+                updateWishlistUI(); updateFooterCount();
+                if (currentModalId === id) closeModal();
+            }
+        }
+
+        // ============================================
+        // CHAT SYSTEM (disederhanakan untuk mobile)
+        // ============================================
+        function initChat(kostId) {
+            if (!currentUser) return null;
+            let kost = kostData.find(k => k.id === kostId);
+            if (!kost) return null;
+            let chatId = 'chat_' + Math.min(currentUser.name, kost.owner) + '_' + Math.max(currentUser.name, kost.owner);
+            if (!chatMessages[chatId]) chatMessages[chatId] = [];
+            if (!chatContacts.find(c => c.id === chatId)) {
+                chatContacts.push({ id: chatId, name: kost.owner, kostName: kost.nama, kostId: kost.id });
+            }
+            return chatId;
+        }
+
+        function sendMessage(kostId) {
+            let chatId = initChat(kostId);
+            if (!chatId) return;
+            let input = document.getElementById('chatInput');
+            let text = input.value.trim();
+            if (!text) return;
+
+            chatMessages[chatId].push({
+                sender: currentUser.name,
+                text: text,
+                time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+            });
+            input.value = '';
+
+            let kost = kostData.find(k => k.id === kostId);
+            setTimeout(() => {
+                let replies = ['Halo! Kost ' + kost.nama + ' masih tersedia.', 'Ada yang bisa dibantu?', 'Kamar kosong ' + kost.kamarKosong + ' dari ' + kost.totalKamar + '.', 'Harga Rp ' + kost.hargaBulan.toLocaleString() + '/bulan.'];
+                chatMessages[chatId].push({
+                    sender: kost.owner,
+                    text: replies[Math.floor(Math.random() * replies.length)],
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+                });
+                renderChat(chatId);
+                updateChatNotif();
+            }, 1200);
+
+            renderChat(chatId);
+            updateChatNotif();
+        }
+
+        function renderChat(chatId) {
+            let container = document.getElementById('chatDetail');
+            let msgs = chatMessages[chatId] || [];
+
+            if (!msgs.length) {
+                container.innerHTML = `
+                    <p style="color:#8a9aa8;text-align:center;padding:1rem 0;font-size:0.85rem;">
+                        <i class="fas fa-comment" style="font-size:2rem;display:block;margin-bottom:0.5rem;opacity:0.2;"></i>
+                        Kirim pesan
+                    </p>
+                    <div class="chat-input-group">
+                        <input type="text" id="chatInput" placeholder="Tulis pesan..." onkeypress="if(event.key==='Enter') sendMessageFromChat()">
+                        <button onclick="sendMessageFromChat()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                `;
+                return;
+            }
+
+            let contact = chatContacts.find(c => c.id === chatId);
+            container.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;font-size:0.85rem;">
+                    <strong>${contact?.name || 'Pemilik'}</strong>
+                    <span style="color:#6f8aa0;font-size:0.7rem;">${contact?.kostName || ''}</span>
+                </div>
+                <div class="chat-container">
+                    ${msgs.map(m => `
+                        <div class="chat-message ${m.sender === currentUser.name ? 'sent' : 'received'}">
+                            ${m.text}
+                            <span style="display:block;font-size:0.6rem;color:#8a9aa8;margin-top:2px;">${m.sender} • ${m.time}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="chat-input-group">
+                    <input type="text" id="chatInput" placeholder="Tulis pesan..." onkeypress="if(event.key==='Enter') sendMessageFromChat()">
+                    <button onclick="sendMessageFromChat()"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            `;
+            let cm = document.getElementById('chatMessages');
+            if (cm) cm.scrollTop = cm.scrollHeight;
+        }
+
+        function sendMessageFromChat() {
+            let contact = chatContacts.find(c =>
+                c.id === Object.keys(chatMessages).find(key =>
+                    document.getElementById('chatDetail').innerHTML.includes(key)
+                )
+            );
+            if (contact) sendMessage(contact.kostId);
+        }
+
+        function renderChatContacts() {
+            let container = document.getElementById('chatContactList');
+            if (!chatContacts.length) {
+                container.innerHTML = '<p style="color:#8a9aa8;font-size:0.8rem;">Belum ada percakapan</p>';
+                return;
+            }
+            container.innerHTML = chatContacts.map(c => `
+                <div style="padding:0.5rem;border-radius:12px;margin-bottom:0.3rem;cursor:pointer;background:${document.getElementById('chatDetail').innerHTML.includes(c.id) ? '#f1f5f9' : 'transparent'};"
+                     onclick="openChatContact('${c.id}')">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div><strong style="font-size:0.85rem;">${c.name}</strong><div style="font-size:0.7rem;color:#6f8aa0;">${c.kostName}</div></div>
+                        <span style="font-size:0.65rem;color:#8a9aa8;">${chatMessages[c.id]?.length || 0}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openChatContact(id) { renderChat(id); renderChatContacts(); }
+
+        function openChat() {
+            let id = parseInt(document.getElementById('detailModal').dataset.kostId);
+            let kost = kostData.find(k => k.id === id);
+            if (!kost) return;
+            if (!currentUser) { alert('⚠️ Login dulu!'); openLoginModal(); return; }
+            closeModal();
+            showPage('chat');
+            let chatId = initChat(id);
+            if (chatId) setTimeout(() => { renderChat(chatId); renderChatContacts(); }, 100);
+        }
+
+        function openChatFromCard(id) {
+            if (!currentUser) { alert('⚠️ Login dulu!'); openLoginModal(); return; }
+            showPage('chat');
+            let chatId = initChat(id);
+            if (chatId) setTimeout(() => { renderChat(chatId); renderChatContacts(); }, 100);
+        }
+
+        function updateChatNotif() {
+            let total = 0;
+            for (let key in chatMessages) {
+                let msgs = chatMessages[key];
+                if (msgs.length && msgs[msgs.length - 1].sender !== currentUser?.name) total++;
+            }
+            let badge = document.getElementById('chatBadge');
+            if (total > 0) { badge.style.display = 'inline'; badge.textContent = total; }
+            else badge.style.display = 'none';
+        }
+
+        function openWhatsApp() {
+            let id = parseInt(document.getElementById('detailModal').dataset.kostId);
+            let kost = kostData.find(k => k.id === id);
+            if (kost && kost.kontak) {
+                let phone = kost.kontak.replace(/[^0-9]/g, '');
+                if (!phone.startsWith('62') && !phone.startsWith('0')) phone = '62' + phone;
+                if (phone.startsWith('0')) phone = '62' + phone.substring(1);
+                window.open('https://wa.me/' + phone + '?text=Halo%20saya%20tertarik%20dengan%20kost%20' + encodeURIComponent(kost.nama), '_blank');
+            } else alert('⚠️ No kontak tidak tersedia!');
+        }
+
+        // ============================================
+        // MAP ROUTE
+        // ============================================
+        function initMap(lat, lng) {
+            if (!mapInitialized) {
+                map = L.map('routeMap').setView([lat, lng], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap'
+                }).addTo(map);
+                mapInitialized = true;
+            } else map.setView([lat, lng], 15);
+            return map;
+        }
+
+        function addDestinationMarker(lat, lng, name) {
+            if (destinationMarker) map.removeLayer(destinationMarker);
+            let icon = L.divIcon({
+                className: 'custom-marker',
+                html: '<i class="fas fa-home"></i>',
+                iconSize: [26, 26],
+                iconAnchor: [13, 13]
+            });
+            destinationMarker = L.marker([lat, lng], { icon }).addTo(map).bindPopup('<strong>' + name + '</strong>');
+        }
+
+        function calculateRoute() {
+            if (!mapInitialized || !currentKostLat || !currentKostLng) {
+                alert('⚠️ Buka detail kost dulu!');
+                return;
+            }
+            let startInput = document.getElementById('startLocation').value;
+            if (!startInput) { alert('⚠️ Masukkan lokasi awal!'); return; }
+            if (routeLayer) map.removeLayer(routeLayer);
+
+            let startLat, startLng;
+            if (userLocation && isLocationDetected) {
+                startLat = userLocation.lat;
+                startLng = userLocation.lng;
+            } else {
+                startLat = currentKostLat + (Math.random() - 0.5) * 0.03;
+                startLng = currentKostLng + (Math.random() - 0.5) * 0.03;
+            }
+
+            let points = [];
+            for (let i = 0; i <= 10; i++) {
+                let t = i / 10;
+                points.push([
+                    startLat + (currentKostLat - startLat) * t + (Math.random() - 0.5) * 0.002 * (1 - t),
+                    startLng + (currentKostLng - startLng) * t + (Math.random() - 0.5) * 0.002 * (1 - t)
+                ]);
+            }
+            points[points.length - 1] = [currentKostLat, currentKostLng];
+
+            routeLayer = L.polyline(points, { color: '#f5a623', weight: 4, opacity: 0.7, dashArray: '6,6' }).addTo(map);
+            map.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
+
+            let dist = getDistance(startLat, startLng, currentKostLat, currentKostLng);
+            let time = Math.round(dist * 5 + Math.random() * 10);
+
+            let info = document.getElementById('routeInfo');
+            info.classList.add('active');
+            document.getElementById('routeDistance').textContent = '🚗 Jarak: ' + dist.toFixed(1) + ' km';
+            document.getElementById('routeTime').textContent = '⏱️ ' + time + ' menit';
+            document.getElementById('routeSteps').innerHTML = [
+                'Mulai dari <strong>' + startInput + '</strong>',
+                'Belok kiri ke Jalan Utama (' + (dist * 0.3).toFixed(1) + ' km)',
+                'Lanjutkan lurus (' + (dist * 0.25).toFixed(1) + ' km)',
+                'Belok kanan ke Jalan Kost (' + (dist * 0.2).toFixed(1) + ' km)',
+                'Tujuan di sebelah kanan'
+            ].map((d, i) => '<div>' + (i + 1) + '. ' + d + '</div>').join('');
+        }
+
+        function locateUser() {
+            if (!navigator.geolocation) { alert('⚠️ Tidak support!'); return; }
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    if (map) {
+                        map.setView([position.coords.latitude, position.coords.longitude], 15);
+                        let icon = L.divIcon({
+                            className: 'user-location-marker',
+                            html: '<i class="fas fa-user"></i>',
+                            iconSize: [26, 26],
+                            iconAnchor: [13, 13]
+                        });
+                        L.marker([position.coords.latitude, position.coords.longitude], { icon }).addTo(map).bindPopup('📍 Anda');
+                        document.getElementById('startLocation').value = 'Lokasi Saya';
+                    }
+                },
+                error => alert('⚠️ Gagal: ' + error.message)
+            );
+        }
+
+        function openRouteInMap(id) {
+            let kost = kostData.find(k => k.id === id);
+            if (!kost || !kost.lat || !kost.lng) { alert('⚠️ Lokasi tidak tersedia!'); return; }
+            openModal(id);
+            setTimeout(() => {
+                initMap(kost.lat, kost.lng);
+                currentKostLat = kost.lat;
+                currentKostLng = kost.lng;
+                addDestinationMarker(kost.lat, kost.lng, kost.nama);
+                if (userLocation && isLocationDetected) document.getElementById('startLocation').value = 'Lokasi Saya';
+                else document.getElementById('startLocation').value = 'Pusat Kota';
+                document.getElementById('routeInfo').classList.remove('active');
+                if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; }
+            }, 300);
+        }
+
+        // ============================================
+        // MODAL DETAIL
+        // ============================================
+        function openModal(id) {
+            let kost = kostData.find(k => k.id === id);
+            if (!kost) return;
+
+            currentModalId = id;
+            currentKostLat = kost.lat;
+            currentKostLng = kost.lng;
+
+            document.getElementById('modalTitle').textContent = kost.nama;
+            document.getElementById('modalLocation').innerHTML = '<i class="fas fa-map-pin"></i> ' + kost.lokasi;
+            document.getElementById('modalBulan').textContent = 'Rp ' + kost.hargaBulan.toLocaleString();
+            document.getElementById('modalTahun').textContent = 'Rp ' + kost.hargaTahun.toLocaleString();
+            document.getElementById('modalDeskripsi').textContent = kost.deskripsi || 'Tidak ada deskripsi.';
+            document.getElementById('modalOwner').textContent = kost.owner;
+            document.getElementById('modalKontak').textContent = '📱 ' + (kost.kontak || '-');
+
+            let kamarEl = document.getElementById('modalKamar');
+            kamarEl.textContent = kost.kamarKosong + '/' + kost.totalKamar;
+            kamarEl.className = 'value ' + (kost.kamarKosong === 0 ? 'full' : kost.kamarKosong <= 2 ? 'limited' : 'available');
+
+            let avg = getAverageRating(kost);
+            document.getElementById('modalStars').textContent = getRatingStars(avg);
+            document.getElementById('modalReviewCount').textContent = '(' + (kost.reviews ? kost.reviews.length : 0) + ')';
+
+            document.getElementById('modalFacilities').innerHTML = kost.fasilitas.map(f => '<span class="tag">' + f + '</span>').join('');
+
+            let modalImage = document.getElementById('modalImage');
+            let imageUrl = getKostImage(kost);
+            modalImage.innerHTML = `
+                <img src="${imageUrl}" alt="${kost.nama}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <i class="fas fa-building fallback-icon" style="display:none;"></i>
+            `;
+
+            let reviewsContainer = document.getElementById('modalReviews');
+            if (kost.reviews && kost.reviews.length) {
+                reviewsContainer.innerHTML = kost.reviews.map(r => `
+                    <div class="review-item">
+                        <div style="display:flex;justify-content:space-between;">
+                            <span style="font-weight:600;font-size:0.85rem;">${r.user}</span>
+                            <span style="color:#f5a623;">${'★'.repeat(r.rating)}</span>
+                        </div>
+                        <p style="font-size:0.85rem;">${r.text}</p>
+                        <span style="font-size:0.7rem;color:#8a9aa8;">${r.date}</span>
+                    </div>
+                `).join('');
+            } else {
+                reviewsContainer.innerHTML = '<p style="color:#8a9aa8;font-size:0.85rem;">Belum ada ulasan.</p>';
+            }
+
+            selectedRating = 0;
+            document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('selectedRatingLabel').textContent = '0';
+            document.getElementById('reviewText').value = '';
+
+            document.getElementById('detailModal').dataset.kostId = id;
+            document.getElementById('detailModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                if (kost.lat && kost.lng) {
+                    initMap(kost.lat, kost.lng);
+                    addDestinationMarker(kost.lat, kost.lng, kost.nama);
+                    if (userLocation && isLocationDetected) document.getElementById('startLocation').value = 'Lokasi Saya';
+                    else document.getElementById('startLocation').value = 'Pusat Kota';
+                    document.getElementById('routeInfo').classList.remove('active');
+                    if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; }
+                }
+            }, 300);
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentModalId = null;
+            if (map) { map.remove(); map = null; mapInitialized = false; }
+        }
+
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // ============================================
+        // REVIEW SYSTEM
+        // ============================================
+        function setRating(rating) {
+            selectedRating = rating;
+            document.querySelectorAll('.star-btn').forEach(b => {
+                b.classList.toggle('active', parseInt(b.dataset.rating) <= rating);
+            });
+            document.getElementById('selectedRatingLabel').textContent = rating;
+        }
+
+        function submitReview() {
+            let id = parseInt(document.getElementById('detailModal').dataset.kostId);
+            let kost = kostData.find(k => k.id === id);
+            if (!kost) return;
+            if (!currentUser) { alert('⚠️ Login dulu!'); openLoginModal(); return; }
+            if (selectedRating === 0) { alert('⚠️ Beri rating!'); return; }
+            let text = document.getElementById('reviewText').value.trim();
+            if (!text) { alert('⚠️ Tulis ulasan!'); return; }
+
+            if (!kost.reviews) kost.reviews = [];
+            kost.reviews.push({
+                user: currentUser.name,
+                rating: selectedRating,
+                text: text,
+                date: new Date().toISOString().split('T')[0]
+            });
+
+            openModal(id);
+            filterKostHome(); filterKostList(); renderWishlist();
+            alert('✅ Ulasan terkirim!');
+        }
+
+        // ============================================
+        // NAVIGASI
+        // ============================================
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            let target = document.getElementById('page-' + page);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.bottom-nav button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.page === page);
+            });
+
+            document.getElementById('heroSection').style.display = page === 'home' ? 'block' : 'none';
+
+            if (page === 'wishlist') renderWishlist();
+            if (page === 'chat') {
+                renderChatContacts();
+                if (chatContacts.length) renderChat(chatContacts[0].id);
+                updateChatNotif();
+            }
+            if (page === 'add') {
+                setTimeout(() => {
+                    let lat = userLocation ? userLocation.lat : PUSAT_KOTA.lat;
+                    let lng = userLocation ? userLocation.lng : PUSAT_KOTA.lng;
+                    initPickerMap(lat, lng);
+                }, 300);
+            }
+            if (page === 'home') filterKostHome();
+            if (page === 'list') filterKostList();
+        }
+
+        function updateFooterCount() {
+            document.getElementById('totalKostFooter').textContent = kostData.length;
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        window.addEventListener('load', function() {
+            userLocation = { lat: PUSAT_KOTA.lat, lng: PUSAT_KOTA.lng };
+            isLocationDetected = true;
+            document.getElementById('locStatus').textContent = '📍 Pusat Kota';
+            document.getElementById('locDetail').textContent = 'Aktifkan izin lokasi';
+
+            setTimeout(() => initPickerMap(PUSAT_KOTA.lat, PUSAT_KOTA.lng), 500);
+            setTimeout(() => getUserLocation(), 1000);
+
+            filterKostHome(); filterKostList(); renderWishlist();
+            updateFooterCount(); updateWishlistUI(); updateChatNotif();
+        });
+
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') searchKost();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') { closeModal(); closeLoginModal(); }
+        });
+
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) closeLoginModal();
+        });
+
+        window.addEventListener('resize', function() {
+            if (map) map.invalidateSize();
+            if (pickerMap) pickerMap.invalidateSize();
+        });
+    </script>
+</body>
+</html>
