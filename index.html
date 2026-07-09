@@ -1107,39 +1107,46 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // ============================================
-        // DATA KOST + GAMBAR RANDOM
+        // DATA GAMBAR KOST (dari URL Anda)
         // ============================================
-        const PUSAT_KOTA = { lat: 2.9592, lng: 99.0687 };
-
-        // Koleksi ID gambar dari picsum (bervariasi)
-        const IMAGE_IDS = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50];
-        let imageIndex = 0;
-
-        function getRandomImageUrl() {
-            const id = IMAGE_IDS[imageIndex % IMAGE_IDS.length];
-            imageIndex++;
-            return `https://picsum.photos/id/${id}/400/300`;
-        }
-
-        let kostData = [
-            { id:1, nama:"Kost Mawar Indah", lokasi:"Jl. Merpati No. 12, Pematangsiantar", hargaBulan:800000, hargaTahun:8400000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost nyaman dengan suasana asri, dekat kampus dan pusat kota.", lat:2.9570, lng:99.0620, owner:"Budi Santoso", kontak:"08123456789", totalKamar:10, kamarKosong:3, kota:"Pematangsiantar", reviews:[{user:"Ani",rating:5,text:"Kostnya nyaman banget!",date:"2026-01-15"}], gambar: getRandomImageUrl() },
-            { id:2, nama:"Kost Melati Putih", lokasi:"Jl. Kenanga No. 5, Pematangsiantar", hargaBulan:1200000, hargaTahun:13200000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Dapur"], deskripsi:"Kost premium dengan fasilitas lengkap, cocok untuk mahasiswa dan pekerja profesional.", lat:2.9530, lng:99.0750, owner:"Siti Rahayu", kontak:"08765432100", totalKamar:8, kamarKosong:2, kota:"Pematangsiantar", reviews:[{user:"Dewi",rating:5,text:"Sangat recommended!",date:"2026-01-18"}], gambar: getRandomImageUrl() },
-            { id:3, nama:"Kost Anggrek Biru", lokasi:"Jl. Pahlawan No. 8, Pematangsiantar", hargaBulan:650000, hargaTahun:7150000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana dengan lingkungan yang tenang dan aman. Harga terjangkau.", lat:2.9620, lng:99.0720, owner:"Agus Prasetyo", kontak:"08567890123", totalKamar:12, kamarKosong:5, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
-            { id:4, nama:"Kost Flamboyan", lokasi:"Jl. Diponegoro No. 20, Pematangsiantar", hargaBulan:1500000, hargaTahun:16500000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur"], deskripsi:"Kost mewah dengan desain modern, dekat dengan pusat perbelanjaan dan kampus.", lat:2.9550, lng:99.0650, owner:"Rina Wijaya", kontak:"08987654321", totalKamar:6, kamarKosong:1, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
-            { id:5, nama:"Kost Sederhana Bahagia", lokasi:"Jl. Bunga Raya No. 3, Pematangsiantar", hargaBulan:500000, hargaTahun:5500000, fasilitas:["Parkir","Dapur"], deskripsi:"Kost ekonomis dengan lingkungan yang ramah dan nyaman untuk istirahat.", lat:2.9650, lng:99.0600, owner:"Mulyono", kontak:"08111222333", totalKamar:15, kamarKosong:7, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
-            { id:6, nama:"Kost Gardenia", lokasi:"Jl. Raya Candi No. 15, Pematangsiantar", hargaBulan:950000, hargaTahun:10450000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost dengan taman hijau, suasana sejuk dan tenang.", lat:2.9580, lng:99.0800, owner:"Diana Putri", kontak:"08222333444", totalKamar:10, kamarKosong:0, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
-            { id:7, nama:"Kost Teratai Residence", lokasi:"Jl. Sisingamangaraja No. 45, Pematangsiantar", hargaBulan:2000000, hargaTahun:22000000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur","Kolam Renang"], deskripsi:"Kost eksklusif dengan fasilitas premium, cocok untuk eksekutif muda.", lat:2.9500, lng:99.0700, owner:"Andi Wijaya", kontak:"08134567890", totalKamar:5, kamarKosong:2, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
-            { id:8, nama:"Kost Ceria", lokasi:"Jl. Kamboja No. 7, Pematangsiantar", hargaBulan:750000, hargaTahun:8250000, fasilitas:["WiFi","Parkir","Dapur","TV"], deskripsi:"Kost ramah dengan lingkungan yang nyaman dan dekat dengan kampus.", lat:2.9600, lng:99.0580, owner:"Nina Kurnia", kontak:"08345678901", totalKamar:8, kamarKosong:4, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
-            { id:9, nama:"Kost Permata", lokasi:"Jl. Sutomo No. 25, Pematangsiantar", hargaBulan:1100000, hargaTahun:12100000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV"], deskripsi:"Kost nyaman dengan akses mudah ke pusat kota.", lat:2.9565, lng:99.0775, owner:"Hendra Gunawan", kontak:"08234567890", totalKamar:7, kamarKosong:3, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
-            { id:10, nama:"Kost Mutiara", lokasi:"Jl. Thamrin No. 10, Pematangsiantar", hargaBulan:900000, hargaTahun:9900000, fasilitas:["WiFi","Kamar Mandi Dalam","Parkir","Dapur"], deskripsi:"Kost strategis di pusat kota, dekat dengan berbagai fasilitas umum.", lat:2.9615, lng:99.0635, owner:"Lina Sari", kontak:"08543210987", totalKamar:9, kamarKosong:6, kota:"Pematangsiantar", reviews:[], gambar: getRandomImageUrl() },
-            { id:11, nama:"Kost Medan Permai", lokasi:"Jl. Jenderal Sudirman No. 50, Medan", hargaBulan:1800000, hargaTahun:19800000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV","Dapur"], deskripsi:"Kost premium di pusat kota Medan, dekat dengan mall dan kampus ternama.", lat:3.5952, lng:98.6722, owner:"Hendra Wijaya", kontak:"08123456788", totalKamar:8, kamarKosong:3, kota:"Medan", reviews:[], gambar: getRandomImageUrl() },
-            { id:12, nama:"Kost Siantar 2", lokasi:"Jl. Pahlawan No. 15, Siantar", hargaBulan:550000, hargaTahun:6050000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana dengan suasana pedesaan, cocok untuk yang ingin suasana tenang.", lat:2.9270, lng:99.0520, owner:"Joko Susanto", kontak:"08567890122", totalKamar:10, kamarKosong:4, kota:"Siantar", reviews:[], gambar: getRandomImageUrl() },
-            { id:13, nama:"Kost Berastagi Indah", lokasi:"Jl. Raya Berastagi No. 8, Berastagi", hargaBulan:700000, hargaTahun:7700000, fasilitas:["AC","WiFi","Parkir","TV"], deskripsi:"Kost dengan pemandangan pegunungan, udara sejuk dan lingkungan yang asri.", lat:3.1900, lng:98.5130, owner:"Maria Simamora", kontak:"08222333445", totalKamar:6, kamarKosong:2, kota:"Berastagi", reviews:[], gambar: getRandomImageUrl() }
+        const GAMBAR_KOST = [
+            "https://b.top4top.io/p_3841zy6u81.jpg",
+            "https://h.top4top.io/p_3841bzbuw1.jpg",
+            "https://k.top4top.io/p_38418tval1.jpg",
+            "https://g.top4top.io/p_3841rmigm1.jpg",
+            "https://a.top4top.io/p_3841bkvwv1.jpg",
+            "https://c.top4top.io/p_3841e28md1.jpg",
+            "https://i.top4top.io/p_3841g8ps91.jpg",
+            "https://www.pasteboard.co/Y6mtY4GylYs4.jpg"
         ];
 
+        // Fungsi untuk mengambil gambar berdasarkan indeks
+        function getGambarKost(index) {
+            return GAMBAR_KOST[index % GAMBAR_KOST.length];
+        }
+
         // ============================================
-        // VARIABEL GLOBAL
+        // DATA KOST
         // ============================================
+        const PUSAT_KOTA = { lat: 2.9592, lng: 99.0687 };
+        let imageIndex = 0;
+
+        let kostData = [
+            { id:1, nama:"Kost Mawar Indah", lokasi:"Jl. Merpati No. 12, Pematangsiantar", hargaBulan:800000, hargaTahun:8400000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost nyaman dengan suasana asri, dekat kampus dan pusat kota.", lat:2.9570, lng:99.0620, owner:"Budi Santoso", kontak:"08123456789", totalKamar:10, kamarKosong:3, kota:"Pematangsiantar", reviews:[{user:"Ani",rating:5,text:"Kostnya nyaman banget!",date:"2026-01-15"}], gambar: getGambarKost(0) },
+            { id:2, nama:"Kost Melati Putih", lokasi:"Jl. Kenanga No. 5, Pematangsiantar", hargaBulan:1200000, hargaTahun:13200000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Dapur"], deskripsi:"Kost premium dengan fasilitas lengkap, cocok untuk mahasiswa dan pekerja profesional.", lat:2.9530, lng:99.0750, owner:"Siti Rahayu", kontak:"08765432100", totalKamar:8, kamarKosong:2, kota:"Pematangsiantar", reviews:[{user:"Dewi",rating:5,text:"Sangat recommended!",date:"2026-01-18"}], gambar: getGambarKost(1) },
+            { id:3, nama:"Kost Anggrek Biru", lokasi:"Jl. Pahlawan No. 8, Pematangsiantar", hargaBulan:650000, hargaTahun:7150000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana dengan lingkungan yang tenang dan aman. Harga terjangkau.", lat:2.9620, lng:99.0720, owner:"Agus Prasetyo", kontak:"08567890123", totalKamar:12, kamarKosong:5, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(2) },
+            { id:4, nama:"Kost Flamboyan", lokasi:"Jl. Diponegoro No. 20, Pematangsiantar", hargaBulan:1500000, hargaTahun:16500000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur"], deskripsi:"Kost mewah dengan desain modern, dekat dengan pusat perbelanjaan dan kampus.", lat:2.9550, lng:99.0650, owner:"Rina Wijaya", kontak:"08987654321", totalKamar:6, kamarKosong:1, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(3) },
+            { id:5, nama:"Kost Sederhana Bahagia", lokasi:"Jl. Bunga Raya No. 3, Pematangsiantar", hargaBulan:500000, hargaTahun:5500000, fasilitas:["Parkir","Dapur"], deskripsi:"Kost ekonomis dengan lingkungan yang ramah dan nyaman untuk istirahat.", lat:2.9650, lng:99.0600, owner:"Mulyono", kontak:"08111222333", totalKamar:15, kamarKosong:7, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(4) },
+            { id:6, nama:"Kost Gardenia", lokasi:"Jl. Raya Candi No. 15, Pematangsiantar", hargaBulan:950000, hargaTahun:10450000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost dengan taman hijau, suasana sejuk dan tenang.", lat:2.9580, lng:99.0800, owner:"Diana Putri", kontak:"08222333444", totalKamar:10, kamarKosong:0, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(5) },
+            { id:7, nama:"Kost Teratai Residence", lokasi:"Jl. Sisingamangaraja No. 45, Pematangsiantar", hargaBulan:2000000, hargaTahun:22000000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur","Kolam Renang"], deskripsi:"Kost eksklusif dengan fasilitas premium, cocok untuk eksekutif muda.", lat:2.9500, lng:99.0700, owner:"Andi Wijaya", kontak:"08134567890", totalKamar:5, kamarKosong:2, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(6) },
+            { id:8, nama:"Kost Ceria", lokasi:"Jl. Kamboja No. 7, Pematangsiantar", hargaBulan:750000, hargaTahun:8250000, fasilitas:["WiFi","Parkir","Dapur","TV"], deskripsi:"Kost ramah dengan lingkungan yang nyaman dan dekat dengan kampus.", lat:2.9600, lng:99.0580, owner:"Nina Kurnia", kontak:"08345678901", totalKamar:8, kamarKosong:4, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(7) },
+            { id:9, nama:"Kost Permata", lokasi:"Jl. Sutomo No. 25, Pematangsiantar", hargaBulan:1100000, hargaTahun:12100000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV"], deskripsi:"Kost nyaman dengan akses mudah ke pusat kota.", lat:2.9565, lng:99.0775, owner:"Hendra Gunawan", kontak:"08234567890", totalKamar:7, kamarKosong:3, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(0) },
+            { id:10, nama:"Kost Mutiara", lokasi:"Jl. Thamrin No. 10, Pematangsiantar", hargaBulan:900000, hargaTahun:9900000, fasilitas:["WiFi","Kamar Mandi Dalam","Parkir","Dapur"], deskripsi:"Kost strategis di pusat kota, dekat dengan berbagai fasilitas umum.", lat:2.9615, lng:99.0635, owner:"Lina Sari", kontak:"08543210987", totalKamar:9, kamarKosong:6, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(1) },
+            { id:11, nama:"Kost Medan Permai", lokasi:"Jl. Jenderal Sudirman No. 50, Medan", hargaBulan:1800000, hargaTahun:19800000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV","Dapur"], deskripsi:"Kost premium di pusat kota Medan, dekat dengan mall dan kampus ternama.", lat:3.5952, lng:98.6722, owner:"Hendra Wijaya", kontak:"08123456788", totalKamar:8, kamarKosong:3, kota:"Medan", reviews:[], gambar: getGambarKost(2) },
+            { id:12, nama:"Kost Siantar 2", lokasi:"Jl. Pahlawan No. 15, Siantar", hargaBulan:550000, hargaTahun:6050000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana dengan suasana pedesaan, cocok untuk yang ingin suasana tenang.", lat:2.9270, lng:99.0520, owner:"Joko Susanto", kontak:"08567890122", totalKamar:10, kamarKosong:4, kota:"Siantar", reviews:[], gambar: getGambarKost(3) },
+            { id:13, nama:"Kost Berastagi Indah", lokasi:"Jl. Raya Berastagi No. 8, Berastagi", hargaBulan:700000, hargaTahun:7700000, fasilitas:["AC","WiFi","Parkir","TV"], deskripsi:"Kost dengan pemandangan pegunungan, udara sejuk dan lingkungan yang asri.", lat:3.1900, lng:98.5130, owner:"Maria Simamora", kontak:"08222333445", totalKamar:6, kamarKosong:2, kota:"Berastagi", reviews:[], gambar: getGambarKost(4) }
+        ];
+
         let nextId = 14;
         let currentModalId = null;
         let selectedRating = 0;
@@ -1652,6 +1659,9 @@
 
             let fasilitas = fasilitasRaw.split(',').map(f => f.trim()).filter(f => f);
 
+            // Ambil gambar random dari array GAMBAR_KOST
+            let randomGambar = GAMBAR_KOST[Math.floor(Math.random() * GAMBAR_KOST.length)];
+
             let newKost = {
                 id: nextId++,
                 nama,
@@ -1668,7 +1678,7 @@
                 kamarKosong,
                 kota: "Pematangsiantar",
                 reviews: [],
-                gambar: getRandomImageUrl()
+                gambar: randomGambar
             };
 
             kostData.push(newKost);
@@ -2287,6 +2297,5 @@
             if (pickerMap) pickerMap.invalidateSize();
         });
     </script>
-
 </body>
 </html>
