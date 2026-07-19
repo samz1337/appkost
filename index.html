@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
+        /* ===== GLOBAL ===== */
         * {
             margin: 0;
             padding: 0;
@@ -25,6 +26,7 @@
         ::-webkit-scrollbar-track { background: #eef2f6; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 12px; }
 
+        /* ===== NAVBAR ===== */
         .navbar {
             background: rgba(255, 255, 255, 0.82);
             backdrop-filter: blur(14px) saturate(180%);
@@ -141,6 +143,7 @@
             margin-left: 2px;
         }
 
+        /* ===== HERO ===== */
         .hero {
             padding: 3rem 5% 2.5rem;
             background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
@@ -192,6 +195,7 @@
         }
         .search-bar button:hover { background: #e09515; }
 
+        /* ===== LOCATION BANNER ===== */
         .location-banner {
             background: white;
             padding: 0.8rem 2rem;
@@ -243,6 +247,7 @@
         }
         .btn-refresh-loc:hover { background: #e2e8f0; }
 
+        /* ===== CONTAINER ===== */
         .container {
             max-width: 1440px;
             margin: 0 auto;
@@ -268,6 +273,7 @@
         .page-title i { color: #f5a623; }
         .page-title .sub { font-size: 0.95rem; font-weight: 400; color: #6f8aa0; }
 
+        /* ===== FILTER SECTION ===== */
         .filter-section {
             display: flex;
             flex-wrap: wrap;
@@ -300,6 +306,7 @@
         .filter-group select:focus, .filter-group input:focus { border-color: #f5a623; }
         .filter-count { font-size: 0.9rem; color: #6f8aa0; }
 
+        /* ===== KOST GRID ===== */
         .kost-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -528,7 +535,15 @@
             color: #dc3545;
         }
         .btn-delete:hover { background: #fecaca; }
+        .btn-book {
+            background: #1a9b5e;
+            color: white;
+        }
+        .btn-book:hover { background: #15804d; }
+        .btn-book.available { background: #1a9b5e; }
+        .btn-book.full { background: #dc3545; cursor: not-allowed; }
 
+        /* ===== FORM CARD ===== */
         .form-card {
             background: white;
             border-radius: 32px;
@@ -563,6 +578,8 @@
         }
         .form-group input:focus, .form-group textarea:focus { border-color: #f5a623; }
         .form-group textarea { min-height: 80px; resize: vertical; }
+
+        .form-hint { font-size: 0.8rem; color: #8a9aa8; margin-top: 4px; }
 
         .map-picker-container {
             border-radius: 24px;
@@ -628,6 +645,7 @@
 
         .form-error { color: #dc3545; font-size: 0.85rem; margin-top: 4px; display: none; }
 
+        /* ===== MODAL ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -775,6 +793,7 @@
         }
         .route-info.active { display: block; }
 
+        /* ===== CHAT ===== */
         .chat-container {
             max-height: 350px;
             overflow-y: auto;
@@ -827,6 +846,7 @@
         }
         .chat-input-group button:hover { background: #e09515; }
 
+        /* ===== REVIEW ===== */
         .review-item {
             background: #f8fafc;
             padding: 1rem;
@@ -857,6 +877,7 @@
         }
         .btn-review:hover { background: #e09515; }
 
+        /* ===== EMPTY STATE ===== */
         .wishlist-empty, .empty-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -865,6 +886,69 @@
         }
         .wishlist-empty i, .empty-state i { font-size: 3.2rem; opacity: 0.3; margin-bottom: 1rem; }
 
+        /* ===== PAYMENT / BOOKING ===== */
+        .booking-section {
+            margin-top: 1.2rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid #edf2f7;
+        }
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 0.6rem 0;
+        }
+        .payment-options .option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8fafc;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.2s;
+        }
+        .payment-options .option:hover { border-color: #e2e8f0; }
+        .payment-options .option.active { border-color: #f5a623; background: #fffbf0; }
+        .payment-options .option i { font-size: 1.2rem; }
+        .payment-options .option .bca { color: #0047ab; }
+        .payment-options .option .bri { color: #007bff; }
+        .payment-options .option .mandiri { color: #ff6b00; }
+        .payment-options .option .qris { color: #00a651; }
+
+        .discount-badge {
+            background: #dc3545;
+            color: white;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-left: 4px;
+        }
+
+        .btn-book-now {
+            background: #f5a623;
+            color: #0b1a2e;
+            border: none;
+            padding: 0.6rem 2rem;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+        }
+        .btn-book-now:hover { background: #e09515; transform: scale(0.98); }
+        .btn-book-now:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ===== LOGIN MODAL ===== */
+        .login-modal .modal { max-width: 440px; }
+
+        /* ===== FOOTER ===== */
         .footer {
             background: white;
             border-top: 1px solid #edf2f7;
@@ -875,6 +959,7 @@
         }
         .footer span { color: #f5a623; font-weight: 600; }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .navbar { flex-direction: column; padding: 0.6rem 1.2rem; }
             .nav-links { justify-content: center; width: 100%; gap: 4px; }
@@ -888,6 +973,7 @@
             .form-card { padding: 1.5rem; }
             .map-picker-info { flex-direction: column; align-items: stretch; }
             .location-banner { flex-direction: column; text-align: center; padding: 1rem; }
+            .modal .detail-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -903,6 +989,7 @@
             <button onclick="showPage('list')" data-page="list"><i class="fas fa-list"></i> Daftar</button>
             <button onclick="showPage('wishlist')" data-page="wishlist"><i class="fas fa-heart"></i> Favorit <span id="wishlistCount" style="background:#dc3545;color:white;border-radius:30px;padding:0 8px;font-size:0.7rem;margin-left:2px;">0</span></button>
             <button onclick="showPage('chat')" data-page="chat"><i class="fas fa-comment-dots"></i> Pesan <span id="chatNotif" class="chat-notif" style="display:none;">0</span></button>
+            <button onclick="showPage('transactions')" data-page="transactions"><i class="fas fa-receipt"></i> Transaksi</button>
             <button onclick="showPage('add')" data-page="add" class="btn-primary-nav"><i class="fas fa-plus"></i> Tambah</button>
             <div id="authButtons"><button onclick="openLoginModal()" class="btn-login-nav"><i class="fas fa-sign-in-alt"></i> Login</button></div>
             <div id="userInfo" style="display:none;" class="user-info">
@@ -973,6 +1060,17 @@
             <div id="wishlistGrid" class="kost-grid"></div>
         </div>
 
+        <!-- TRANSACTIONS -->
+        <div class="page" id="page-transactions">
+            <div class="page-title"><i class="fas fa-receipt" style="color:#1a9b5e;"></i> Riwayat Transaksi</div>
+            <div id="transactionList" style="background:white;border-radius:32px;padding:1.5rem;border:1px solid #edf2f7;">
+                <p style="color:#8a9aa8;text-align:center;padding:2rem 0;">
+                    <i class="fas fa-receipt" style="font-size:2.8rem;display:block;margin-bottom:0.8rem;opacity:0.2;"></i>
+                    Belum ada transaksi
+                </p>
+            </div>
+        </div>
+
         <!-- CHAT -->
         <div class="page" id="page-chat">
             <div class="page-title"><i class="fas fa-comment-dots" style="color:#f5a623;"></i> Pesan & Kontak</div>
@@ -1000,9 +1098,19 @@
                         <div><label>Harga/Tahun (Rp) *</label><input type="number" id="hargaTahun" placeholder="8400000" required></div>
                         <div><label>Total Kamar *</label><input type="number" id="totalKamar" placeholder="10" required min="1"></div>
                         <div><label>Kamar Kosong *</label><input type="number" id="kamarKosong" placeholder="3" required min="0"></div>
-                        <div class="full-width"><label>Fasilitas *</label><input type="text" id="fasilitasKost" placeholder="AC, WiFi, Kamar Mandi Dalam" required><div class="form-hint" style="font-size:0.8rem;color:#8a9aa8;margin-top:4px;">Pisahkan dengan koma (,)</div></div>
+                        <div><label>Diskon Mahasiswa (%)</label><input type="number" id="diskonMahasiswa" placeholder="10" min="0" max="50"></div>
+                        <div class="full-width"><label>Fasilitas *</label><input type="text" id="fasilitasKost" placeholder="AC, WiFi, Kamar Mandi Dalam" required><div class="form-hint">Pisahkan dengan koma (,)</div></div>
+                        <div class="full-width"><label>Layanan Tambahan</label><input type="text" id="layananKost" placeholder="Laundry, Makan, Cleaning Service"><div class="form-hint">Pisahkan dengan koma (,)</div></div>
                         <div class="full-width"><label>Deskripsi</label><textarea id="deskripsiKost" placeholder="Deskripsikan kost Anda..."></textarea></div>
                         <div class="full-width"><label>Kontak (WA/Telepon) *</label><input type="text" id="kontakKost" placeholder="08123456789" required></div>
+                        <div class="full-width"><label>Metode Pembayaran</label>
+                            <select id="metodePembayaranKost">
+                                <option value="all">Semua Metode</option>
+                                <option value="transfer">Transfer Bank</option>
+                                <option value="qris">QRIS</option>
+                                <option value="cash">Cash</option>
+                            </select>
+                        </div>
 
                         <div class="full-width">
                             <label><i class="fas fa-map-pin" style="color:#f5a623;"></i> Pilih Lokasi di Peta *</label>
@@ -1035,10 +1143,52 @@
                 <div class="detail-item"><div class="label">Per Tahun</div><div class="value" id="modalTahun">Rp 0</div></div>
                 <div class="detail-item"><div class="label">Kamar Kosong</div><div class="value" id="modalKamar">0 / 0</div></div>
             </div>
+
+            <!-- DISKON MAHASISWA -->
+            <div id="modalDiscount" style="margin:0.6rem 0;padding:0.4rem 1rem;background:#eef6ff;border-radius:40px;display:none;">
+                <i class="fas fa-graduation-cap" style="color:#f5a623;"></i> <strong>Diskon Mahasiswa:</strong> <span id="modalDiscountText">10%</span>
+            </div>
+
             <div><strong>Fasilitas</strong></div>
             <div class="facilities-list" id="modalFacilities"></div>
+
+            <div id="modalLayanan" style="margin-top:0.6rem;">
+                <strong>Layanan Tambahan</strong>
+                <div class="facilities-list" id="modalLayananList"></div>
+            </div>
+
             <div style="margin-top:1rem;"><strong>Deskripsi</strong></div>
             <p id="modalDeskripsi" style="color:#4a637a;"></p>
+
+            <!-- BOOKING & PAYMENT -->
+            <div class="booking-section">
+                <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;align-items:center;">
+                    <div>
+                        <strong>Booking Sekarang</strong>
+                        <div style="font-size:0.85rem;color:#6f8aa0;">Pilih metode pembayaran</div>
+                    </div>
+                    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+                        <button class="btn-book" id="btnBookNow" onclick="bookKost()">
+                            <i class="fas fa-calendar-check"></i> Pesan Sekarang
+                        </button>
+                    </div>
+                </div>
+                <div class="payment-options" id="paymentOptions">
+                    <div class="option active" data-method="transfer" onclick="selectPayment('transfer')">
+                        <i class="fas fa-university bca"></i> Transfer Bank
+                    </div>
+                    <div class="option" data-method="qris" onclick="selectPayment('qris')">
+                        <i class="fas fa-qrcode qris"></i> QRIS
+                    </div>
+                    <div class="option" data-method="cash" onclick="selectPayment('cash')">
+                        <i class="fas fa-money-bill-wave"></i> Cash
+                    </div>
+                </div>
+                <div id="paymentDetail" style="background:#f8fafc;padding:0.8rem 1.2rem;border-radius:20px;margin-top:0.6rem;font-size:0.9rem;">
+                    <span id="paymentMethodLabel">💳 Transfer Bank</span>
+                    <span style="margin-left:1rem;color:#6f8aa0;">Rek: 123-456-7890 a/n KostApp</span>
+                </div>
+            </div>
 
             <div class="contact-section">
                 <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; align-items:center;">
@@ -1047,6 +1197,7 @@
                 </div>
             </div>
 
+            <!-- ROUTE -->
             <div style="margin-top:1.5rem;">
                 <strong><i class="fas fa-route" style="color:#f5a623;"></i> Simulasi Rute</strong>
                 <div class="map-container"><div id="routeMap"></div></div>
@@ -1061,6 +1212,7 @@
                 </div>
             </div>
 
+            <!-- REVIEW -->
             <div class="review-section" style="margin-top:1.8rem;padding-top:1.2rem;border-top:1px solid #edf2f7;">
                 <strong>Ulasan</strong>
                 <div id="modalReviews"></div>
@@ -1091,6 +1243,9 @@
                     <div><label>Email</label><input type="email" id="loginEmail" placeholder="email@example.com" required></div>
                     <div><label>Password</label><input type="password" id="loginPassword" placeholder="Minimal 6 karakter" required minlength="6"></div>
                     <div id="loginNameField" style="display:none;"><label>Nama Lengkap</label><input type="text" id="loginName" placeholder="Nama Anda"></div>
+                    <div id="loginStudentField" style="display:none;">
+                        <label><input type="checkbox" id="loginIsStudent"> Saya Mahasiswa (dapat diskon)</label>
+                    </div>
                 </div>
                 <button type="submit" class="btn-submit" id="loginSubmitBtn" style="width:100%;justify-content:center;">Login</button>
             </form>
@@ -1107,7 +1262,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // ============================================
-        // DATA GAMBAR KOST (dari URL Anda)
+        // DATA GAMBAR KOST
         // ============================================
         const GAMBAR_KOST = [
             "https://b.top4top.io/p_3841zy6u81.jpg",
@@ -1120,7 +1275,6 @@
             "https://www.pasteboard.co/Y6mtY4GylYs4.jpg"
         ];
 
-        // Fungsi untuk mengambil gambar berdasarkan indeks
         function getGambarKost(index) {
             return GAMBAR_KOST[index % GAMBAR_KOST.length];
         }
@@ -1130,21 +1284,121 @@
         // ============================================
         const PUSAT_KOTA = { lat: 2.9592, lng: 99.0687 };
         let imageIndex = 0;
+        let studentDiscountActive = false;
 
         let kostData = [
-            { id:1, nama:"Kost Mawar Indah", lokasi:"Jl. Merpati No. 12, Pematangsiantar", hargaBulan:800000, hargaTahun:8400000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost nyaman dengan suasana asri, dekat kampus dan pusat kota.", lat:2.9570, lng:99.0620, owner:"Budi Santoso", kontak:"08123456789", totalKamar:10, kamarKosong:3, kota:"Pematangsiantar", reviews:[{user:"Ani",rating:5,text:"Kostnya nyaman banget!",date:"2026-01-15"}], gambar: getGambarKost(0) },
-            { id:2, nama:"Kost Melati Putih", lokasi:"Jl. Kenanga No. 5, Pematangsiantar", hargaBulan:1200000, hargaTahun:13200000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Dapur"], deskripsi:"Kost premium dengan fasilitas lengkap, cocok untuk mahasiswa dan pekerja profesional.", lat:2.9530, lng:99.0750, owner:"Siti Rahayu", kontak:"08765432100", totalKamar:8, kamarKosong:2, kota:"Pematangsiantar", reviews:[{user:"Dewi",rating:5,text:"Sangat recommended!",date:"2026-01-18"}], gambar: getGambarKost(1) },
-            { id:3, nama:"Kost Anggrek Biru", lokasi:"Jl. Pahlawan No. 8, Pematangsiantar", hargaBulan:650000, hargaTahun:7150000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana dengan lingkungan yang tenang dan aman. Harga terjangkau.", lat:2.9620, lng:99.0720, owner:"Agus Prasetyo", kontak:"08567890123", totalKamar:12, kamarKosong:5, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(2) },
-            { id:4, nama:"Kost Flamboyan", lokasi:"Jl. Diponegoro No. 20, Pematangsiantar", hargaBulan:1500000, hargaTahun:16500000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur"], deskripsi:"Kost mewah dengan desain modern, dekat dengan pusat perbelanjaan dan kampus.", lat:2.9550, lng:99.0650, owner:"Rina Wijaya", kontak:"08987654321", totalKamar:6, kamarKosong:1, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(3) },
-            { id:5, nama:"Kost Sederhana Bahagia", lokasi:"Jl. Bunga Raya No. 3, Pematangsiantar", hargaBulan:500000, hargaTahun:5500000, fasilitas:["Parkir","Dapur"], deskripsi:"Kost ekonomis dengan lingkungan yang ramah dan nyaman untuk istirahat.", lat:2.9650, lng:99.0600, owner:"Mulyono", kontak:"08111222333", totalKamar:15, kamarKosong:7, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(4) },
-            { id:6, nama:"Kost Gardenia", lokasi:"Jl. Raya Candi No. 15, Pematangsiantar", hargaBulan:950000, hargaTahun:10450000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"], deskripsi:"Kost dengan taman hijau, suasana sejuk dan tenang.", lat:2.9580, lng:99.0800, owner:"Diana Putri", kontak:"08222333444", totalKamar:10, kamarKosong:0, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(5) },
-            { id:7, nama:"Kost Teratai Residence", lokasi:"Jl. Sisingamangaraja No. 45, Pematangsiantar", hargaBulan:2000000, hargaTahun:22000000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur","Kolam Renang"], deskripsi:"Kost eksklusif dengan fasilitas premium, cocok untuk eksekutif muda.", lat:2.9500, lng:99.0700, owner:"Andi Wijaya", kontak:"08134567890", totalKamar:5, kamarKosong:2, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(6) },
-            { id:8, nama:"Kost Ceria", lokasi:"Jl. Kamboja No. 7, Pematangsiantar", hargaBulan:750000, hargaTahun:8250000, fasilitas:["WiFi","Parkir","Dapur","TV"], deskripsi:"Kost ramah dengan lingkungan yang nyaman dan dekat dengan kampus.", lat:2.9600, lng:99.0580, owner:"Nina Kurnia", kontak:"08345678901", totalKamar:8, kamarKosong:4, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(7) },
-            { id:9, nama:"Kost Permata", lokasi:"Jl. Sutomo No. 25, Pematangsiantar", hargaBulan:1100000, hargaTahun:12100000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV"], deskripsi:"Kost nyaman dengan akses mudah ke pusat kota.", lat:2.9565, lng:99.0775, owner:"Hendra Gunawan", kontak:"08234567890", totalKamar:7, kamarKosong:3, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(0) },
-            { id:10, nama:"Kost Mutiara", lokasi:"Jl. Thamrin No. 10, Pematangsiantar", hargaBulan:900000, hargaTahun:9900000, fasilitas:["WiFi","Kamar Mandi Dalam","Parkir","Dapur"], deskripsi:"Kost strategis di pusat kota, dekat dengan berbagai fasilitas umum.", lat:2.9615, lng:99.0635, owner:"Lina Sari", kontak:"08543210987", totalKamar:9, kamarKosong:6, kota:"Pematangsiantar", reviews:[], gambar: getGambarKost(1) },
-            { id:11, nama:"Kost Medan Permai", lokasi:"Jl. Jenderal Sudirman No. 50, Medan", hargaBulan:1800000, hargaTahun:19800000, fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV","Dapur"], deskripsi:"Kost premium di pusat kota Medan, dekat dengan mall dan kampus ternama.", lat:3.5952, lng:98.6722, owner:"Hendra Wijaya", kontak:"08123456788", totalKamar:8, kamarKosong:3, kota:"Medan", reviews:[], gambar: getGambarKost(2) },
-            { id:12, nama:"Kost Siantar 2", lokasi:"Jl. Pahlawan No. 15, Siantar", hargaBulan:550000, hargaTahun:6050000, fasilitas:["WiFi","Parkir","Dapur"], deskripsi:"Kost sederhana dengan suasana pedesaan, cocok untuk yang ingin suasana tenang.", lat:2.9270, lng:99.0520, owner:"Joko Susanto", kontak:"08567890122", totalKamar:10, kamarKosong:4, kota:"Siantar", reviews:[], gambar: getGambarKost(3) },
-            { id:13, nama:"Kost Berastagi Indah", lokasi:"Jl. Raya Berastagi No. 8, Berastagi", hargaBulan:700000, hargaTahun:7700000, fasilitas:["AC","WiFi","Parkir","TV"], deskripsi:"Kost dengan pemandangan pegunungan, udara sejuk dan lingkungan yang asri.", lat:3.1900, lng:98.5130, owner:"Maria Simamora", kontak:"08222333445", totalKamar:6, kamarKosong:2, kota:"Berastagi", reviews:[], gambar: getGambarKost(4) }
+            {
+                id:1, nama:"Kost Mawar Indah", lokasi:"Jl. Merpati No. 12, Pematangsiantar",
+                hargaBulan:800000, hargaTahun:8400000,
+                fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"],
+                layanan:["Laundry","Cleaning Service"],
+                deskripsi:"Kost nyaman dengan suasana asri, dekat kampus dan pusat kota.",
+                lat:2.9570, lng:99.0620, owner:"Budi Santoso", kontak:"08123456789",
+                totalKamar:10, kamarKosong:3, kota:"Pematangsiantar",
+                diskonMahasiswa:10, metodePembayaran:["transfer","qris","cash"],
+                reviews:[{user:"Ani",rating:5,text:"Kostnya nyaman banget!",date:"2026-01-15"}],
+                gambar: getGambarKost(0)
+            },
+            {
+                id:2, nama:"Kost Melati Putih", lokasi:"Jl. Kenanga No. 5, Pematangsiantar",
+                hargaBulan:1200000, hargaTahun:13200000,
+                fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Dapur"],
+                layanan:["Laundry","Makan","Cleaning Service"],
+                deskripsi:"Kost premium dengan fasilitas lengkap, cocok untuk mahasiswa dan pekerja profesional.",
+                lat:2.9530, lng:99.0750, owner:"Siti Rahayu", kontak:"08765432100",
+                totalKamar:8, kamarKosong:2, kota:"Pematangsiantar",
+                diskonMahasiswa:15, metodePembayaran:["transfer","qris"],
+                reviews:[{user:"Dewi",rating:5,text:"Sangat recommended!",date:"2026-01-18"}],
+                gambar: getGambarKost(1)
+            },
+            {
+                id:3, nama:"Kost Anggrek Biru", lokasi:"Jl. Pahlawan No. 8, Pematangsiantar",
+                hargaBulan:650000, hargaTahun:7150000,
+                fasilitas:["WiFi","Parkir","Dapur"],
+                layanan:["Laundry"],
+                deskripsi:"Kost sederhana dengan lingkungan yang tenang dan aman. Harga terjangkau.",
+                lat:2.9620, lng:99.0720, owner:"Agus Prasetyo", kontak:"08567890123",
+                totalKamar:12, kamarKosong:5, kota:"Pematangsiantar",
+                diskonMahasiswa:5, metodePembayaran:["transfer","cash"],
+                reviews:[], gambar: getGambarKost(2)
+            },
+            {
+                id:4, nama:"Kost Flamboyan", lokasi:"Jl. Diponegoro No. 20, Pematangsiantar",
+                hargaBulan:1500000, hargaTahun:16500000,
+                fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur"],
+                layanan:["Laundry","Makan","Cleaning Service","Parkir Mobil"],
+                deskripsi:"Kost mewah dengan desain modern, dekat dengan pusat perbelanjaan dan kampus.",
+                lat:2.9550, lng:99.0650, owner:"Rina Wijaya", kontak:"08987654321",
+                totalKamar:6, kamarKosong:1, kota:"Pematangsiantar",
+                diskonMahasiswa:20, metodePembayaran:["transfer","qris","cash"],
+                reviews:[], gambar: getGambarKost(3)
+            },
+            {
+                id:5, nama:"Kost Sederhana Bahagia", lokasi:"Jl. Bunga Raya No. 3, Pematangsiantar",
+                hargaBulan:500000, hargaTahun:5500000,
+                fasilitas:["Parkir","Dapur"],
+                layanan:[],
+                deskripsi:"Kost ekonomis dengan lingkungan yang ramah dan nyaman untuk istirahat.",
+                lat:2.9650, lng:99.0600, owner:"Mulyono", kontak:"08111222333",
+                totalKamar:15, kamarKosong:7, kota:"Pematangsiantar",
+                diskonMahasiswa:0, metodePembayaran:["cash"],
+                reviews:[], gambar: getGambarKost(4)
+            },
+            {
+                id:6, nama:"Kost Gardenia", lokasi:"Jl. Raya Candi No. 15, Pematangsiantar",
+                hargaBulan:950000, hargaTahun:10450000,
+                fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir"],
+                layanan:["Laundry","Cleaning Service"],
+                deskripsi:"Kost dengan taman hijau, suasana sejuk dan tenang.",
+                lat:2.9580, lng:99.0800, owner:"Diana Putri", kontak:"08222333444",
+                totalKamar:10, kamarKosong:0, kota:"Pematangsiantar",
+                diskonMahasiswa:10, metodePembayaran:["transfer","qris"],
+                reviews:[], gambar: getGambarKost(5)
+            },
+            {
+                id:7, nama:"Kost Teratai Residence", lokasi:"Jl. Sisingamangaraja No. 45, Pematangsiantar",
+                hargaBulan:2000000, hargaTahun:22000000,
+                fasilitas:["AC","WiFi","Kamar Mandi Dalam","TV","Parkir","Dapur","Kolam Renang"],
+                layanan:["Laundry","Makan","Cleaning Service","Parkir Mobil","Security 24 Jam"],
+                deskripsi:"Kost eksklusif dengan fasilitas premium, cocok untuk eksekutif muda.",
+                lat:2.9500, lng:99.0700, owner:"Andi Wijaya", kontak:"08134567890",
+                totalKamar:5, kamarKosong:2, kota:"Pematangsiantar",
+                diskonMahasiswa:25, metodePembayaran:["transfer","qris"],
+                reviews:[], gambar: getGambarKost(6)
+            },
+            {
+                id:8, nama:"Kost Ceria", lokasi:"Jl. Kamboja No. 7, Pematangsiantar",
+                hargaBulan:750000, hargaTahun:8250000,
+                fasilitas:["WiFi","Parkir","Dapur","TV"],
+                layanan:["Laundry"],
+                deskripsi:"Kost ramah dengan lingkungan yang nyaman dan dekat dengan kampus.",
+                lat:2.9600, lng:99.0580, owner:"Nina Kurnia", kontak:"08345678901",
+                totalKamar:8, kamarKosong:4, kota:"Pematangsiantar",
+                diskonMahasiswa:10, metodePembayaran:["transfer","cash"],
+                reviews:[], gambar: getGambarKost(7)
+            },
+            {
+                id:9, nama:"Kost Permata", lokasi:"Jl. Sutomo No. 25, Pematangsiantar",
+                hargaBulan:1100000, hargaTahun:12100000,
+                fasilitas:["AC","WiFi","Kamar Mandi Dalam","Parkir","TV"],
+                layanan:["Laundry","Cleaning Service"],
+                deskripsi:"Kost nyaman dengan akses mudah ke pusat kota.",
+                lat:2.9565, lng:99.0775, owner:"Hendra Gunawan", kontak:"08234567890",
+                totalKamar:7, kamarKosong:3, kota:"Pematangsiantar",
+                diskonMahasiswa:15, metodePembayaran:["transfer","qris","cash"],
+                reviews:[], gambar: getGambarKost(0)
+            },
+            {
+                id:10, nama:"Kost Mutiara", lokasi:"Jl. Thamrin No. 10, Pematangsiantar",
+                hargaBulan:900000, hargaTahun:9900000,
+                fasilitas:["WiFi","Kamar Mandi Dalam","Parkir","Dapur"],
+                layanan:["Laundry"],
+                deskripsi:"Kost strategis di pusat kota, dekat dengan berbagai fasilitas umum.",
+                lat:2.9615, lng:99.0635, owner:"Lina Sari", kontak:"08543210987",
+                totalKamar:9, kamarKosong:6, kota:"Pematangsiantar",
+                diskonMahasiswa:5, metodePembayaran:["transfer","cash"],
+                reviews:[], gambar: getGambarKost(1)
+            }
         ];
 
         let nextId = 14;
@@ -1168,6 +1422,8 @@
         let selectedLng = null;
         let chatMessages = {};
         let chatContacts = [];
+        let transactions = [];
+        let selectedPayment = 'transfer';
 
         // ============================================
         // FUNGSI UTILITY
@@ -1210,6 +1466,16 @@
             return kost.gambar || `https://picsum.photos/id/${Math.floor(Math.random() * 40) + 10}/400/300`;
         }
 
+        function getDiscountedPrice(kost) {
+            if (!kost.diskonMahasiswa) return kost.hargaBulan;
+            return kost.hargaBulan - (kost.hargaBulan * kost.diskonMahasiswa / 100);
+        }
+
+        function getDiscountedYearPrice(kost) {
+            if (!kost.diskonMahasiswa) return kost.hargaTahun;
+            return kost.hargaTahun - (kost.hargaTahun * kost.diskonMahasiswa / 100);
+        }
+
         // ============================================
         // RENDER KOST GRID
         // ============================================
@@ -1238,11 +1504,14 @@
                 let nearby = dist !== null && dist < 3;
                 let outTown = kost.kota && kost.kota !== "Pematangsiantar";
                 let imageUrl = getKostImage(kost);
+                let hasDiscount = kost.diskonMahasiswa && kost.diskonMahasiswa > 0;
+                let discountedPrice = getDiscountedPrice(kost);
 
                 return `
                     <div class="kost-card ${nearby ? 'nearby' : ''}" onclick="openModal(${kost.id})">
                         ${nearby ? '<div class="nearby-ribbon">📍 TERDEKAT</div>' : ''}
                         ${outTown ? '<div class="out-of-town">🌍 ' + kost.kota + '</div>' : ''}
+                        ${hasDiscount ? '<div class="out-of-town" style="background:#dc3545;left:60px;">🎓 ' + kost.diskonMahasiswa + '% OFF</div>' : ''}
                         <div class="kost-image">
                             <img src="${imageUrl}" alt="${kost.nama}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <i class="fas fa-building fallback-icon" style="display:none;"></i>
@@ -1256,6 +1525,7 @@
                                 ${kost.nama}
                                 ${distText ? '<span class="distance-badge">📍 ' + distText + '</span>' : ''}
                                 ${nearby ? '<span class="nearby-badge">Terdekat</span>' : ''}
+                                ${hasDiscount ? '<span class="discount-badge">🎓 ' + kost.diskonMahasiswa + '%</span>' : ''}
                             </div>
                             <div class="kost-location"><i class="fas fa-map-pin"></i> ${kost.lokasi}</div>
                             <div class="kost-rooms">
@@ -1274,7 +1544,7 @@
                             <div class="kost-price">
                                 <div class="price-item">
                                     <span class="label">Per Bulan</span>
-                                    <span class="value">Rp ${kost.hargaBulan.toLocaleString()}</span>
+                                    <span class="value">${hasDiscount ? '<span style="text-decoration:line-through;color:#8a9aa8;font-size:0.8rem;">Rp ' + kost.hargaBulan.toLocaleString() + '</span> Rp ' + discountedPrice.toLocaleString() : 'Rp ' + kost.hargaBulan.toLocaleString()}</span>
                                 </div>
                                 <div class="price-item">
                                     <span class="label">Per Tahun</span>
@@ -1291,6 +1561,9 @@
                                 <button class="btn-chat-card" onclick="event.stopPropagation(); openChatFromCard(${kost.id})">
                                     <i class="fas fa-comment"></i>
                                 </button>
+                                ${kost.kamarKosong > 0 ? `<button class="btn-book available" onclick="event.stopPropagation(); openModal(${kost.id}); setTimeout(() => document.getElementById('btnBookNow').scrollIntoView({behavior:'smooth'}), 500);">
+                                    <i class="fas fa-calendar-check"></i> Pesan
+                                </button>` : `<button class="btn-book full" disabled><i class="fas fa-times"></i> Penuh</button>`}
                                 ${currentUser && kost.owner === currentUser.name ? '<button class="btn-delete" onclick="event.stopPropagation(); deleteKost(' + kost.id + ')"><i class="fas fa-trash"></i></button>' : ''}
                             </div>
                         </div>
@@ -1401,8 +1674,9 @@
         // AUTH SYSTEM
         // ============================================
         let users = [
-            { email: "demo@kostapp.com", password: "123456", name: "Demo User" },
-            { email: "budi@kost.com", password: "123456", name: "Budi Santoso" }
+            { email: "demo@kostapp.com", password: "123456", name: "Demo User", isStudent: false },
+            { email: "budi@kost.com", password: "123456", name: "Budi Santoso", isStudent: false },
+            { email: "mahasiswa@kost.com", password: "123456", name: "Mahasiswa Hebat", isStudent: true }
         ];
 
         function openLoginModal() {
@@ -1414,6 +1688,7 @@
             document.getElementById('toggleText').textContent = 'Belum punya akun?';
             document.getElementById('toggleLink').textContent = 'Daftar Sekarang';
             document.getElementById('loginNameField').style.display = 'none';
+            document.getElementById('loginStudentField').style.display = 'none';
             document.getElementById('loginForm').reset();
         }
 
@@ -1431,6 +1706,7 @@
                 document.getElementById('toggleText').textContent = 'Sudah punya akun?';
                 document.getElementById('toggleLink').textContent = 'Login Sekarang';
                 document.getElementById('loginNameField').style.display = 'block';
+                document.getElementById('loginStudentField').style.display = 'block';
             } else {
                 document.getElementById('loginTitle').textContent = 'Login';
                 document.getElementById('loginSubtitle').textContent = 'Masuk untuk mengakses semua fitur';
@@ -1438,6 +1714,7 @@
                 document.getElementById('toggleText').textContent = 'Belum punya akun?';
                 document.getElementById('toggleLink').textContent = 'Daftar Sekarang';
                 document.getElementById('loginNameField').style.display = 'none';
+                document.getElementById('loginStudentField').style.display = 'none';
             }
         }
 
@@ -1453,12 +1730,13 @@
                     currentUser = user;
                     closeLoginModal();
                     updateUI();
-                    alert('✅ Login berhasil! Selamat datang ' + user.name);
+                    alert('✅ Login berhasil! Selamat datang ' + user.name + (user.isStudent ? ' 🎓 (Mahasiswa)' : ''));
                 } else {
                     alert('❌ Email atau password salah!');
                 }
             } else {
                 let name = document.getElementById('loginName').value;
+                let isStudent = document.getElementById('loginIsStudent').checked;
                 if (!name) {
                     alert('⚠️ Mohon isi nama lengkap!');
                     return;
@@ -1467,11 +1745,12 @@
                     alert('❌ Email sudah terdaftar!');
                     return;
                 }
-                users.push({ email, password, name });
-                currentUser = { email, password, name };
+                let newUser = { email, password, name, isStudent };
+                users.push(newUser);
+                currentUser = newUser;
                 closeLoginModal();
                 updateUI();
-                alert('✅ Pendaftaran berhasil! Selamat datang ' + name);
+                alert('✅ Pendaftaran berhasil! Selamat datang ' + name + (isStudent ? ' 🎓 (Mahasiswa)' : ''));
             }
         }
 
@@ -1491,7 +1770,7 @@
             if (currentUser) {
                 authButtons.style.display = 'none';
                 userInfo.style.display = 'flex';
-                userName.textContent = currentUser.name;
+                userName.textContent = currentUser.name + (currentUser.isStudent ? ' 🎓' : '');
                 userAvatar.textContent = currentUser.name.charAt(0).toUpperCase();
             } else {
                 authButtons.style.display = 'block';
@@ -1642,10 +1921,13 @@
             let hargaBulan = parseInt(document.getElementById('hargaBulan').value);
             let hargaTahun = parseInt(document.getElementById('hargaTahun').value);
             let fasilitasRaw = document.getElementById('fasilitasKost').value.trim();
+            let layananRaw = document.getElementById('layananKost').value.trim();
             let deskripsi = document.getElementById('deskripsiKost').value.trim();
             let totalKamar = parseInt(document.getElementById('totalKamar').value);
             let kamarKosong = parseInt(document.getElementById('kamarKosong').value);
             let kontak = document.getElementById('kontakKost').value.trim();
+            let diskonMahasiswa = parseInt(document.getElementById('diskonMahasiswa').value) || 0;
+            let metodePembayaran = document.getElementById('metodePembayaranKost').value;
 
             if (!nama || !lokasi || !hargaBulan || !hargaTahun || !fasilitasRaw || !totalKamar || kamarKosong === undefined || !kontak) {
                 alert('⚠️ Mohon isi semua field yang diperlukan!');
@@ -1658,8 +1940,7 @@
             }
 
             let fasilitas = fasilitasRaw.split(',').map(f => f.trim()).filter(f => f);
-
-            // Ambil gambar random dari array GAMBAR_KOST
+            let layanan = layananRaw ? layananRaw.split(',').map(l => l.trim()).filter(l => l) : [];
             let randomGambar = GAMBAR_KOST[Math.floor(Math.random() * GAMBAR_KOST.length)];
 
             let newKost = {
@@ -1669,6 +1950,7 @@
                 hargaBulan,
                 hargaTahun,
                 fasilitas,
+                layanan,
                 deskripsi: deskripsi || 'Kost baru dengan fasilitas lengkap.',
                 lat: selectedLat,
                 lng: selectedLng,
@@ -1677,6 +1959,8 @@
                 totalKamar,
                 kamarKosong,
                 kota: "Pematangsiantar",
+                diskonMahasiswa,
+                metodePembayaran: metodePembayaran === 'all' ? ['transfer','qris','cash'] : [metodePembayaran],
                 reviews: [],
                 gambar: randomGambar
             };
@@ -1722,6 +2006,117 @@
                 updateFooterCount();
                 if (currentModalId === id) closeModal();
             }
+        }
+
+        // ============================================
+        // PAYMENT & BOOKING
+        // ============================================
+        function selectPayment(method) {
+            selectedPayment = method;
+            document.querySelectorAll('.payment-options .option').forEach(el => {
+                el.classList.toggle('active', el.dataset.method === method);
+            });
+
+            let labels = {
+                'transfer': '💳 Transfer Bank - Rek: 123-456-7890 a/n KostApp',
+                'qris': '📱 QRIS - Scan QR Code untuk pembayaran',
+                'cash': '💰 Cash - Bayar langsung ke pemilik kost'
+            };
+            document.getElementById('paymentMethodLabel').textContent = labels[method] || labels.transfer;
+        }
+
+        function bookKost() {
+            let id = parseInt(document.getElementById('detailModal').dataset.kostId);
+            let kost = kostData.find(k => k.id === id);
+            if (!kost) return;
+
+            if (!currentUser) {
+                alert('⚠️ Silakan login terlebih dahulu untuk booking!');
+                openLoginModal();
+                return;
+            }
+
+            if (kost.kamarKosong <= 0) {
+                alert('⚠️ Maaf, kamar kost ini sudah penuh!');
+                return;
+            }
+
+            let harga = getDiscountedPrice(kost);
+            let isDiscounted = currentUser.isStudent && kost.diskonMahasiswa > 0;
+
+            let confirmMsg = `📋 Konfirmasi Booking\n\n`;
+            confirmMsg += `🏠 Kost: ${kost.nama}\n`;
+            confirmMsg += `📍 Lokasi: ${kost.lokasi}\n`;
+            confirmMsg += `💰 Harga/Bulan: Rp ${harga.toLocaleString()}`;
+            if (isDiscounted) {
+                confirmMsg += ` (diskon ${kost.diskonMahasiswa}% mahasiswa)`;
+            }
+            confirmMsg += `\n💳 Metode: ${selectedPayment.toUpperCase()}\n`;
+            confirmMsg += `\nLanjutkan booking?`;
+
+            if (!confirm(confirmMsg)) return;
+
+            // Kurangi kamar kosong
+            kost.kamarKosong--;
+
+            // Simpan transaksi
+            let transaction = {
+                id: Date.now(),
+                kostId: kost.id,
+                kostName: kost.nama,
+                user: currentUser.name,
+                price: harga,
+                method: selectedPayment,
+                date: new Date().toLocaleString('id-ID'),
+                status: 'Booking Berhasil',
+                isStudent: currentUser.isStudent,
+                discount: isDiscounted ? kost.diskonMahasiswa : 0
+            };
+            transactions.push(transaction);
+
+            // Update UI
+            filterKostHome();
+            filterKostList();
+            renderWishlist();
+            renderTransactions();
+            updateFooterCount();
+
+            alert(`✅ Booking berhasil!\n\nKost: ${kost.nama}\nHarga: Rp ${harga.toLocaleString()}${isDiscounted ? ' (diskon ' + kost.diskonMahasiswa + '% mahasiswa)' : ''}\nMetode: ${selectedPayment.toUpperCase()}\n\nTerima kasih telah booking di KostApp!`);
+
+            closeModal();
+            showPage('transactions');
+        }
+
+        function renderTransactions() {
+            let container = document.getElementById('transactionList');
+            if (!transactions.length) {
+                container.innerHTML = `
+                    <p style="color:#8a9aa8;text-align:center;padding:2rem 0;">
+                        <i class="fas fa-receipt" style="font-size:2.8rem;display:block;margin-bottom:0.8rem;opacity:0.2;"></i>
+                        Belum ada transaksi
+                    </p>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div style="display:flex;flex-direction:column;gap:0.8rem;">
+                    ${transactions.slice().reverse().map(t => `
+                        <div style="background:#f8fafc;padding:1rem 1.2rem;border-radius:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;border-left:4px solid ${t.status === 'Booking Berhasil' ? '#1a9b5e' : '#f5a623'};">
+                            <div>
+                                <div style="font-weight:700;">${t.kostName}</div>
+                                <div style="font-size:0.85rem;color:#6f8aa0;">${t.user} • ${t.date}</div>
+                                ${t.isStudent && t.discount > 0 ? '<span style="background:#dc3545;color:white;padding:0.1rem 0.6rem;border-radius:20px;font-size:0.65rem;font-weight:700;">🎓 ' + t.discount + '% OFF</span>' : ''}
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-weight:700;color:#1a9b5e;">Rp ${t.price.toLocaleString()}</div>
+                                <div style="font-size:0.8rem;color:#6f8aa0;">💳 ${t.method.toUpperCase()}</div>
+                                <div style="font-size:0.8rem;color:#1a9b5e;">✅ ${t.status}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
         }
 
         // ============================================
@@ -2096,6 +2491,15 @@
             document.getElementById('modalOwner').textContent = kost.owner;
             document.getElementById('modalKontak').textContent = '📱 ' + (kost.kontak || '-');
 
+            // DISKON
+            let discountEl = document.getElementById('modalDiscount');
+            if (kost.diskonMahasiswa > 0) {
+                discountEl.style.display = 'block';
+                document.getElementById('modalDiscountText').textContent = kost.diskonMahasiswa + '% (khusus mahasiswa)';
+            } else {
+                discountEl.style.display = 'none';
+            }
+
             let kamarElement = document.getElementById('modalKamar');
             kamarElement.textContent = kost.kamarKosong + ' / ' + kost.totalKamar;
             kamarElement.className = 'value ' + (kost.kamarKosong === 0 ? 'full' : kost.kamarKosong <= 2 ? 'limited' : 'available');
@@ -2106,6 +2510,16 @@
 
             document.getElementById('modalFacilities').innerHTML = kost.fasilitas.map(f => '<span class="tag">' + f + '</span>').join('');
 
+            // Layanan
+            let layananList = document.getElementById('modalLayananList');
+            let layananSection = document.getElementById('modalLayanan');
+            if (kost.layanan && kost.layanan.length) {
+                layananSection.style.display = 'block';
+                layananList.innerHTML = kost.layanan.map(l => '<span class="tag">' + l + '</span>').join('');
+            } else {
+                layananSection.style.display = 'none';
+            }
+
             // Gambar modal
             let modalImage = document.getElementById('modalImage');
             let imageUrl = getKostImage(kost);
@@ -2114,6 +2528,7 @@
                 <i class="fas fa-building fallback-icon" style="display:none;"></i>
             `;
 
+            // Reviews
             let reviewsContainer = document.getElementById('modalReviews');
             if (kost.reviews && kost.reviews.length) {
                 reviewsContainer.innerHTML = kost.reviews.map(r => `
@@ -2128,6 +2543,22 @@
                 `).join('');
             } else {
                 reviewsContainer.innerHTML = '<p style="color:#8a9aa8;">Belum ada ulasan. Jadilah yang pertama!</p>';
+            }
+
+            // Payment options
+            selectPayment('transfer');
+
+            // Book button
+            let bookBtn = document.getElementById('btnBookNow');
+            if (kost.kamarKosong > 0) {
+                bookBtn.disabled = false;
+                bookBtn.innerHTML = '<i class="fas fa-calendar-check"></i> Pesan Sekarang (Rp ' + getDiscountedPrice(kost).toLocaleString() + '/bln)';
+                if (currentUser && currentUser.isStudent && kost.diskonMahasiswa > 0) {
+                    bookBtn.innerHTML += ' 🎓';
+                }
+            } else {
+                bookBtn.disabled = true;
+                bookBtn.innerHTML = '<i class="fas fa-times"></i> Kamar Penuh';
             }
 
             selectedRating = 0;
@@ -2242,6 +2673,7 @@
                 if (chatContacts.length) renderChat(chatContacts[0].id);
                 updateChatNotif();
             }
+            if (page === 'transactions') renderTransactions();
             if (page === 'add') {
                 setTimeout(() => {
                     let lat = userLocation ? userLocation.lat : PUSAT_KOTA.lat;
@@ -2272,9 +2704,13 @@
             filterKostHome();
             filterKostList();
             renderWishlist();
+            renderTransactions();
             updateFooterCount();
             updateWishlistUI();
             updateChatNotif();
+
+            // Default payment
+            selectPayment('transfer');
         });
 
         document.getElementById('searchInput').addEventListener('keyup', function(e) {
