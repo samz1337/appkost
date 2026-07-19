@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
-        /* ===== GLOBAL ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
+        html, body {
+            height: 100%;
             font-family: 'Inter', sans-serif;
             background: #f6f9fc;
             color: #0b1a2e;
@@ -19,6 +19,13 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #eef2f6; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 12px; }
+
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .main-content { flex: 1; }
 
         /* ===== NAVBAR ===== */
         .navbar {
@@ -122,6 +129,18 @@
             transition: 0.2s;
         }
         .logout-btn:hover { color: #dc3545; }
+
+        .balance-display {
+            background: #f5a623;
+            color: #0b1a2e;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
 
         /* ===== HERO ===== */
         .hero {
@@ -509,6 +528,11 @@
             color: #dc3545;
         }
         .btn-delete:hover { background: #fecaca; }
+        .btn-chat-card {
+            background: #f5a623;
+            color: #0b1a2e;
+        }
+        .btn-chat-card:hover { background: #e09515; }
 
         /* ===== FORM ===== */
         .form-card {
@@ -673,17 +697,44 @@
             justify-content: center;
             overflow: hidden;
             margin-bottom: 1.2rem;
+            position: relative;
         }
         .modal-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .modal-image .fallback-icon {
-            font-size: 4rem;
-            color: #8a9aa8;
-            opacity: 0.4;
+        .modal-image .image-nav {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            background: rgba(0,0,0,0.5);
+            padding: 4px 12px;
+            border-radius: 20px;
         }
+        .modal-image .image-nav button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .modal-image .image-nav button:hover { background: rgba(255,255,255,0.2); }
+        .modal-image .image-nav .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            display: inline-block;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal-image .image-nav .dot.active { background: white; }
 
         .modal .detail-grid {
             display: grid;
@@ -735,10 +786,10 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #eef6ff;
+            background: #f5a623;
             color: #0b1a2e;
         }
-        .btn-contact:hover { background: #dce7f5; }
+        .btn-contact:hover { background: #e09515; }
 
         .map-container { border-radius: 24px; overflow: hidden; border: 1px solid #edf2f7; margin: 0.8rem 0; }
         #routeMap { width: 100%; height: 280px; background: #eef2f6; }
@@ -828,6 +879,8 @@
             gap: 10px;
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
+            width: 100%;
+            justify-content: center;
         }
         .btn-pay-now:hover { background: #15804d; transform: scale(0.98); }
         .btn-pay-now:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -905,6 +958,15 @@
             max-height: 500px;
             overflow-y: auto;
         }
+        .chat-contact-item {
+            padding: 0.8rem;
+            border-radius: 16px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .chat-contact-item:hover { background: #f1f5f9; }
+        .chat-contact-item.active { background: #f1f5f9; }
 
         /* ===== REVIEW ===== */
         .review-item {
@@ -945,7 +1007,7 @@
         }
         .wishlist-empty i, .empty-state i { font-size: 3.2rem; opacity: 0.3; margin-bottom: 1rem; }
 
-        /* ===== FACILITY ICONS ===== */
+        /* ===== FACILITY ICON POPUP ===== */
         .facility-icon-popup {
             position: fixed;
             bottom: 30px;
@@ -974,6 +1036,111 @@
             color: #8a9aa8;
         }
         .facility-icon-popup .close-popup:hover { color: #0b1a2e; }
+        .facility-icon-popup .facility-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        /* ===== TOP UP ===== */
+        .topup-section {
+            background: white;
+            border-radius: 32px;
+            padding: 2rem;
+            border: 1px solid #edf2f7;
+            margin-bottom: 2rem;
+        }
+        .topup-section .balance-display {
+            font-size: 2rem;
+            background: none;
+            color: #0b1a2e;
+            padding: 0;
+        }
+        .topup-section .balance-display i { color: #f5a623; }
+        .topup-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .topup-options .option {
+            background: #f8fafc;
+            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.2s;
+            font-weight: 600;
+            min-width: 80px;
+            text-align: center;
+        }
+        .topup-options .option:hover { border-color: #e2e8f0; }
+        .topup-options .option.active { border-color: #f5a623; background: #fffbf0; }
+        .topup-options .option .amount { font-size: 1.2rem; }
+        .topup-options .option .label { font-size: 0.7rem; color: #6f8aa0; }
+
+        .btn-topup {
+            background: #f5a623;
+            color: #0b1a2e;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-topup:hover { background: #e09515; transform: scale(0.98); }
+
+        /* ===== DASHBOARD ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .dashboard-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            border: 1px solid #edf2f7;
+            transition: 0.2s;
+        }
+        .dashboard-card:hover { border-color: #f5a623; }
+        .dashboard-card .status {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .dashboard-card .status.active { background: #d4edda; color: #155724; }
+        .dashboard-card .status.expired { background: #f8d7da; color: #721c24; }
+        .dashboard-card .status.upcoming { background: #fff3cd; color: #856404; }
+
+        .btn-extend {
+            background: #1a9b5e;
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-extend:hover { background: #15804d; }
+        .btn-extend:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* ===== FOOTER ===== */
         .footer {
@@ -983,6 +1150,7 @@
             text-align: center;
             color: #6f8aa0;
             font-size: 0.9rem;
+            margin-top: auto;
         }
         .footer span { color: #f5a623; font-weight: 600; }
 
@@ -1002,174 +1170,222 @@
             .location-banner { flex-direction: column; text-align: center; padding: 1rem; }
             .modal .detail-grid { grid-template-columns: 1fr; }
             .chat-contact-list { max-height: 300px; }
+            .facility-icon-popup { max-width: 90%; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .topup-options .option { flex: 1; min-width: 60px; }
         }
     </style>
 </head>
 <body>
+<div class="app-wrapper">
+    <!-- ===== CONTENT ===== -->
+    <div class="main-content">
 
-    <!-- ===== NAVBAR ===== -->
-    <nav class="navbar">
-        <div class="logo" onclick="showPage('home')">
-            <i class="fas fa-building"></i> Kost<span>App</span>
-        </div>
-        <div class="nav-links" id="navLinks">
-            <button class="active" onclick="showPage('home')" data-page="home"><i class="fas fa-home"></i> Beranda</button>
-            <button onclick="showPage('list')" data-page="list"><i class="fas fa-list"></i> Daftar</button>
-            <button onclick="showPage('wishlist')" data-page="wishlist"><i class="fas fa-heart"></i> Favorit <span id="wishlistCount" style="background:#dc3545;color:white;border-radius:30px;padding:0 8px;font-size:0.7rem;margin-left:2px;">0</span></button>
-            <button onclick="showPage('chat')" data-page="chat"><i class="fas fa-comment-dots"></i> Pesan <span id="chatNotif" class="chat-notif" style="display:none;">0</span></button>
-            <button onclick="showPage('transactions')" data-page="transactions"><i class="fas fa-receipt"></i> Transaksi</button>
-            <button onclick="showPage('add')" data-page="add" class="btn-primary-nav"><i class="fas fa-plus"></i> Tambah</button>
-            <div id="authButtons"><button onclick="openLoginModal()" class="btn-login-nav"><i class="fas fa-sign-in-alt"></i> Login</button></div>
-            <div id="userInfo" style="display:none;" class="user-info">
-                <div class="avatar" id="userAvatar">U</div>
-                <span id="userName">User</span>
-                <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+        <!-- ===== NAVBAR ===== -->
+        <nav class="navbar">
+            <div class="logo" onclick="showPage('home')">
+                <i class="fas fa-building"></i> Kost<span>App</span>
             </div>
-        </div>
-    </nav>
-
-    <!-- ===== HERO ===== -->
-    <section class="hero" id="heroSection">
-        <h1>Cari Kost <span class="highlight">Terdekat</span></h1>
-        <p>Temukan kost dengan harga terbaik, fasilitas lengkap, dan lokasi strategis</p>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Cari nama kost atau lokasi..." onkeyup="searchKost()">
-            <button onclick="searchKost()"><i class="fas fa-search"></i> Cari</button>
-        </div>
-    </section>
-
-    <!-- ===== LOCATION BANNER ===== -->
-    <div class="location-banner" id="locationBanner">
-        <div class="location-info">
-            <div class="loc-icon"><i class="fas fa-location-dot"></i></div>
-            <div class="loc-text">
-                <strong id="locStatus">📍 Mendeteksi lokasi...</strong>
-                <span id="locDetail">Aktifkan izin lokasi untuk temukan kost terdekat</span>
-            </div>
-        </div>
-        <button class="btn-refresh-loc" id="btnRefreshLoc" onclick="getUserLocation()"><i class="fas fa-rotate"></i> Refresh</button>
-    </div>
-
-    <!-- ===== FACILITY POPUP ===== -->
-    <div class="facility-icon-popup" id="facilityPopup">
-        <button class="close-popup" onclick="closeFacilityPopup()">&times;</button>
-        <i id="facilityPopupIcon" class="fas fa-wifi"></i>
-        <h3 id="facilityPopupTitle">WiFi</h3>
-        <p id="facilityPopupDesc" style="color:#6f8aa0;font-size:0.9rem;">Koneksi internet cepat dan stabil</p>
-    </div>
-
-    <!-- ===== MAIN ===== -->
-    <div class="container">
-
-        <!-- HOME -->
-        <div class="page active" id="page-home">
-            <div class="page-title"><i class="fas fa-fire"></i> Kost Terdekat <span class="sub">— Rekomendasi untukmu</span></div>
-            <div class="filter-section">
-                <div class="filter-group">
-                    <select id="filterFacilityHome" onchange="filterKostHome()"><option value="all">Semua Fasilitas</option><option value="AC">AC</option><option value="WiFi">WiFi</option><option value="Kamar Mandi Dalam">Kamar Mandi Dalam</option><option value="Dapur">Dapur</option><option value="Parkir">Parkir</option><option value="TV">TV</option></select>
-                    <select id="sortPriceHome" onchange="filterKostHome()"><option value="default">Urutkan</option><option value="low">Harga Termurah</option><option value="high">Harga Termahal</option></select>
-                    <select id="sortRatingHome" onchange="filterKostHome()"><option value="default">Urutkan</option><option value="rating">Rating Tertinggi</option></select>
-                    <select id="sortDistanceHome" onchange="filterKostHome()"><option value="default">Urutkan</option><option value="distance">Jarak Terdekat</option></select>
-                </div>
-                <div class="filter-count"><span id="kostCountHome">0</span> kost ditemukan</div>
-            </div>
-            <div id="kostGridHome" class="kost-grid"></div>
-        </div>
-
-        <!-- LIST -->
-        <div class="page" id="page-list">
-            <div class="page-title"><i class="fas fa-list"></i> Semua Kost</div>
-            <div class="filter-section">
-                <div class="filter-group">
-                    <select id="filterFacilityList" onchange="filterKostList()"><option value="all">Semua Fasilitas</option><option value="AC">AC</option><option value="WiFi">WiFi</option><option value="Kamar Mandi Dalam">Kamar Mandi Dalam</option><option value="Dapur">Dapur</option><option value="Parkir">Parkir</option><option value="TV">TV</option></select>
-                    <select id="sortPriceList" onchange="filterKostList()"><option value="default">Urutkan</option><option value="low">Harga Termurah</option><option value="high">Harga Termahal</option></select>
-                    <input type="text" id="searchList" placeholder="Cari kost..." onkeyup="filterKostList()">
-                </div>
-                <div class="filter-count"><span id="kostCountList">0</span> kost ditemukan</div>
-            </div>
-            <div id="kostGridList" class="kost-grid"></div>
-        </div>
-
-        <!-- WISHLIST -->
-        <div class="page" id="page-wishlist">
-            <div class="page-title"><i class="fas fa-heart" style="color:#dc3545;"></i> Favorit Saya</div>
-            <div id="wishlistGrid" class="kost-grid"></div>
-        </div>
-
-        <!-- TRANSACTIONS -->
-        <div class="page" id="page-transactions">
-            <div class="page-title"><i class="fas fa-receipt" style="color:#1a9b5e;"></i> Riwayat Transaksi</div>
-            <div id="transactionList" style="background:white;border-radius:32px;padding:1.5rem;border:1px solid #edf2f7;"></div>
-        </div>
-
-        <!-- CHAT -->
-        <div class="page" id="page-chat">
-            <div class="page-title"><i class="fas fa-comment-dots" style="color:#f5a623;"></i> Pesan & Kontak</div>
-            <div style="display:grid; grid-template-columns: 1fr 2.2fr; gap:1.8rem;">
-                <div class="chat-contact-list" id="chatContactList">
-                    <h4 style="margin-bottom:1rem;">💬 Chat Terakhir</h4>
-                    <div id="chatContacts"><p style="color:#8a9aa8; font-size:0.9rem;">Belum ada percakapan</p></div>
-                </div>
-                <div style="background:white; border-radius:32px; padding:1.5rem; border:1px solid #edf2f7;">
-                    <div id="chatDetail"><p style="color:#8a9aa8; text-align:center; padding:2rem 0;"><i class="fas fa-comment" style="font-size:2.8rem; display:block; margin-bottom:0.8rem; opacity:0.2;"></i> Pilih percakapan</p></div>
+            <div class="nav-links" id="navLinks">
+                <button class="active" onclick="showPage('home')" data-page="home"><i class="fas fa-home"></i> Beranda</button>
+                <button onclick="showPage('list')" data-page="list"><i class="fas fa-list"></i> Daftar</button>
+                <button onclick="showPage('wishlist')" data-page="wishlist"><i class="fas fa-heart"></i> Favorit <span id="wishlistCount" style="background:#dc3545;color:white;border-radius:30px;padding:0 8px;font-size:0.7rem;margin-left:2px;">0</span></button>
+                <button onclick="showPage('chat')" data-page="chat"><i class="fas fa-comment-dots"></i> Pesan <span id="chatNotif" class="chat-notif" style="display:none;background:#dc3545;color:white;border-radius:30px;padding:0 8px;font-size:0.7rem;margin-left:2px;">0</span></button>
+                <button onclick="showPage('transactions')" data-page="transactions"><i class="fas fa-receipt"></i> Transaksi</button>
+                <button onclick="showPage('dashboard')" data-page="dashboard"><i class="fas fa-columns"></i> Dashboard</button>
+                <button onclick="showPage('add')" data-page="add" class="btn-primary-nav"><i class="fas fa-plus"></i> Tambah</button>
+                <div id="authButtons"><button onclick="openLoginModal()" class="btn-login-nav"><i class="fas fa-sign-in-alt"></i> Login</button></div>
+                <div id="userInfo" style="display:none;" class="user-info">
+                    <div class="avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                    <span class="balance-display"><i class="fas fa-wallet"></i> Rp <span id="userBalance">0</span></span>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </div>
+        </nav>
+
+        <!-- ===== HERO ===== -->
+        <section class="hero" id="heroSection">
+            <h1>Cari Kost <span class="highlight">Terdekat</span></h1>
+            <p>Temukan kost dengan harga terbaik, fasilitas lengkap, dan lokasi strategis</p>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Cari nama kost atau lokasi..." onkeyup="searchKost()">
+                <button onclick="searchKost()"><i class="fas fa-search"></i> Cari</button>
+            </div>
+        </section>
+
+        <!-- ===== LOCATION BANNER ===== -->
+        <div class="location-banner" id="locationBanner">
+            <div class="location-info">
+                <div class="loc-icon"><i class="fas fa-location-dot"></i></div>
+                <div class="loc-text">
+                    <strong id="locStatus">📍 Mendeteksi lokasi...</strong>
+                    <span id="locDetail">Aktifkan izin lokasi untuk temukan kost terdekat</span>
+                </div>
+            </div>
+            <button class="btn-refresh-loc" id="btnRefreshLoc" onclick="getUserLocation()"><i class="fas fa-rotate"></i> Refresh</button>
         </div>
 
-        <!-- ADD -->
-        <div class="page" id="page-add">
-            <div class="form-card">
-                <h2><i class="fas fa-plus-circle" style="color:#f5a623;"></i> Tambah Kost Baru</h2>
-                <p style="color:#6f8aa0; margin-bottom:1.5rem;">Lengkapi data kost, upload gambar, dan pilih lokasi di peta.</p>
-                <form id="addKostForm" onsubmit="addKost(event)">
-                    <div class="form-group">
-                        <div class="full-width"><label>Nama Kost *</label><input type="text" id="namaKost" placeholder="Contoh: Kost Mawar Indah" required></div>
-                        <div class="full-width"><label>Alamat *</label><input type="text" id="lokasiKost" placeholder="Jl. Merpati No. 12" required></div>
-                        <div><label>Harga/Bulan (Rp) *</label><input type="number" id="hargaBulan" placeholder="800000" required></div>
-                        <div><label>Harga/Tahun (Rp) *</label><input type="number" id="hargaTahun" placeholder="8400000" required></div>
-                        <div><label>Total Kamar *</label><input type="number" id="totalKamar" placeholder="10" required min="1"></div>
-                        <div><label>Kamar Kosong *</label><input type="number" id="kamarKosong" placeholder="3" required min="0"></div>
-                        <div><label>Diskon Mahasiswa (%)</label><input type="number" id="diskonMahasiswa" placeholder="10" min="0" max="50"></div>
-                        <div class="full-width"><label>Fasilitas *</label><input type="text" id="fasilitasKost" placeholder="AC, WiFi, Kamar Mandi Dalam" required><div class="form-hint">Pisahkan dengan koma (,)</div></div>
-                        <div class="full-width"><label>Layanan Tambahan</label><input type="text" id="layananKost" placeholder="Laundry, Makan, Cleaning Service"><div class="form-hint">Pisahkan dengan koma (,)</div></div>
-                        <div class="full-width"><label>Deskripsi</label><textarea id="deskripsiKost" placeholder="Deskripsikan kost Anda..."></textarea></div>
-                        <div class="full-width"><label>Upload Gambar Kost *</label>
-                            <input type="file" id="gambarKost" accept="image/*" multiple required>
-                            <div class="image-preview" id="imagePreview"></div>
-                            <div class="form-hint">Upload minimal 1 gambar</div>
+        <!-- ===== FACILITY POPUP ===== -->
+        <div class="facility-icon-popup" id="facilityPopup">
+            <button class="close-popup" onclick="closeFacilityPopup()">&times;</button>
+            <i id="facilityPopupIcon" class="fas fa-wifi"></i>
+            <h3 id="facilityPopupTitle">WiFi</h3>
+            <p id="facilityPopupDesc" style="color:#6f8aa0;font-size:0.9rem;">Koneksi internet cepat dan stabil</p>
+            <img id="facilityPopupImage" class="facility-image" src="" alt="Fasilitas" style="display:none;">
+        </div>
+
+        <!-- ===== MAIN ===== -->
+        <div class="container">
+
+            <!-- HOME -->
+            <div class="page active" id="page-home">
+                <div class="page-title"><i class="fas fa-fire"></i> Kost Terdekat <span class="sub">— Rekomendasi untukmu</span></div>
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <select id="filterFacilityHome" onchange="filterKostHome()"><option value="all">Semua Fasilitas</option><option value="AC">AC</option><option value="WiFi">WiFi</option><option value="Kamar Mandi Dalam">Kamar Mandi Dalam</option><option value="Dapur">Dapur</option><option value="Parkir">Parkir</option><option value="TV">TV</option></select>
+                        <select id="sortPriceHome" onchange="filterKostHome()"><option value="default">Urutkan</option><option value="low">Harga Termurah</option><option value="high">Harga Termahal</option></select>
+                        <select id="sortRatingHome" onchange="filterKostHome()"><option value="default">Urutkan</option><option value="rating">Rating Tertinggi</option></select>
+                        <select id="sortDistanceHome" onchange="filterKostHome()"><option value="default">Urutkan</option><option value="distance">Jarak Terdekat</option></select>
+                    </div>
+                    <div class="filter-count"><span id="kostCountHome">0</span> kost ditemukan</div>
+                </div>
+                <div id="kostGridHome" class="kost-grid"></div>
+            </div>
+
+            <!-- LIST -->
+            <div class="page" id="page-list">
+                <div class="page-title"><i class="fas fa-list"></i> Semua Kost</div>
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <select id="filterFacilityList" onchange="filterKostList()"><option value="all">Semua Fasilitas</option><option value="AC">AC</option><option value="WiFi">WiFi</option><option value="Kamar Mandi Dalam">Kamar Mandi Dalam</option><option value="Dapur">Dapur</option><option value="Parkir">Parkir</option><option value="TV">TV</option></select>
+                        <select id="sortPriceList" onchange="filterKostList()"><option value="default">Urutkan</option><option value="low">Harga Termurah</option><option value="high">Harga Termahal</option></select>
+                        <input type="text" id="searchList" placeholder="Cari kost..." onkeyup="filterKostList()">
+                    </div>
+                    <div class="filter-count"><span id="kostCountList">0</span> kost ditemukan</div>
+                </div>
+                <div id="kostGridList" class="kost-grid"></div>
+            </div>
+
+            <!-- WISHLIST -->
+            <div class="page" id="page-wishlist">
+                <div class="page-title"><i class="fas fa-heart" style="color:#dc3545;"></i> Favorit Saya</div>
+                <div id="wishlistGrid" class="kost-grid"></div>
+            </div>
+
+            <!-- TRANSACTIONS -->
+            <div class="page" id="page-transactions">
+                <div class="page-title"><i class="fas fa-receipt" style="color:#1a9b5e;"></i> Riwayat Transaksi</div>
+                <div id="transactionList" style="background:white;border-radius:32px;padding:1.5rem;border:1px solid #edf2f7;"></div>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div class="page" id="page-dashboard">
+                <div class="page-title"><i class="fas fa-columns" style="color:#f5a623;"></i> Dashboard Saya</div>
+                
+                <!-- TOP UP SECTION -->
+                <div class="topup-section">
+                    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;align-items:center;">
+                        <div>
+                            <div style="font-size:0.85rem;color:#6f8aa0;">Saldo Anda</div>
+                            <div class="balance-display"><i class="fas fa-wallet"></i> Rp <span id="dashboardBalance">0</span></div>
                         </div>
-                        <div class="full-width"><label>Metode Pembayaran</label>
-                            <select id="metodePembayaranKost">
-                                <option value="all">Semua Metode</option>
-                                <option value="transfer">Transfer Bank</option>
-                                <option value="qris">QRIS</option>
-                                <option value="cash">Cash</option>
-                            </select>
-                        </div>
-
-                        <div class="full-width">
-                            <label><i class="fas fa-map-pin" style="color:#f5a623;"></i> Pilih Lokasi di Peta *</label>
-                            <div class="map-picker-container"><div id="addKostMap"></div></div>
-                            <div class="map-picker-info">
-                                <div class="coord-info"><i class="fas fa-location-dot"></i> <span>Koordinat: </span><strong id="selectedCoordDisplay">Belum dipilih</strong></div>
-                                <button type="button" class="btn-use-location" id="btnUseMyLocation" onclick="useMyLocationForPicker()"><i class="fas fa-location-dot"></i> Lokasi Saya</button>
-                                <span class="selected-marker-info empty" id="markerStatus">⚪ Klik peta untuk pilih</span>
-                            </div>
-                            <input type="hidden" id="selectedLat" value=""><input type="hidden" id="selectedLng" value="">
-                            <div class="form-error" id="mapError">⚠️ Silakan pilih lokasi di peta!</div>
+                        <div>
+                            <button class="btn-topup" onclick="openTopUpModal()"><i class="fas fa-plus-circle"></i> Top Up Saldo</button>
                         </div>
                     </div>
-                    <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan Kost</button>
-                </form>
+                </div>
+
+                <h3 style="margin:1.5rem 0 1rem;">🏠 Kost Saya</h3>
+                <div id="myKostGrid" class="dashboard-grid"></div>
+
+                <h3 style="margin:1.5rem 0 1rem;">📋 Riwayat Sewa</h3>
+                <div id="rentHistoryGrid" class="dashboard-grid"></div>
+            </div>
+
+            <!-- CHAT -->
+            <div class="page" id="page-chat">
+                <div class="page-title"><i class="fas fa-comment-dots" style="color:#f5a623;"></i> Pesan & Kontak</div>
+                <div style="display:grid; grid-template-columns: 1fr 2.2fr; gap:1.8rem;">
+                    <div class="chat-contact-list">
+                        <h4 style="margin-bottom:1rem;">💬 Chat Terakhir</h4>
+                        <div id="chatContacts"><p style="color:#8a9aa8; font-size:0.9rem;">Belum ada percakapan</p></div>
+                    </div>
+                    <div style="background:white; border-radius:32px; padding:1.5rem; border:1px solid #edf2f7;">
+                        <div id="chatDetail"><p style="color:#8a9aa8; text-align:center; padding:2rem 0;"><i class="fas fa-comment" style="font-size:2.8rem; display:block; margin-bottom:0.8rem; opacity:0.2;"></i> Pilih percakapan</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADD -->
+            <div class="page" id="page-add">
+                <div class="form-card">
+                    <h2><i class="fas fa-plus-circle" style="color:#f5a623;"></i> Tambah Kost Baru</h2>
+                    <p style="color:#6f8aa0; margin-bottom:1.5rem;">Lengkapi data kost, upload gambar, dan pilih lokasi di peta.</p>
+                    <form id="addKostForm" onsubmit="addKost(event)">
+                        <div class="form-group">
+                            <div class="full-width"><label>Nama Kost *</label><input type="text" id="namaKost" placeholder="Contoh: Kost Mawar Indah" required></div>
+                            <div class="full-width"><label>Alamat *</label><input type="text" id="lokasiKost" placeholder="Jl. Merpati No. 12" required></div>
+                            <div><label>Harga/Bulan (Rp) *</label><input type="number" id="hargaBulan" placeholder="800000" required></div>
+                            <div><label>Harga/Tahun (Rp) *</label><input type="number" id="hargaTahun" placeholder="8400000" required></div>
+                            <div><label>Total Kamar *</label><input type="number" id="totalKamar" placeholder="10" required min="1"></div>
+                            <div><label>Kamar Kosong *</label><input type="number" id="kamarKosong" placeholder="3" required min="0"></div>
+                            <div><label>Diskon Mahasiswa (%)</label><input type="number" id="diskonMahasiswa" placeholder="10" min="0" max="50"></div>
+                            <div class="full-width"><label>Fasilitas *</label><input type="text" id="fasilitasKost" placeholder="AC, WiFi, Kamar Mandi Dalam" required><div class="form-hint">Pisahkan dengan koma (,)</div></div>
+                            <div class="full-width"><label>Layanan Tambahan</label><input type="text" id="layananKost" placeholder="Laundry, Makan, Cleaning Service"><div class="form-hint">Pisahkan dengan koma (,)</div></div>
+                            <div class="full-width"><label>Deskripsi</label><textarea id="deskripsiKost" placeholder="Deskripsikan kost Anda..."></textarea></div>
+                            <div class="full-width"><label>Upload Gambar Kost *</label>
+                                <input type="file" id="gambarKost" accept="image/*" multiple required>
+                                <div class="image-preview" id="imagePreview"></div>
+                                <div class="form-hint">Upload minimal 1 gambar</div>
+                            </div>
+                            <div class="full-width"><label>Upload Gambar Fasilitas (opsional)</label>
+                                <input type="file" id="gambarFasilitas" accept="image/*" multiple>
+                                <div class="image-preview" id="facilityImagePreview"></div>
+                                <div class="form-hint">Upload gambar untuk setiap fasilitas (AC, WiFi, Kamar Mandi Dalam, dll)</div>
+                            </div>
+                            <div class="full-width"><label>Metode Pembayaran</label>
+                                <select id="metodePembayaranKost">
+                                    <option value="all">Semua Metode</option>
+                                    <option value="transfer">Transfer Bank</option>
+                                    <option value="qris">QRIS</option>
+                                    <option value="cash">Cash</option>
+                                </select>
+                            </div>
+
+                            <div class="full-width">
+                                <label><i class="fas fa-map-pin" style="color:#f5a623;"></i> Pilih Lokasi di Peta *</label>
+                                <div class="map-picker-container"><div id="addKostMap"></div></div>
+                                <div class="map-picker-info">
+                                    <div class="coord-info"><i class="fas fa-location-dot"></i> <span>Koordinat: </span><strong id="selectedCoordDisplay">Belum dipilih</strong></div>
+                                    <button type="button" class="btn-use-location" id="btnUseMyLocation" onclick="useMyLocationForPicker()"><i class="fas fa-location-dot"></i> Lokasi Saya</button>
+                                    <span class="selected-marker-info empty" id="markerStatus">⚪ Klik peta untuk pilih</span>
+                                </div>
+                                <input type="hidden" id="selectedLat" value=""><input type="hidden" id="selectedLng" value="">
+                                <div class="form-error" id="mapError">⚠️ Silakan pilih lokasi di peta!</div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan Kost</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        &copy; 2026 <span>KostApp</span> · <span id="totalKostFooter">0</span> kost tersedia
+    </footer>
+</div>
 
     <!-- ===== MODAL DETAIL ===== -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal">
             <button class="modal-close" onclick="closeModal()">&times;</button>
-            <div class="modal-image" id="modalImage"><i class="fas fa-building fallback-icon"></i></div>
+            <div class="modal-image" id="modalImage">
+                <img id="modalMainImage" src="" alt="Kost">
+                <div class="image-nav" id="imageNav"></div>
+            </div>
             <h2 id="modalTitle">Nama Kost</h2>
             <div class="location" id="modalLocation"><i class="fas fa-map-pin"></i> Lokasi</div>
             <div class="kost-rating"><span class="stars" id="modalStars">★★★★★</span><span class="review-count" id="modalReviewCount">(0 ulasan)</span></div>
@@ -1203,21 +1419,20 @@
                     </div>
                 </div>
                 <div class="payment-options" id="paymentOptions">
-                    <div class="option active" data-method="transfer" onclick="selectPayment('transfer')">
+                    <div class="option active" data-method="saldo" onclick="selectPayment('saldo')">
+                        <i class="fas fa-wallet" style="color:#f5a623;"></i> Saldo App
+                    </div>
+                    <div class="option" data-method="transfer" onclick="selectPayment('transfer')">
                         <i class="fas fa-university bca"></i> Transfer Bank
                     </div>
                     <div class="option" data-method="qris" onclick="selectPayment('qris')">
                         <i class="fas fa-qrcode qris"></i> QRIS
                     </div>
-                    <div class="option" data-method="cash" onclick="selectPayment('cash')">
-                        <i class="fas fa-money-bill-wave"></i> Cash (Bayar di Tempat)
-                    </div>
                 </div>
 
                 <div id="paymentDetail" style="background:#f8fafc;padding:0.8rem 1.2rem;border-radius:20px;margin-top:0.6rem;font-size:0.9rem;">
-                    <span id="paymentMethodLabel">💳 Transfer Bank</span>
-                    <span style="margin-left:1rem;color:#6f8aa0;">Rek: 123-456-7890 a/n KostApp</span>
-                    <div style="font-size:0.8rem;color:#6f8aa0;margin-top:4px;">Pembayaran akan diverifikasi dalam 24 jam</div>
+                    <span id="paymentMethodLabel">💰 Bayar dengan Saldo App</span>
+                    <div style="font-size:0.8rem;color:#6f8aa0;margin-top:4px;">Saldo Anda: Rp <span id="modalBalance">0</span></div>
                 </div>
 
                 <div class="payment-status" id="paymentStatus">
@@ -1271,6 +1486,62 @@
         </div>
     </div>
 
+    <!-- ===== TOP UP MODAL ===== -->
+    <div class="modal-overlay" id="topUpModal">
+        <div class="modal" style="max-width:500px;">
+            <button class="modal-close" onclick="closeTopUpModal()">&times;</button>
+            <h2><i class="fas fa-plus-circle" style="color:#f5a623;"></i> Top Up Saldo</h2>
+            <p style="color:#6f8aa0;margin-bottom:1.5rem;">Isi saldo Anda untuk membayar kost</p>
+            
+            <div style="margin-bottom:1rem;">
+                <div style="font-weight:600;margin-bottom:0.5rem;">Saldo Saat Ini</div>
+                <div style="font-size:2rem;font-weight:700;color:#f5a623;">Rp <span id="topUpCurrentBalance">0</span></div>
+            </div>
+
+            <div style="margin-bottom:1.5rem;">
+                <div style="font-weight:600;margin-bottom:0.5rem;">Pilih Nominal</div>
+                <div class="topup-options" id="topUpOptions">
+                    <div class="option active" data-amount="50000" onclick="selectTopUp(50000)">
+                        <div class="amount">Rp 50.000</div>
+                    </div>
+                    <div class="option" data-amount="100000" onclick="selectTopUp(100000)">
+                        <div class="amount">Rp 100.000</div>
+                    </div>
+                    <div class="option" data-amount="200000" onclick="selectTopUp(200000)">
+                        <div class="amount">Rp 200.000</div>
+                    </div>
+                    <div class="option" data-amount="500000" onclick="selectTopUp(500000)">
+                        <div class="amount">Rp 500.000</div>
+                    </div>
+                    <div class="option" data-amount="1000000" onclick="selectTopUp(1000000)">
+                        <div class="amount">Rp 1.000.000</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom:1.5rem;">
+                <label style="font-weight:600;display:block;margin-bottom:0.5rem;">Nominal Lainnya</label>
+                <input type="number" id="customTopUpAmount" placeholder="Masukkan nominal..." min="10000" step="10000" style="width:100%;padding:0.7rem 1rem;border:1px solid #e2e8f0;border-radius:20px;font-family:'Inter',sans-serif;">
+            </div>
+
+            <div style="margin-bottom:1.5rem;">
+                <label style="font-weight:600;display:block;margin-bottom:0.5rem;">Metode Pembayaran</label>
+                <div class="payment-options" style="margin:0;">
+                    <div class="option active" data-method="qris" onclick="selectTopUpMethod('qris')">
+                        <i class="fas fa-qrcode qris"></i> QRIS
+                    </div>
+                    <div class="option" data-method="transfer" onclick="selectTopUpMethod('transfer')">
+                        <i class="fas fa-university bca"></i> Transfer Bank
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-pay-now" onclick="processTopUp()" style="background:#f5a623;color:#0b1a2e;">
+                <i class="fas fa-check-circle"></i> Top Up Sekarang
+            </button>
+        </div>
+    </div>
+
     <!-- ===== LOGIN MODAL ===== -->
     <div class="modal-overlay login-modal" id="loginModal">
         <div class="modal" style="max-width:440px;">
@@ -1295,17 +1566,15 @@
         </div>
     </div>
 
-    <!-- ===== FOOTER ===== -->
-    <div class="footer">&copy; 2026 <span>KostApp</span> · <span id="totalKostFooter">0</span> kost tersedia</div>
-
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // ============================================
-        // DATA KOST
+        // DATA
         // ============================================
         const PUSAT_KOTA = { lat: 2.9592, lng: 99.0687 };
+        let currentImageIndex = 0;
+        let currentImages = [];
 
-        // Facility icons mapping
         const FACILITY_ICONS = {
             'AC': { icon: 'fa-snowflake', desc: 'Pendingin ruangan untuk kenyamanan maksimal' },
             'WiFi': { icon: 'fa-wifi', desc: 'Koneksi internet cepat dan stabil' },
@@ -1316,6 +1585,7 @@
             'Kolam Renang': { icon: 'fa-swimmer', desc: 'Kolam renang untuk refreshing' }
         };
 
+        // Data kost (sama seperti sebelumnya)
         let kostData = [
             {
                 id:1, nama:"Kost Mawar Indah", lokasi:"Jl. Merpati No. 12, Pematangsiantar",
@@ -1327,7 +1597,8 @@
                 totalKamar:10, kamarKosong:3, kota:"Pematangsiantar",
                 diskonMahasiswa:10, metodePembayaran:["transfer","qris","cash"],
                 reviews:[{user:"Ani",rating:5,text:"Kostnya nyaman banget!",date:"2026-01-15"}],
-                gambar: ["https://b.top4top.io/p_3841zy6u81.jpg"]
+                gambar: ["https://b.top4top.io/p_3841zy6u81.jpg"],
+                facilityImages: {}
             },
             {
                 id:2, nama:"Kost Melati Putih", lokasi:"Jl. Kenanga No. 5, Pematangsiantar",
@@ -1339,7 +1610,8 @@
                 totalKamar:8, kamarKosong:2, kota:"Pematangsiantar",
                 diskonMahasiswa:15, metodePembayaran:["transfer","qris"],
                 reviews:[{user:"Dewi",rating:5,text:"Sangat recommended!",date:"2026-01-18"}],
-                gambar: ["https://h.top4top.io/p_3841bzbuw1.jpg"]
+                gambar: ["https://h.top4top.io/p_3841bzbuw1.jpg"],
+                facilityImages: {}
             },
             {
                 id:3, nama:"Kost Anggrek Biru", lokasi:"Jl. Pahlawan No. 8, Pematangsiantar",
@@ -1350,7 +1622,8 @@
                 lat:2.9620, lng:99.0720, owner:"Agus Prasetyo",
                 totalKamar:12, kamarKosong:5, kota:"Pematangsiantar",
                 diskonMahasiswa:5, metodePembayaran:["transfer","cash"],
-                reviews:[], gambar: ["https://k.top4top.io/p_38418tval1.jpg"]
+                reviews:[], gambar: ["https://k.top4top.io/p_38418tval1.jpg"],
+                facilityImages: {}
             },
             {
                 id:4, nama:"Kost Flamboyan", lokasi:"Jl. Diponegoro No. 20, Pematangsiantar",
@@ -1361,7 +1634,8 @@
                 lat:2.9550, lng:99.0650, owner:"Rina Wijaya",
                 totalKamar:6, kamarKosong:1, kota:"Pematangsiantar",
                 diskonMahasiswa:20, metodePembayaran:["transfer","qris","cash"],
-                reviews:[], gambar: ["https://g.top4top.io/p_3841rmigm1.jpg"]
+                reviews:[], gambar: ["https://g.top4top.io/p_3841rmigm1.jpg"],
+                facilityImages: {}
             }
         ];
 
@@ -1386,8 +1660,13 @@
         let chatMessages = {};
         let chatContacts = [];
         let transactions = [];
-        let selectedPayment = 'transfer';
+        let selectedPayment = 'saldo';
         let uploadedImages = [];
+        let uploadedFacilityImages = {};
+        let userBalance = 0;
+        let selectedTopUpAmount = 50000;
+        let selectedTopUpMethod = 'qris';
+        let myRents = [];
 
         // ============================================
         // FUNGSI UTILITY
@@ -1426,31 +1705,41 @@
             return wishlist.indexOf(id) > -1;
         }
 
-        function getKostImage(kost) {
-            return kost.gambar && kost.gambar.length ? kost.gambar[0] : 'https://via.placeholder.com/400x300?text=Kost';
+        function getKostImage(kost, index) {
+            if (!kost.gambar || !kost.gambar.length) return 'https://via.placeholder.com/400x300?text=Kost';
+            return kost.gambar[index % kost.gambar.length];
         }
 
         function getDiscountedPrice(kost) {
-            if (!kost.diskonMahasiswa) return kost.hargaBulan;
+            if (!kost.diskonMahasiswa || !currentUser?.isStudent) return kost.hargaBulan;
             return kost.hargaBulan - (kost.hargaBulan * kost.diskonMahasiswa / 100);
         }
 
         // ============================================
         // FACILITY POPUP
         // ============================================
-        function showFacilityPopup(facility) {
+        function showFacilityPopup(facility, kostId) {
             let popup = document.getElementById('facilityPopup');
             let icon = document.getElementById('facilityPopupIcon');
             let title = document.getElementById('facilityPopupTitle');
             let desc = document.getElementById('facilityPopupDesc');
+            let img = document.getElementById('facilityPopupImage');
 
             let data = FACILITY_ICONS[facility] || { icon: 'fa-cube', desc: 'Fasilitas lengkap untuk kenyamanan Anda' };
             icon.className = 'fas ' + data.icon;
             title.textContent = facility;
             desc.textContent = data.desc;
 
+            let kost = kostData.find(k => k.id === kostId);
+            if (kost && kost.facilityImages && kost.facilityImages[facility]) {
+                img.src = kost.facilityImages[facility];
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+
             popup.classList.add('active');
-            setTimeout(() => popup.classList.remove('active'), 4000);
+            setTimeout(() => popup.classList.remove('active'), 5000);
         }
 
         function closeFacilityPopup() {
@@ -1472,6 +1761,45 @@
                     let img = document.createElement('img');
                     img.src = event.target.result;
                     preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('gambarFasilitas').addEventListener('change', function(e) {
+            let preview = document.getElementById('facilityImagePreview');
+            preview.innerHTML = '';
+            uploadedFacilityImages = {};
+
+            for (let file of e.target.files) {
+                let reader = new FileReader();
+                reader.onload = function(event) {
+                    let name = file.name.replace(/\.[^/.]+$/, '').toLowerCase();
+                    let facilityMatch = Object.keys(FACILITY_ICONS).find(f => 
+                        name.includes(f.toLowerCase().replace(/ /g, '')) || 
+                        name.includes(f.toLowerCase().replace(/ /g, '-')) ||
+                        name.includes(f.toLowerCase().replace(/ /g, '_'))
+                    );
+                    if (facilityMatch) {
+                        uploadedFacilityImages[facilityMatch] = event.target.result;
+                        let img = document.createElement('img');
+                        img.src = event.target.result;
+                        img.title = facilityMatch;
+                        preview.appendChild(img);
+                    } else {
+                        for (let key of Object.keys(FACILITY_ICONS)) {
+                            if (name.includes(key.toLowerCase().replace(/ /g, '')) || 
+                                name.includes(key.toLowerCase().replace(/ /g, '-')) ||
+                                name.includes(key.toLowerCase().replace(/ /g, '_'))) {
+                                uploadedFacilityImages[key] = event.target.result;
+                                let img = document.createElement('img');
+                                img.src = event.target.result;
+                                img.title = key;
+                                preview.appendChild(img);
+                                break;
+                            }
+                        }
+                    }
                 };
                 reader.readAsDataURL(file);
             }
@@ -1504,9 +1832,8 @@
                 let distText = dist !== null ? (dist < 1 ? (dist * 1000).toFixed(0) + ' m' : dist.toFixed(1) + ' km') : '';
                 let nearby = dist !== null && dist < 3;
                 let outTown = kost.kota && kost.kota !== "Pematangsiantar";
-                let imageUrl = getKostImage(kost);
+                let imageUrl = getKostImage(kost, 0);
                 let hasDiscount = kost.diskonMahasiswa && kost.diskonMahasiswa > 0;
-                let discountedPrice = getDiscountedPrice(kost);
 
                 return `
                     <div class="kost-card ${nearby ? 'nearby' : ''}" onclick="openModal(${kost.id})">
@@ -1540,7 +1867,7 @@
                             </div>
                             <div class="kost-facilities">
                                 ${kost.fasilitas.slice(0, 3).map(f => `
-                                    <span class="facility-tag" onclick="event.stopPropagation(); showFacilityPopup('${f}')">
+                                    <span class="facility-tag" onclick="event.stopPropagation(); showFacilityPopup('${f}', ${kost.id})">
                                         <i class="fas ${FACILITY_ICONS[f]?.icon || 'fa-cube'}"></i> ${f}
                                     </span>
                                 `).join('')}
@@ -1549,7 +1876,7 @@
                             <div class="kost-price">
                                 <div class="price-item">
                                     <span class="label">Per Bulan</span>
-                                    <span class="value">${hasDiscount ? '<span style="text-decoration:line-through;color:#8a9aa8;font-size:0.8rem;">Rp ' + kost.hargaBulan.toLocaleString() + '</span> Rp ' + discountedPrice.toLocaleString() : 'Rp ' + kost.hargaBulan.toLocaleString()}</span>
+                                    <span class="value">${hasDiscount && currentUser?.isStudent ? '<span style="text-decoration:line-through;color:#8a9aa8;font-size:0.8rem;">Rp ' + kost.hargaBulan.toLocaleString() + '</span> Rp ' + getDiscountedPrice(kost).toLocaleString() : 'Rp ' + kost.hargaBulan.toLocaleString()}</span>
                                 </div>
                                 <div class="price-item">
                                     <span class="label">Per Tahun</span>
@@ -1562,6 +1889,9 @@
                                 </button>
                                 <button class="btn-detail" onclick="event.stopPropagation(); openModal(${kost.id})">
                                     <i class="fas fa-info"></i> Detail
+                                </button>
+                                <button class="btn-chat-card" onclick="event.stopPropagation(); openChatFromCard(${kost.id})">
+                                    <i class="fas fa-comment"></i>
                                 </button>
                                 <button class="btn-book-now" onclick="event.stopPropagation(); openModal(${kost.id}); setTimeout(() => document.getElementById('btnPayNow').scrollIntoView({behavior:'smooth'}), 500);" ${kost.kamarKosong <= 0 ? 'disabled' : ''}>
                                     <i class="fas fa-credit-card"></i> ${kost.kamarKosong > 0 ? 'Bayar & Booking' : 'Penuh'}
@@ -1676,9 +2006,9 @@
         // AUTH SYSTEM
         // ============================================
         let users = [
-            { email: "demo@kostapp.com", password: "123456", name: "Demo User", isStudent: false },
-            { email: "budi@kost.com", password: "123456", name: "Budi Santoso", isStudent: false },
-            { email: "mahasiswa@kost.com", password: "123456", name: "Mahasiswa Hebat", isStudent: true }
+            { email: "demo@kostapp.com", password: "123456", name: "Demo User", isStudent: false, balance: 500000 },
+            { email: "budi@kost.com", password: "123456", name: "Budi Santoso", isStudent: false, balance: 1000000 },
+            { email: "mahasiswa@kost.com", password: "123456", name: "Mahasiswa Hebat", isStudent: true, balance: 200000 }
         ];
 
         function openLoginModal() {
@@ -1730,6 +2060,7 @@
                 let user = users.find(u => u.email === email && u.password === password);
                 if (user) {
                     currentUser = user;
+                    userBalance = user.balance || 0;
                     closeLoginModal();
                     updateUI();
                     alert('✅ Login berhasil! Selamat datang ' + user.name + (user.isStudent ? ' 🎓 (Mahasiswa)' : ''));
@@ -1747,9 +2078,10 @@
                     alert('❌ Email sudah terdaftar!');
                     return;
                 }
-                let newUser = { email, password, name, isStudent };
+                let newUser = { email, password, name, isStudent, balance: 0 };
                 users.push(newUser);
                 currentUser = newUser;
+                userBalance = 0;
                 closeLoginModal();
                 updateUI();
                 alert('✅ Pendaftaran berhasil! Selamat datang ' + name + (isStudent ? ' 🎓 (Mahasiswa)' : ''));
@@ -1758,6 +2090,7 @@
 
         function logout() {
             currentUser = null;
+            userBalance = 0;
             updateUI();
             showPage('home');
             alert('👋 Anda telah logout');
@@ -1768,16 +2101,20 @@
             let userInfo = document.getElementById('userInfo');
             let userName = document.getElementById('userName');
             let userAvatar = document.getElementById('userAvatar');
+            let balanceEl = document.getElementById('userBalance');
 
             if (currentUser) {
                 authButtons.style.display = 'none';
                 userInfo.style.display = 'flex';
                 userName.textContent = currentUser.name + (currentUser.isStudent ? ' 🎓' : '');
                 userAvatar.textContent = currentUser.name.charAt(0).toUpperCase();
+                balanceEl.textContent = userBalance.toLocaleString();
+                document.getElementById('dashboardBalance').textContent = userBalance.toLocaleString();
             } else {
                 authButtons.style.display = 'block';
                 userInfo.style.display = 'none';
             }
+            renderDashboard();
         }
 
         // ============================================
@@ -1966,14 +2303,17 @@
                 diskonMahasiswa,
                 metodePembayaran: metodePembayaran === 'all' ? ['transfer','qris','cash'] : [metodePembayaran],
                 reviews: [],
-                gambar: uploadedImages.slice()
+                gambar: uploadedImages.slice(),
+                facilityImages: uploadedFacilityImages
             };
 
             kostData.push(newKost);
 
             document.getElementById('addKostForm').reset();
             document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('facilityImagePreview').innerHTML = '';
             uploadedImages = [];
+            uploadedFacilityImages = {};
             selectedLat = null;
             selectedLng = null;
             document.getElementById('selectedCoordDisplay').textContent = 'Belum dipilih';
@@ -2010,25 +2350,109 @@
                 renderWishlist();
                 updateWishlistUI();
                 updateFooterCount();
+                renderDashboard();
                 if (currentModalId === id) closeModal();
             }
         }
 
         // ============================================
-        // PAYMENT SYSTEM (Pihak Ketiga)
+        // TOP UP SYSTEM
+        // ============================================
+        function openTopUpModal() {
+            if (!currentUser) {
+                alert('⚠️ Silakan login terlebih dahulu!');
+                openLoginModal();
+                return;
+            }
+            document.getElementById('topUpCurrentBalance').textContent = userBalance.toLocaleString();
+            document.getElementById('topUpModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            selectTopUp(50000);
+        }
+
+        function closeTopUpModal() {
+            document.getElementById('topUpModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function selectTopUp(amount) {
+            selectedTopUpAmount = amount;
+            document.querySelectorAll('#topUpOptions .option').forEach(el => {
+                el.classList.toggle('active', parseInt(el.dataset.amount) === amount);
+            });
+            document.getElementById('customTopUpAmount').value = '';
+        }
+
+        function selectTopUpMethod(method) {
+            selectedTopUpMethod = method;
+            document.querySelectorAll('#topUpModal .payment-options .option').forEach(el => {
+                el.classList.toggle('active', el.dataset.method === method);
+            });
+        }
+
+        function processTopUp() {
+            let amount = selectedTopUpAmount;
+            let customAmount = parseInt(document.getElementById('customTopUpAmount').value);
+            if (customAmount > 0) amount = customAmount;
+
+            if (!amount || amount < 10000) {
+                alert('⚠️ Minimal top up Rp 10.000!');
+                return;
+            }
+
+            if (!confirm(`💰 Konfirmasi Top Up\n\nNominal: Rp ${amount.toLocaleString()}\nMetode: ${selectedTopUpMethod.toUpperCase()}\n\nLanjutkan?`)) return;
+
+            // Simulasi proses top up
+            let btn = document.querySelector('#topUpModal .btn-pay-now');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+
+            setTimeout(() => {
+                userBalance += amount;
+                if (currentUser) {
+                    let user = users.find(u => u.email === currentUser.email);
+                    if (user) user.balance = userBalance;
+                }
+
+                // Catat transaksi top up
+                transactions.push({
+                    id: Date.now(),
+                    type: 'topup',
+                    amount: amount,
+                    method: selectedTopUpMethod,
+                    date: new Date().toLocaleString('id-ID'),
+                    status: 'Berhasil',
+                    user: currentUser.name
+                });
+
+                updateUI();
+                renderTransactions();
+                renderDashboard();
+                closeTopUpModal();
+
+                alert(`✅ Top Up berhasil!\n\nSaldo Anda sekarang: Rp ${userBalance.toLocaleString()}`);
+
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Top Up Sekarang';
+            }, 2000);
+        }
+
+        // ============================================
+        // PAYMENT SYSTEM
         // ============================================
         function selectPayment(method) {
             selectedPayment = method;
-            document.querySelectorAll('.payment-options .option').forEach(el => {
+            document.querySelectorAll('#paymentOptions .option').forEach(el => {
                 el.classList.toggle('active', el.dataset.method === method);
             });
 
             let labels = {
+                'saldo': '💰 Bayar dengan Saldo App',
                 'transfer': '💳 Transfer Bank - Rek: 123-456-7890 a/n KostApp',
-                'qris': '📱 QRIS - Scan QR Code untuk pembayaran',
-                'cash': '💰 Cash - Bayar langsung ke pemilik kost (verifikasi 24 jam)'
+                'qris': '📱 QRIS - Scan QR Code untuk pembayaran'
             };
-            document.getElementById('paymentMethodLabel').textContent = labels[method] || labels.transfer;
+            document.getElementById('paymentMethodLabel').textContent = labels[method] || labels.saldo;
+            document.getElementById('modalBalance').textContent = userBalance.toLocaleString();
         }
 
         function processPayment() {
@@ -2050,6 +2474,13 @@
             let harga = getDiscountedPrice(kost);
             let isDiscounted = currentUser.isStudent && kost.diskonMahasiswa > 0;
 
+            // Cek saldo jika pakai saldo
+            if (selectedPayment === 'saldo' && userBalance < harga) {
+                alert(`⚠️ Saldo tidak mencukupi!\n\nSaldo Anda: Rp ${userBalance.toLocaleString()}\nHarga: Rp ${harga.toLocaleString()}\n\nSilakan top up terlebih dahulu.`);
+                openTopUpModal();
+                return;
+            }
+
             let confirmMsg = `💳 Konfirmasi Pembayaran\n\n`;
             confirmMsg += `🏠 Kost: ${kost.nama}\n`;
             confirmMsg += `📍 Lokasi: ${kost.lokasi}\n`;
@@ -2058,14 +2489,17 @@
                 confirmMsg += `\n🎓 Diskon ${kost.diskonMahasiswa}% (mahasiswa)`;
             }
             confirmMsg += `\n💳 Metode: ${selectedPayment.toUpperCase()}`;
-            confirmMsg += `\n\n⏱️ Pembayaran akan diverifikasi dalam 24 jam`;
-            confirmMsg += `\n📱 Uang akan masuk ke rekening pihak ketiga (KostApp)`;
-            confirmMsg += `\n💰 Setelah verifikasi, dana akan diteruskan ke pemilik kost`;
+            if (selectedPayment === 'saldo') {
+                confirmMsg += `\n💰 Saldo Anda: Rp ${userBalance.toLocaleString()}`;
+                confirmMsg += `\n💳 Sisa Saldo: Rp ${(userBalance - harga).toLocaleString()}`;
+            } else {
+                confirmMsg += `\n\n⏱️ Pembayaran akan diverifikasi dalam 24 jam`;
+                confirmMsg += `\n📱 Uang akan masuk ke rekening pihak ketiga (KostApp)`;
+            }
             confirmMsg += `\n\nLanjutkan pembayaran?`;
 
             if (!confirm(confirmMsg)) return;
 
-            // Simulasi pembayaran
             let statusEl = document.getElementById('paymentStatus');
             let contentEl = document.getElementById('paymentStatusContent');
             statusEl.classList.add('active');
@@ -2079,10 +2513,22 @@
             btnPay.disabled = true;
             btnPay.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
 
-            // Simulasi proses 3 detik
             setTimeout(() => {
                 // Kurangi kamar
                 kost.kamarKosong--;
+
+                // Jika pakai saldo, kurangi saldo
+                let usedSaldo = 0;
+                let remainingBalance = userBalance;
+                if (selectedPayment === 'saldo') {
+                    usedSaldo = harga;
+                    userBalance -= harga;
+                    remainingBalance = userBalance;
+                    if (currentUser) {
+                        let user = users.find(u => u.email === currentUser.email);
+                        if (user) user.balance = userBalance;
+                    }
+                }
 
                 let transaction = {
                     id: Date.now(),
@@ -2092,22 +2538,44 @@
                     price: harga,
                     method: selectedPayment,
                     date: new Date().toLocaleString('id-ID'),
-                    status: 'Menunggu Verifikasi (24 jam)',
+                    status: selectedPayment === 'saldo' ? 'Berhasil (Dibayar)' : 'Menunggu Verifikasi (24 jam)',
                     isStudent: currentUser.isStudent,
                     discount: isDiscounted ? kost.diskonMahasiswa : 0,
                     paymentDate: new Date().toISOString(),
-                    verified: false
+                    verified: selectedPayment === 'saldo',
+                    usedSaldo: usedSaldo,
+                    remainingBalance: remainingBalance
                 };
 
                 transactions.push(transaction);
+
+                // Simpan ke myRents
+                myRents.push({
+                    id: Date.now(),
+                    kostId: kost.id,
+                    kostName: kost.nama,
+                    owner: kost.owner,
+                    price: harga,
+                    startDate: new Date().toISOString(),
+                    endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                    status: 'active',
+                    paymentMethod: selectedPayment,
+                    isStudent: currentUser.isStudent,
+                    discount: isDiscounted ? kost.diskonMahasiswa : 0
+                });
+
+                let successMsg = selectedPayment === 'saldo' 
+                    ? `✅ Pembayaran berhasil menggunakan saldo!\n\nKost: ${kost.nama}\nTotal: Rp ${harga.toLocaleString()}\nSisa Saldo: Rp ${remainingBalance.toLocaleString()}`
+                    : `✅ Pembayaran berhasil!\n\nKost: ${kost.nama}\nTotal: Rp ${harga.toLocaleString()}\nMetode: ${selectedPayment.toUpperCase()}\n\n⏱️ Dana akan diverifikasi dalam 24 jam`;
 
                 contentEl.innerHTML = `
                     <div class="success">
                         <i class="fas fa-check-circle"></i> Pembayaran berhasil!
                         <div style="font-size:0.85rem;margin-top:4px;">
-                            💰 Rp ${harga.toLocaleString()} telah ditransfer ke rekening KostApp (pihak ketiga)
-                            <br>⏱️ Dana akan diteruskan ke pemilik kost dalam 24 jam
-                            <br>📋 Status: Menunggu Verifikasi
+                            ${selectedPayment === 'saldo' 
+                                ? `💰 Rp ${harga.toLocaleString()} telah dibayar dari saldo<br>💳 Sisa saldo: Rp ${remainingBalance.toLocaleString()}`
+                                : `💰 Rp ${harga.toLocaleString()} telah ditransfer ke rekening KostApp (pihak ketiga)<br>⏱️ Dana akan diteruskan ke pemilik kost dalam 24 jam`}
+                            <br>📋 Status: ${transaction.status}
                         </div>
                     </div>
                 `;
@@ -2115,19 +2583,19 @@
                 btnPay.innerHTML = '<i class="fas fa-check"></i> Pembayaran Berhasil';
                 btnPay.disabled = true;
 
-                // Update UI
                 filterKostHome();
                 filterKostList();
                 renderWishlist();
                 renderTransactions();
+                renderDashboard();
                 updateFooterCount();
+                updateUI();
 
-                // Update modal
                 let kamarElement = document.getElementById('modalKamar');
                 kamarElement.textContent = kost.kamarKosong + ' / ' + kost.totalKamar;
                 kamarElement.className = 'value ' + (kost.kamarKosong === 0 ? 'full' : kost.kamarKosong <= 2 ? 'limited' : 'available');
 
-                alert(`✅ Pembayaran berhasil!\n\nKost: ${kost.nama}\nTotal: Rp ${harga.toLocaleString()}\nMetode: ${selectedPayment.toUpperCase()}\n\n⏱️ Dana akan diverifikasi dalam 24 jam\n💰 Setelah verifikasi, dana akan diteruskan ke pemilik kost\n\nTerima kasih telah menggunakan KostApp!`);
+                alert(successMsg + '\n\nTerima kasih telah menggunakan KostApp!');
 
                 setTimeout(() => {
                     statusEl.classList.remove('active');
@@ -2142,6 +2610,186 @@
             }, 3000);
         }
 
+        // ============================================
+        // DASHBOARD
+        // ============================================
+        function renderDashboard() {
+            if (!currentUser) {
+                document.getElementById('myKostGrid').innerHTML = `
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <i class="fas fa-lock"></i>
+                        <h3>Login untuk melihat dashboard</h3>
+                        <p>Silakan login untuk mengelola kost Anda</p>
+                    </div>
+                `;
+                document.getElementById('rentHistoryGrid').innerHTML = '';
+                return;
+            }
+
+            // Kost milik user
+            let myKosts = kostData.filter(k => k.owner === currentUser.name);
+            let myKostHTML = myKosts.length ? myKosts.map(k => `
+                <div class="dashboard-card">
+                    <div style="display:flex;justify-content:space-between;align-items:start;">
+                        <div>
+                            <h4>${k.nama}</h4>
+                            <div style="font-size:0.85rem;color:#6f8aa0;">${k.lokasi}</div>
+                            <div style="font-size:0.85rem;color:#1a9b5e;margin-top:4px;">
+                                🏠 ${k.kamarKosong}/${k.totalKamar} kamar tersedia
+                            </div>
+                            <div style="font-size:0.85rem;font-weight:600;margin-top:4px;">
+                                Rp ${k.hargaBulan.toLocaleString()}/bulan
+                            </div>
+                        </div>
+                        <div>
+                            <span class="status ${k.kamarKosong > 0 ? 'active' : 'expired'}">
+                                ${k.kamarKosong > 0 ? '✅ Tersedia' : '❌ Penuh'}
+                            </span>
+                        </div>
+                    </div>
+                    <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap;">
+                        <button onclick="showPage('list')" class="btn-extend" style="background:#f5a623;color:#0b1a2e;">
+                            <i class="fas fa-edit"></i> Kelola
+                        </button>
+                        <button onclick="deleteKost(${k.id})" class="btn-extend" style="background:#dc3545;color:white;">
+                            <i class="fas fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                </div>
+            `).join('') : `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-plus-circle"></i>
+                    <h3>Belum ada kost</h3>
+                    <p>Tambahkan kost Anda melalui halaman Tambah Kost</p>
+                </div>
+            `;
+
+            document.getElementById('myKostGrid').innerHTML = myKostHTML;
+
+            // Riwayat sewa
+            let myRentsHTML = myRents.length ? myRents.map(r => {
+                let isActive = new Date(r.endDate) > new Date();
+                let status = isActive ? 'Aktif' : 'Berakhir';
+                let statusClass = isActive ? 'active' : 'expired';
+                let daysLeft = Math.ceil((new Date(r.endDate) - new Date()) / (1000 * 60 * 60 * 24));
+
+                return `
+                    <div class="dashboard-card">
+                        <div style="display:flex;justify-content:space-between;align-items:start;">
+                            <div>
+                                <h4>${r.kostName}</h4>
+                                <div style="font-size:0.85rem;color:#6f8aa0;">Pemilik: ${r.owner}</div>
+                                <div style="font-size:0.85rem;color:#6f8aa0;">
+                                    📅 ${new Date(r.startDate).toLocaleDateString('id-ID')} - ${new Date(r.endDate).toLocaleDateString('id-ID')}
+                                </div>
+                                <div style="font-size:0.85rem;font-weight:600;color:#1a9b5e;margin-top:4px;">
+                                    Rp ${r.price.toLocaleString()}/bulan
+                                    ${r.isStudent && r.discount > 0 ? `🎓 ${r.discount}% OFF` : ''}
+                                </div>
+                            </div>
+                            <div>
+                                <span class="status ${statusClass}">${isActive ? '✅ ' + status : '⏱️ ' + status}</span>
+                                ${isActive ? `<div style="font-size:0.7rem;color:#6f8aa0;margin-top:4px;">${daysLeft} hari tersisa</div>` : ''}
+                            </div>
+                        </div>
+                        <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap;">
+                            ${isActive ? `
+                                <button onclick="extendRent(${r.id})" class="btn-extend">
+                                    <i class="fas fa-clock"></i> Perpanjang (Rp ${r.price.toLocaleString()})
+                                </button>
+                            ` : `
+                                <button onclick="renewRent(${r.kostId})" class="btn-extend" style="background:#f5a623;color:#0b1a2e;">
+                                    <i class="fas fa-redo"></i> Sewa Lagi
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }).join('') : `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-home"></i>
+                    <h3>Belum ada riwayat sewa</h3>
+                    <p>Mulai sewa kost melalui halaman Beranda</p>
+                </div>
+            `;
+
+            document.getElementById('rentHistoryGrid').innerHTML = myRentsHTML;
+        }
+
+        // ============================================
+        // EXTEND RENT
+        // ============================================
+        function extendRent(rentId) {
+            if (!currentUser) {
+                alert('⚠️ Silakan login terlebih dahulu!');
+                openLoginModal();
+                return;
+            }
+
+            let rent = myRents.find(r => r.id === rentId);
+            if (!rent) return;
+
+            let price = rent.price;
+            if (userBalance < price) {
+                alert(`⚠️ Saldo tidak mencukupi!\n\nSaldo Anda: Rp ${userBalance.toLocaleString()}\nBiaya Perpanjang: Rp ${price.toLocaleString()}\n\nSilakan top up terlebih dahulu.`);
+                openTopUpModal();
+                return;
+            }
+
+            if (!confirm(`📋 Konfirmasi Perpanjangan\n\nKost: ${rent.kostName}\nBiaya: Rp ${price.toLocaleString()}\nSaldo Anda: Rp ${userBalance.toLocaleString()}\n\nLanjutkan?`)) return;
+
+            // Proses perpanjangan
+            userBalance -= price;
+            if (currentUser) {
+                let user = users.find(u => u.email === currentUser.email);
+                if (user) user.balance = userBalance;
+            }
+
+            // Update end date +30 hari
+            let newEndDate = new Date(rent.endDate);
+            newEndDate.setDate(newEndDate.getDate() + 30);
+            rent.endDate = newEndDate.toISOString();
+
+            // Catat transaksi
+            transactions.push({
+                id: Date.now(),
+                type: 'extend',
+                kostName: rent.kostName,
+                user: currentUser.name,
+                price: price,
+                method: 'saldo',
+                date: new Date().toLocaleString('id-ID'),
+                status: 'Berhasil (Perpanjang)',
+                usedSaldo: price,
+                remainingBalance: userBalance
+            });
+
+            updateUI();
+            renderTransactions();
+            renderDashboard();
+            updateFooterCount();
+
+            alert(`✅ Perpanjangan berhasil!\n\nKost: ${rent.kostName}\nBiaya: Rp ${price.toLocaleString()}\nSisa Saldo: Rp ${userBalance.toLocaleString()}\n\nMasa berlaku sampai: ${new Date(rent.endDate).toLocaleDateString('id-ID')}`);
+        }
+
+        function renewRent(kostId) {
+            let kost = kostData.find(k => k.id === kostId);
+            if (!kost) return;
+
+            if (kost.kamarKosong <= 0) {
+                alert('⚠️ Maaf, kamar kost ini sudah penuh!');
+                return;
+            }
+
+            openModal(kostId);
+            setTimeout(() => {
+                document.getElementById('btnPayNow').scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        }
+
+        // ============================================
+        // TRANSACTIONS
+        // ============================================
         function renderTransactions() {
             let container = document.getElementById('transactionList');
             if (!transactions.length) {
@@ -2156,30 +2804,41 @@
 
             container.innerHTML = `
                 <div style="display:flex;flex-direction:column;gap:0.8rem;">
-                    ${transactions.slice().reverse().map(t => `
-                        <div style="background:#f8fafc;padding:1rem 1.2rem;border-radius:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;border-left:4px solid ${t.status.includes('Berhasil') ? '#1a9b5e' : '#f5a623'};">
-                            <div>
-                                <div style="font-weight:700;">${t.kostName}</div>
-                                <div style="font-size:0.85rem;color:#6f8aa0;">${t.user} • ${t.date}</div>
-                                ${t.isStudent && t.discount > 0 ? '<span style="background:#dc3545;color:white;padding:0.1rem 0.6rem;border-radius:20px;font-size:0.65rem;font-weight:700;">🎓 ' + t.discount + '% OFF</span>' : ''}
-                                <div style="font-size:0.8rem;color:#6f8aa0;margin-top:4px;">
-                                    💳 ${t.method.toUpperCase()} • ${t.status}
+                    ${transactions.slice().reverse().map(t => {
+                        let isTopUp = t.type === 'topup';
+                        let isExtend = t.type === 'extend';
+                        let borderColor = t.status.includes('Berhasil') ? '#1a9b5e' : '#f5a623';
+                        if (isTopUp) borderColor = '#007bff';
+                        if (isExtend) borderColor = '#f5a623';
+
+                        return `
+                            <div style="background:#f8fafc;padding:1rem 1.2rem;border-radius:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;border-left:4px solid ${borderColor};">
+                                <div>
+                                    <div style="font-weight:700;">
+                                        ${isTopUp ? '💳 Top Up Saldo' : isExtend ? '🔄 Perpanjangan' : '🏠 ' + t.kostName}
+                                    </div>
+                                    <div style="font-size:0.85rem;color:#6f8aa0;">${t.user} • ${t.date}</div>
+                                    ${t.isStudent && t.discount > 0 ? '<span style="background:#dc3545;color:white;padding:0.1rem 0.6rem;border-radius:20px;font-size:0.65rem;font-weight:700;">🎓 ' + t.discount + '% OFF</span>' : ''}
+                                    <div style="font-size:0.8rem;color:#6f8aa0;margin-top:4px;">
+                                        💳 ${t.method.toUpperCase()} • ${t.status}
+                                        ${t.usedSaldo ? ' • 💰 Saldo digunakan' : ''}
+                                    </div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="font-weight:700;color:#1a9b5e;">
+                                        ${isTopUp ? '+ ' : ''}Rp ${t.price.toLocaleString()}
+                                    </div>
+                                    ${t.remainingBalance !== undefined ? `<div style="font-size:0.8rem;color:#6f8aa0;">Sisa Saldo: Rp ${t.remainingBalance.toLocaleString()}</div>` : ''}
                                 </div>
                             </div>
-                            <div style="text-align:right;">
-                                <div style="font-weight:700;color:#1a9b5e;">Rp ${t.price.toLocaleString()}</div>
-                                <div style="font-size:0.8rem;color:#8a9aa8;">
-                                    ${t.verified ? '✅ Dana sudah diteruskan ke pemilik' : '⏱️ Menunggu verifikasi 24 jam'}
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
+                        `;
+                    }).join('')}
                 </div>
             `;
         }
 
         // ============================================
-        // CHAT SYSTEM (Tanpa WhatsApp)
+        // CHAT SYSTEM
         // ============================================
         function initChat(kostId) {
             if (!currentUser) return null;
@@ -2291,10 +2950,8 @@
                 return;
             }
             container.innerHTML = chatContacts.map(c => `
-                <div style="padding:0.8rem;border-radius:16px;margin-bottom:0.5rem;cursor:pointer;background:${document.getElementById('chatDetail').innerHTML.includes(c.id) ? '#f1f5f9' : 'transparent'};transition:0.2s;"
-                     onclick="openChatContact('${c.id}')"
-                     onmouseover="this.style.background='#f1f5f9'"
-                     onmouseout="this.style.background='${document.getElementById('chatDetail').innerHTML.includes(c.id) ? '#f1f5f9' : 'transparent'}'">
+                <div class="chat-contact-item ${document.getElementById('chatDetail').innerHTML.includes(c.id) ? 'active' : ''}"
+                     onclick="openChatContact('${c.id}')">
                     <div style="display:flex;justify-content:space-between;align-items:center;">
                         <div>
                             <strong>${c.name}</strong>
@@ -2321,6 +2978,22 @@
                 return;
             }
             closeModal();
+            showPage('chat');
+            let chatId = initChat(id);
+            if (chatId) {
+                setTimeout(() => {
+                    renderChat(chatId);
+                    renderChatContacts();
+                }, 100);
+            }
+        }
+
+        function openChatFromCard(id) {
+            if (!currentUser) {
+                alert('⚠️ Silakan login terlebih dahulu untuk chat!');
+                openLoginModal();
+                return;
+            }
             showPage('chat');
             let chatId = initChat(id);
             if (chatId) {
@@ -2512,6 +3185,8 @@
             currentModalId = id;
             currentKostLat = kost.lat;
             currentKostLng = kost.lng;
+            currentImages = kost.gambar || [];
+            currentImageIndex = 0;
 
             document.getElementById('modalTitle').textContent = kost.nama;
             document.getElementById('modalLocation').innerHTML = '<i class="fas fa-map-pin"></i> ' + kost.lokasi;
@@ -2520,9 +3195,8 @@
             document.getElementById('modalDeskripsi').textContent = kost.deskripsi || 'Tidak ada deskripsi.';
             document.getElementById('modalOwner').textContent = kost.owner;
 
-            // DISKON
             let discountEl = document.getElementById('modalDiscount');
-            if (kost.diskonMahasiswa > 0) {
+            if (kost.diskonMahasiswa > 0 && currentUser?.isStudent) {
                 discountEl.style.display = 'block';
                 document.getElementById('modalDiscountText').textContent = kost.diskonMahasiswa + '% (khusus mahasiswa)';
             } else {
@@ -2537,13 +3211,11 @@
             document.getElementById('modalStars').textContent = getRatingStars(avg);
             document.getElementById('modalReviewCount').textContent = '(' + (kost.reviews ? kost.reviews.length : 0) + ' ulasan)';
 
-            // Fasilitas dengan icon
             document.getElementById('modalFacilities').innerHTML = kost.fasilitas.map(f => {
                 let icon = FACILITY_ICONS[f]?.icon || 'fa-cube';
-                return `<span class="tag" onclick="showFacilityPopup('${f}')"><i class="fas ${icon}"></i> ${f}</span>`;
+                return `<span class="tag" onclick="showFacilityPopup('${f}', ${kost.id})"><i class="fas ${icon}"></i> ${f}</span>`;
             }).join('');
 
-            // Layanan
             let layananList = document.getElementById('modalLayananList');
             let layananSection = document.getElementById('modalLayanan');
             if (kost.layanan && kost.layanan.length) {
@@ -2553,15 +3225,8 @@
                 layananSection.style.display = 'none';
             }
 
-            // Gambar modal
-            let modalImage = document.getElementById('modalImage');
-            let imageUrl = getKostImage(kost);
-            modalImage.innerHTML = `
-                <img src="${imageUrl}" alt="${kost.nama}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <i class="fas fa-building fallback-icon" style="display:none;"></i>
-            `;
+            updateModalImage();
 
-            // Reviews
             let reviewsContainer = document.getElementById('modalReviews');
             if (kost.reviews && kost.reviews.length) {
                 reviewsContainer.innerHTML = kost.reviews.map(r => `
@@ -2578,10 +3243,10 @@
                 reviewsContainer.innerHTML = '<p style="color:#8a9aa8;">Belum ada ulasan. Jadilah yang pertama!</p>';
             }
 
-            // Payment
-            selectPayment('transfer');
+            // Default ke saldo
+            selectPayment('saldo');
+            document.getElementById('modalBalance').textContent = userBalance.toLocaleString();
 
-            // Payment button
             let payBtn = document.getElementById('btnPayNow');
             let statusEl = document.getElementById('paymentStatus');
             statusEl.classList.remove('active');
@@ -2592,6 +3257,9 @@
                 payBtn.innerHTML = `<i class="fas fa-credit-card"></i> Bayar Rp ${price.toLocaleString()}`;
                 if (currentUser && currentUser.isStudent && kost.diskonMahasiswa > 0) {
                     payBtn.innerHTML += ' 🎓';
+                }
+                if (selectedPayment === 'saldo' && userBalance < price) {
+                    payBtn.innerHTML = `<i class="fas fa-wallet"></i> Saldo Tidak Cukup (Rp ${userBalance.toLocaleString()})`;
                 }
             } else {
                 payBtn.disabled = true;
@@ -2625,6 +3293,36 @@
             }, 300);
         }
 
+        function updateModalImage() {
+            let img = document.getElementById('modalMainImage');
+            let nav = document.getElementById('imageNav');
+
+            if (currentImages.length > 0) {
+                img.src = currentImages[currentImageIndex];
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+
+            if (currentImages.length > 1) {
+                nav.innerHTML = currentImages.map((_, i) => `
+                    <span class="dot ${i === currentImageIndex ? 'active' : ''}" onclick="changeImage(${i})"></span>
+                `).join('') + `
+                    <button onclick="changeImage(${currentImageIndex - 1 < 0 ? currentImages.length - 1 : currentImageIndex - 1})">‹</button>
+                    <button onclick="changeImage(${currentImageIndex + 1 >= currentImages.length ? 0 : currentImageIndex + 1})">›</button>
+                `;
+                nav.style.display = 'flex';
+            } else {
+                nav.style.display = 'none';
+            }
+        }
+
+        function changeImage(index) {
+            if (currentImages.length === 0) return;
+            currentImageIndex = (index + currentImages.length) % currentImages.length;
+            updateModalImage();
+        }
+
         function closeModal() {
             document.getElementById('detailModal').classList.remove('active');
             document.body.style.overflow = 'auto';
@@ -2638,6 +3336,10 @@
 
         document.getElementById('detailModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
+        });
+
+        document.getElementById('topUpModal').addEventListener('click', function(e) {
+            if (e.target === this) closeTopUpModal();
         });
 
         // ============================================
@@ -2711,6 +3413,7 @@
                 updateChatNotif();
             }
             if (page === 'transactions') renderTransactions();
+            if (page === 'dashboard') renderDashboard();
             if (page === 'add') {
                 setTimeout(() => {
                     let lat = userLocation ? userLocation.lat : PUSAT_KOTA.lat;
@@ -2742,11 +3445,12 @@
             filterKostList();
             renderWishlist();
             renderTransactions();
+            renderDashboard();
             updateFooterCount();
             updateWishlistUI();
             updateChatNotif();
 
-            selectPayment('transfer');
+            selectPayment('saldo');
         });
 
         document.getElementById('searchInput').addEventListener('keyup', function(e) {
@@ -2757,6 +3461,7 @@
             if (e.key === 'Escape') {
                 closeModal();
                 closeLoginModal();
+                closeTopUpModal();
                 closeFacilityPopup();
             }
         });
@@ -2768,6 +3473,17 @@
         window.addEventListener('resize', function() {
             if (map) map.invalidateSize();
             if (pickerMap) pickerMap.invalidateSize();
+        });
+
+        // Custom top up input
+        document.getElementById('customTopUpAmount').addEventListener('input', function() {
+            let val = parseInt(this.value);
+            if (val > 0) {
+                document.querySelectorAll('#topUpOptions .option').forEach(el => {
+                    el.classList.remove('active');
+                });
+                selectedTopUpAmount = val;
+            }
         });
     </script>
 </body>
